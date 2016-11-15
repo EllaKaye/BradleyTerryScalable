@@ -13,3 +13,6 @@ src/*.dll
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.Rbuildignore
+SBT.Rproj
