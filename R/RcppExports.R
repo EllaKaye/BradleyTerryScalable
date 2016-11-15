@@ -5,3 +5,7 @@ BT_EM_arma <- function(W_R, a, b, maxit = 100L, start = "eig", epsilon = 1e-2) {
     .Call('SBT_BT_EM_arma', PACKAGE = 'SBT', W_R, a, b, maxit, start, epsilon)
 }
 
+ILSR_arma <- function(W_R, maxit = 100L, epsilon = 1e-2) {
+    .Call('SBT_ILSR_arma', PACKAGE = 'SBT', W_R, maxit, epsilon)
+}
+

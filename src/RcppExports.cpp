@@ -22,3 +22,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ILSR_arma
+List ILSR_arma(S4 W_R, int maxit, double epsilon);
+RcppExport SEXP SBT_ILSR_arma(SEXP W_RSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type W_R(W_RSEXP);
+    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
+    rcpp_result_gen = Rcpp::wrap(ILSR_arma(W_R, maxit, epsilon));
+    return rcpp_result_gen;
+END_RCPP
+}
