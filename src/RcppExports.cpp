@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // BT_EM_arma
-List BT_EM_arma(S4 W_R, double a, double b, int maxit, std::string start, double epsilon);
-RcppExport SEXP SBT_BT_EM_arma(SEXP W_RSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP startSEXP, SEXP epsilonSEXP) {
+List BT_EM_arma(S4 W_R, double a, double b, int maxit, double epsilon);
+RcppExport SEXP SBT_BT_EM_arma(SEXP W_RSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -16,9 +16,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type a(aSEXP);
     Rcpp::traits::input_parameter< double >::type b(bSEXP);
     Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< std::string >::type start(startSEXP);
     Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
-    rcpp_result_gen = Rcpp::wrap(BT_EM_arma(W_R, a, b, maxit, start, epsilon));
+    rcpp_result_gen = Rcpp::wrap(BT_EM_arma(W_R, a, b, maxit, epsilon));
     return rcpp_result_gen;
 END_RCPP
 }
