@@ -30,6 +30,10 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   if (is.matrix(W)) W <- Matrix(W, sparse = TRUE)
   if (class(W) != "dgCMatrix") W <- as(W, "dgCMatrix")
 
+  ### decide whether to return graph
+  return_graph <- FALSE
+  if (a == 1 & is.null(components) & graph) return_graph <- TRUE
+
   ### calculate components, if necessary
   if (a == 1 & is.null(components)) {
     g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
@@ -50,11 +54,14 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
 
     # When n == 1, just use all of W
     if (n == 1) {
-      if (ML_method == "ILSR") fit <- ILSR_arma(W, maxit = maxit, epsilon = epsilon)
+      if (ML_method == "ILSR") {
+        if (K == 2) fit <- BT_EM_arma(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
+        else fit <- ILSR_arma(W, maxit = maxit, epsilon = epsilon)
+      }
       if (ML_method == "MM") fit <- BT_EM_arma(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
 
-
       pi <- base::as.vector(fit$pi)
+      names(pi) <- rownames(W)
       iters <- fit$iters
       converged <- fit$converged
     } # end n == 1 if
@@ -120,7 +127,7 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
     ### EM-algorithm on full W, if no components are provided
     else {
 
-      fit <- BT_EM_arma(W, a, b, maxit = maxit, epsilon = epsilon)
+      fit <- BT_EM_arma(W, a = a, b = b, maxit = maxit, epsilon = epsilon)
       pi <- base::as.vector(fit$pi)
       iters <- fit$iters
       converged <- fit$converged
@@ -130,7 +137,7 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   } ## end a > 1 if
 
   result <- list(pi = pi, iters = iters, converged = converged)
-  if (graph) result$graph <- g
+  if (return_graph) result$graph <- g
 
   return(result)
 }
