@@ -152,6 +152,6 @@ List ILSR_arma(S4 W_R, int maxit = 100, double epsilon = 1e-2) {
 
   return(List::create(
       _["pi"] = pi /= sum(pi),
-      _["iter"] = iter,
+      _["iters"] = iter - 1,
       _["converged"] = converged));
 }

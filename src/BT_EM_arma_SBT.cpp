@@ -233,6 +233,6 @@ List BT_EM_arma(S4 W_R, double a, double b, int maxit = 100, double epsilon = 1e
 
   return(List::create(
       _["pi"] = pi /= sum(pi),
-      _["iter"] = iter - 1,
+      _["iters"] = iter - 1,
       _["converged"] = converged));
 }
