@@ -30,9 +30,6 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   if (is.matrix(W)) W <- Matrix(W, sparse = TRUE)
   if (class(W) != "dgCMatrix") W <- as(W, "dgCMatrix")
 
-  ### deal with dimnames
-  saved_dimnames <- dimnames(W)
-
   ### calculate components, if necessary
   if (a == 1 & is.null(components)) {
     g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
