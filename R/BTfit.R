@@ -30,10 +30,6 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   if (is.matrix(W)) W <- Matrix(W, sparse = TRUE)
   if (class(W) != "dgCMatrix") W <- as(W, "dgCMatrix")
 
-  ### decide whether to return graph
-  return_graph <- FALSE
-  if (a == 1 & is.null(components) & graph) return_graph <- TRUE
-
   ### calculate components, if necessary
   if (a == 1 & is.null(components)) {
     g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
@@ -54,11 +50,13 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
 
     # When n == 1, just use all of W
     if (n == 1) {
-      if (ML_method == "ILSR") {
-        if (K == 2) fit <- BT_EM(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-        else fit <- ILSR(W, maxit = maxit, epsilon = epsilon)
+
+      if (K == 2) fit <- list(pi = c(W[1,2], W[2,1])/sum(W), iters = 1, converged = TRUE)
+
+      else {
+        if (ML_method == "ILSR") fit <- ILSR(W, maxit = maxit, epsilon = epsilon)
+        if (ML_method == "MM") fit <- BT_EM(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
       }
-      if (ML_method == "MM") fit <- BT_EM(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
 
       pi <- base::as.vector(fit$pi)
       names(pi) <- rownames(W)
@@ -76,12 +74,12 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
         compk <- components[[k]] # the players in component k
         Wsub <- W[compk, compk] # wins matrix for players in component k
 
-        if (ML_method == "ILSR") {
+        if (length(compk) == 2) fit <- list(pi = c(Wsub[1,2], Wsub[2,1])/sum(Wsub), iters = 1, converged = TRUE)
 
-          if (length(compk) == 2) fit <- BT_EM(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-          else fit <- ILSR(Wsub, maxit = maxit, epsilon = epsilon)
+        else {
+          if (ML_method == "ILSR") fit <- ILSR(Wsub, maxit = maxit, epsilon = epsilon)
+          if (ML_method == "MM") fit <- BT_EM(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
         }
-        if (ML_method == "MM") fit <- BT_EM(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
 
         pi[[k]] <- base::as.vector(fit$pi)
         names(pi[[k]]) <- compk
