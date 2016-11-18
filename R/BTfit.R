@@ -1,4 +1,4 @@
-BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 100, epsilon = 1e-2, graph = FALSE) {
+btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 100, epsilon = 1e-2, graph = FALSE) {
 
   ### Checks on the arguments
   if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
@@ -55,10 +55,10 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
     # When n == 1, just use all of W
     if (n == 1) {
       if (ML_method == "ILSR") {
-        if (K == 2) fit <- BT_EM_arma(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-        else fit <- ILSR_arma(W, maxit = maxit, epsilon = epsilon)
+        if (K == 2) fit <- BT_EM(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
+        else fit <- ILSR(W, maxit = maxit, epsilon = epsilon)
       }
-      if (ML_method == "MM") fit <- BT_EM_arma(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
+      if (ML_method == "MM") fit <- BT_EM(W, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
 
       pi <- base::as.vector(fit$pi)
       names(pi) <- rownames(W)
@@ -78,10 +78,10 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
 
         if (ML_method == "ILSR") {
 
-          if (length(compk) == 2) fit <- BT_EM_arma(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-          else fit <- ILSR_arma(Wsub, maxit = maxit, epsilon = epsilon)
+          if (length(compk) == 2) fit <- BT_EM(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
+          else fit <- ILSR(Wsub, maxit = maxit, epsilon = epsilon)
         }
-        if (ML_method == "MM") fit <- BT_EM_arma(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
+        if (ML_method == "MM") fit <- BT_EM(Wsub, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
 
         pi[[k]] <- base::as.vector(fit$pi)
         names(pi[[k]]) <- compk
@@ -112,7 +112,7 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
         compk <- components[[k]] # the players in component k
         Wsub <- W[compk, compk] # wins matrix for players in component k
 
-        fit <- BT_EM_arma(Wsub, a = a, b = b, maxit = maxit, epsilon = epsilon)
+        fit <- BT_EM(Wsub, a = a, b = b, maxit = maxit, epsilon = epsilon)
 
         pi[[k]] <- base::as.vector(fit$pi)
         names(pi[[k]]) <- compk
@@ -127,7 +127,7 @@ BTfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
     ### EM-algorithm on full W, if no components are provided
     else {
 
-      fit <- BT_EM_arma(W, a = a, b = b, maxit = maxit, epsilon = epsilon)
+      fit <- BT_EM(W, a = a, b = b, maxit = maxit, epsilon = epsilon)
       pi <- base::as.vector(fit$pi)
       iters <- fit$iters
       converged <- fit$converged
