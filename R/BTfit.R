@@ -1,4 +1,4 @@
-btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 100, epsilon = 1e-2, graph = FALSE) {
+btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 100, epsilon = 1e-2) {
 
   ### Checks on the arguments
   if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
@@ -137,7 +137,6 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   } ## end a > 1 if
 
   result <- list(pi = pi, iters = iters, converged = converged)
-  if (return_graph) result$graph <- g
 
   return(result)
 }
