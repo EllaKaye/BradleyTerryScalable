@@ -7,7 +7,7 @@ using namespace arma;
 // [[Rcpp::plugins(cpp11)]]
 
 // [[Rcpp::export]]
-List BT_EM_arma(S4 W_R, double a, double b, int maxit = 100, double epsilon = 1e-2) {
+List BT_EM(S4 W_R, double a, double b, int maxit = 100, double epsilon = 1e-2) {
 
   // Convert S4 Matrix to arma Sparse Matrix
   IntegerVector dims = W_R.slot("Dim");
