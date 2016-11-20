@@ -21,6 +21,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// btprob_vec
+arma::mat btprob_vec(arma::vec pi);
+RcppExport SEXP SBT_btprob_vec(SEXP piSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
+    rcpp_result_gen = Rcpp::wrap(btprob_vec(pi));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ILSR
 List ILSR(S4 W_R, int maxit, double epsilon);
 RcppExport SEXP SBT_ILSR(SEXP W_RSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
