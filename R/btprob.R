@@ -6,9 +6,21 @@ btprob <- function(pi) {
 
 
   if (is.list(pi)) {
-    lapply(pi, btprob_vec)
+    pi_list_names <- lapply(pi, names)
+    unnamed <- lapply(pi, btprob_vec)
+    out <- mapply(function(x,y) {
+      dimnames(x) <- list(y, y)
+      return(x)
+    }, unnamed, pi_list_names)
   }
 
-  else (btprob_vec(pi))
+  else {
+    pi_names <- names(pi)
+    out <- btprob_vec(pi)
+    dimnames(out) <- list(pi_names, pi_names)
+  }
+
+  out
 }
+
 
