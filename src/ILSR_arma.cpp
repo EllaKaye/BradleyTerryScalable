@@ -77,6 +77,9 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
   // do the iterations...
   while( iter++ < maxit && !converged ) {
 
+    // check for interrupt every 10 iterations
+    if (iter % 10 == 0) Rcpp::checkUserInterrupt();
+
     // Rescale W by the latest pi and save into W
     for(int i = 0; i <  wij.size(); i++) {
       W_values[i] = wij[i] / (pi[W_locations.row(0)[i]] + pi[W_locations.row(1)[i]]);

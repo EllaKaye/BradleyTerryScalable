@@ -89,6 +89,9 @@ List BT_EM(S4 W, double a, double b, int maxit = 100, double epsilon = 1e-2) {
 
   while( iter++ < maxit && !converged ) {
 
+    // check for interrupt every 10 iterations
+    if (iter % 10 == 0) Rcpp::checkUserInterrupt();
+
     // E step
     //// update 'values' and batch insert back into N
     for(int i = 0; i <  nij.size(); i++) {
