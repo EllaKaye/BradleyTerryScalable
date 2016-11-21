@@ -1,19 +1,19 @@
 #' Converts a data frame of paired results into a square matrix.
 #'
-#' \code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix that is of the correct form to be passed as the \code{W} argument into the rest of the functions in this package: \code{\link{MLE_check}}, \code{\link{ILSR}}, \code{\link{BT_EM}}, \code{\link{BT_comp}}.
+#' \code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix that is of the correct form to be passed as the \code{W} argument into the \code{\link{connected_components}} and \code{\link{btfit}} functions in this package.
 #'
-#' @param df A dataframe, with either 3 or 4 columns.
+#' @param df A data frame (either a \code{\link[base]{data.frame}} or a \code{\link[dplyr]{tbl_df}}). It must have 3 or 4 columns:
 #' \describe{
 #'   \item{Ordered}{If a 3-column data-frame, the 1st column contains the name of the winning player, the 2nd column contains the name of the losing player and the third columns contains the number of times that the winner has beaten the loser.}
 #'   \item{Unordered}{If a 4-column data-frame, the 1st column contains the name of Player 1, the 2nd column contains the name of Player 2, the third column contains the number of times that Player 1 has beaten Player 2 and the fourth column contains the number of times Player 2 has beaten Player 1.}
 #' }
 #' In both cases, if there is a repeated pairing in \code{df}, \code{pairs_to_matrix} aggregates the number of wins, as one would expect.
-#' @return A sparse \eqn{K} by \eqn{K} matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}. This output is in the correct format to pass as the \code{W} input to the rest of the functions in this package.
-#' @seealso \code{\link{MLE_check}}, \code{\link{ILSR}}, \code{\link{BT_EM}}, \code{\link{BT_comp}}.
+#' @return A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}. This output is in the correct format to pass as the \code{W} argument to \code{\link{connected_components}} and \code{\link{btfit}}.
+#' @seealso \code{\link{connected_components}}, \code{\link{btfit}}.
 #' @examples
-#' winner <- c("A", "A", "A", "A", "B", "B", "B", "C", "C", "E", "F", "F")
-#' loser <- c("B", "C", "D", "F", "D", "A", "F", "F", "G", "G", "A", "C")
-#' df <- data.frame(winner = winner, loser = loser, num.wins = 1:12)
+#' winner <- c("A", "A", "A", "A", "A", "B", "B", "B", "C", "C", "E", "F", "F")
+#' loser <- c("B", "B", "C", "D", "F", "D", "A", "F", "F", "G", "G", "A", "C")
+#' df <- data.frame(winner = winner, loser = loser, num_wins = 1:13)
 #' pairs_to_matrix(df)
 #'
 #' df2 <- data.frame(team1 = c("A", "A", "B", "C"),
@@ -23,6 +23,12 @@
 
 #' @export
 pairs_to_matrix <- function(df) {
+
+  # Check for Matrix.utils
+  if (!requireNamespace("Matrix.utils", quietly = TRUE)) {
+    stop("The package Matrix.utils is needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
 
   # check if data frame
   if(!(is.data.frame(df))) stop ("Argument must be a data frame")
