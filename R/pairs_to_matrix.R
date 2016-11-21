@@ -2,7 +2,7 @@
 #'
 #' \code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix that is of the correct form to be passed as the \code{W} argument into the \code{\link{connected_components}} and \code{\link{btfit}} functions in this package.
 #'
-#' @param df A data frame (either a \code{\link[base]{data.frame}} or a \code{\link[dplyr]{tbl_df}}). It must have 3 or 4 columns:
+#' @param df A data frame. It must have 3 or 4 columns:
 #' \describe{
 #'   \item{Ordered}{If a 3-column data-frame, the 1st column contains the name of the winning player, the 2nd column contains the name of the losing player and the third columns contains the number of times that the winner has beaten the loser.}
 #'   \item{Unordered}{If a 4-column data-frame, the 1st column contains the name of Player 1, the 2nd column contains the name of Player 2, the third column contains the number of times that Player 1 has beaten Player 2 and the fourth column contains the number of times Player 2 has beaten Player 1.}

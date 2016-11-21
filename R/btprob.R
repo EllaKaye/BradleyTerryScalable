@@ -1,3 +1,6 @@
+
+
+
 btprob <- function(pi) {
 
   if(!is.vector(pi)) stop("pi should be a numeric vector or a list of numeric vectors")

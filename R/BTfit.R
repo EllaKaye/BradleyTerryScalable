@@ -1,10 +1,49 @@
+#' Fits the Bradley-Terry model
+#'
+#' \code{btfit} fits the Bradley-Terry model on (potentially) large and sparse datasets.
+#'
+#' Let there be \eqn{K} players, let \eqn{\pi_k} be the Bradley-Terry strength parameter of player \eqn{k}, for \eqn{k = 1, \ldots, K} and let \eqn{\pi} be the vector of all the \eqn{\pi_k}. Let \eqn{w_{ij}} be the number of times player \eqn{i} wins against player \eqn{j} and let \eqn{n_{ij} = w_{ij} + w_{ji}} be the number of times they play, with \eqn{w_{ii} = 0} by convention.
+#'
+#' Explain G_W.
+#'
+#' @param a Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{pi} (by component, if necessary). When \code{a > 1}, a is the shape parameter for the Gamma prior (See Details).
+#' @param b The rate parameter for the Gamma prior (See Details). When \code{a = 1}, \code{btfit} returns the MLE and this argument is ignored. If \code{b = NULL} (the default) when \code{a > 1}, then \code{b} is set to \eqn{aK - 1}.
+#' @param components The fully-connected components of \eqn{G_W}, as calculated by \code{\link{connected_components}}. If the MLE is requested (i.e. if \code{a = 1}) and \code{components = NULL}, \code{btfit} will calculate the components within the function, but for large matrices, this is time consuming, so we recommend passing in the components as an argument (especially as \code{\link{connected_components(W)}} should be run before \code{btfit} in any case). If \code{a > 1} then components are not necessary, but if they are provided, the function will return the penalised \eqn{pi} by component.
+#' @param ML_method The algorithm to be used when finding the MLE. See Details.
+#' @param maxit The maximum number of iterations for the algorithm. If returning \code{pi} by component, this will be the maximum number of iterations for each component.
+#' @param epsilon Determines when the algorithm is deemed to have converged. See Details.
+#' @inheritParams connected_components
+#'@return Returns a list containing:
+#'\item{pi}{The stregth parameter for the Bradley-Terry model. If \code{a = 1}, this is the MLE. If \code{a > 1}, this is the MAP estimate. If components are provided, or the MLE estimate is requested but \eqn{G_W} is not fully connected, then \code{pi} is list of length \eqn{N}, where \eqn{N} is the number of fully connected components of \eqn{G_W} of two or more players. The \eqn{n}-th item is a vector \eqn{pi} for the players in the \eqn{n}-th fully connected component, \eqn{n = 1, \ldots, N}.}
+#'\item{iters}{A vector of length \eqn{N}. The \eqn{n}-th entry is the number of iterations it took for algorithm for component \eqn{n} to converge, for \eqn{n = 1, \ldots, N}. Note that if the algorithm has not converged in any component, a warning will be produced.}
+#'\item{converged}{A logical vector of length \eqn{N}, indicating whether the algorithm has converged for the \eqn{n}-th component in \code{maxit} iterations}
+#'
+#'
+#' @seealso \code{\link{connected_components}}, \code{\link{btprobs}}
+#'
+#'
+#'
+#' @references Caron, F. and Doucet, A. (2012) Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
+#' @references Hunter, D. R. (2004) MM Algorithms for Generalized Bradley-Terry Models. \emph{The Annals of Statistics}, \strong{32}(1), 384-406.
+#' @examples
+#' W_connected <- Matrix::rsparsematrix(10, 10 , 0.5, rand.x = function(n) rbinom(n, 10, 0.5))
+#' i <- c(3,1,5,4,2,5,5,7,8,5,6,8,7)
+#' j <- c(1,2,2,3,4,4,6,6,6,7,7,7,8)
+#' W_not_connected <-  Matrix::sparseMatrix(i = i, j = j, x = 1:13, dims = c(8,8), dimnames = list(letters[1:8], letters[1:8]))
+#' W_components <- connected_components(W_not_connected)$components
+#' fit1 <- btfit(W_connected, 1)
+#' fit2 <- btfit(W_not_connected, 1, components = W_components)
+#' fit3 <- btfit(W_not_connected, 3)
+#' @export
+
 btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 100, epsilon = 1e-2) {
 
   ### Checks on the arguments
   if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
   if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
   if (any(W < 0)) stop("All entries of W must by non-negative")
-  if (a < 1) stop ("a must be >= 1")
+  if (!is.numeric(a)) stop("a must be >= 1")
+  if (a < 1) stop("a must be >= 1")
   if ((a > 1) && (!is.null(b)) && (b < 0)) stop("b must be positive or NULL when a > 1")
   if (!(is.null(rownames(W)) & is.null(colnames(W)))) {
     if(sum(rownames(W) != colnames(W)) > 0) stop("rownames and colnames of W should be the same")
