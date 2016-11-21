@@ -7,17 +7,17 @@
 using namespace Rcpp;
 
 // BT_EM
-List BT_EM(S4 W_R, double a, double b, int maxit, double epsilon);
-RcppExport SEXP SBT_BT_EM(SEXP W_RSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+List BT_EM(S4 W, double a, double b, int maxit, double epsilon);
+RcppExport SEXP SBT_BT_EM(SEXP WSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< S4 >::type W_R(W_RSEXP);
+    Rcpp::traits::input_parameter< S4 >::type W(WSEXP);
     Rcpp::traits::input_parameter< double >::type a(aSEXP);
     Rcpp::traits::input_parameter< double >::type b(bSEXP);
     Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
-    rcpp_result_gen = Rcpp::wrap(BT_EM(W_R, a, b, maxit, epsilon));
+    rcpp_result_gen = Rcpp::wrap(BT_EM(W, a, b, maxit, epsilon));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -33,15 +33,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // ILSR
-List ILSR(S4 W_R, int maxit, double epsilon);
-RcppExport SEXP SBT_ILSR(SEXP W_RSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+List ILSR(S4 W, int maxit, double epsilon);
+RcppExport SEXP SBT_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< S4 >::type W_R(W_RSEXP);
+    Rcpp::traits::input_parameter< S4 >::type W(WSEXP);
     Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
     Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
-    rcpp_result_gen = Rcpp::wrap(ILSR(W_R, maxit, epsilon));
+    rcpp_result_gen = Rcpp::wrap(ILSR(W, maxit, epsilon));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -7,29 +7,29 @@ using namespace arma;
 // [[Rcpp::plugins(cpp11)]]
 
 // [[Rcpp::export]]
-List BT_EM(S4 W_R, double a, double b, int maxit = 100, double epsilon = 1e-2) {
+List BT_EM(S4 W, double a, double b, int maxit = 100, double epsilon = 1e-2) {
 
   // Convert S4 Matrix to arma Sparse Matrix
-  IntegerVector dims = W_R.slot("Dim");
-  arma::urowvec w_i = Rcpp::as<arma::urowvec>(W_R.slot("i"));
-  arma::urowvec w_p = Rcpp::as<arma::urowvec>(W_R.slot("p"));
-  arma::vec w_x     = Rcpp::as<arma::vec>(W_R.slot("x"));
+  IntegerVector dims = W.slot("Dim");
+  arma::urowvec w_i = Rcpp::as<arma::urowvec>(W.slot("i"));
+  arma::urowvec w_p = Rcpp::as<arma::urowvec>(W.slot("p"));
+  arma::vec w_x     = Rcpp::as<arma::vec>(W.slot("x"));
 
   int nrow = dims[0], ncol = dims[1];
 
-  arma::sp_mat W(w_i, w_p, w_x, nrow, ncol);
+  arma::sp_mat W_arma(w_i, w_p, w_x, nrow, ncol);
 
-  int K = W.n_rows;
+  int K = W_arma.n_rows;
 
   // Set diagonal of W to zero
   // Fudge: element-wise multiplication of W by ones matrix with zeros on diagonal
   // NB much faster than W.diag().zeros()
   arma::mat spec(K, K, fill::ones);
   spec.diag().zeros();
-  W = W % spec;
+  W_arma = W_arma % spec;
 
   // Set up N and store original values
-  arma::sp_mat N = W + W.t();
+  arma::sp_mat N = W_arma + W_arma.t();
 
   arma::sp_mat::const_iterator first = N.begin();
   arma::sp_mat::const_iterator last   = N.end();
@@ -47,33 +47,33 @@ List BT_EM(S4 W_R, double a, double b, int maxit = 100, double epsilon = 1e-2) {
   }
 
   // set up numerator
-  arma::vec numer = arma::vec(sum(W, 1)) + (a - 1);
+  arma::vec numer = arma::vec(sum(W_arma, 1)) + (a - 1);
 
   // set up pi
   arma::vec pi(K);
   pi.fill(1.0/K); // equal start
 
-  bool use_eigs = !any(arma::rowvec(sum(W,0)) == 0);
+  bool use_eigs = !any(arma::rowvec(sum(W_arma,0)) == 0);
 
   if(use_eigs && (K > 2)) {
     arma::cx_vec eigvec;
     arma::cx_vec eigval;
 
     // update W so its divided by colSums
-    arma::rowvec Wcolsum = 1.0/arma::rowvec(sum(W,0));
-    arma::umat w_locations(2, W.n_nonzero);
-    arma::vec values(W.n_nonzero);
+    arma::rowvec Wcolsum = 1.0/arma::rowvec(sum(W_arma,0));
+    arma::umat w_locations(2, W_arma.n_nonzero);
+    arma::vec values(W_arma.n_nonzero);
 
     int ii=0;
-    for(arma::sp_mat::const_iterator it = W.begin(); it != W.end(); ++it)
+    for(arma::sp_mat::const_iterator it = W_arma.begin(); it != W_arma.end(); ++it)
     {
       values[ii] = (*it) * Wcolsum[it.row()];
       w_locations(0,ii) = it.row();
       w_locations(1,ii++) = it.col();
     }
-    W = arma::sp_mat(w_locations, values, W.n_rows, W.n_cols);
+    W_arma = arma::sp_mat(w_locations, values, W_arma.n_rows, W_arma.n_cols);
 
-    arma::eigs_gen(eigval, eigvec, W, 1);
+    arma::eigs_gen(eigval, eigvec, W_arma, 1);
     pi = abs(eigvec);
   } // end eigenvector for pi
 

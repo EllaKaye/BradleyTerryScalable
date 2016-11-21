@@ -5,27 +5,27 @@ using namespace arma;
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-List ILSR(S4 W_R, int maxit = 100, double epsilon = 1e-2) {
+List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
 
   // Convert S4 Matrix to arma Sparse Matrix
-  IntegerVector dims = W_R.slot("Dim");
-  arma::urowvec W_i = Rcpp::as<arma::urowvec>(W_R.slot("i"));
-  arma::urowvec W_p = Rcpp::as<arma::urowvec>(W_R.slot("p"));
-  arma::vec W_x     = Rcpp::as<arma::vec>(W_R.slot("x"));
+  IntegerVector dims = W.slot("Dim");
+  arma::urowvec W_i = Rcpp::as<arma::urowvec>(W.slot("i"));
+  arma::urowvec W_p = Rcpp::as<arma::urowvec>(W.slot("p"));
+  arma::vec W_x     = Rcpp::as<arma::vec>(W.slot("x"));
 
   int nrow = dims[0], ncol = dims[1];
 
-  arma::sp_mat W(W_i, W_p, W_x, nrow, ncol);
+  arma::sp_mat W_arma(W_i, W_p, W_x, nrow, ncol);
 
-  int K = W.n_rows;
+  int K = W_arma.n_rows;
 
   // Kill the diagonal (a fudge, but much quicker than .diag().zeros() on sparse matrix)
   arma::mat spec(K, K, fill::ones);
   spec.diag().zeros();
-  W = W % spec;
+  W_arma = W_arma % spec;
 
   // Set up N and extract what remains unchanged
-  arma::sp_mat N = W + W.t();
+  arma::sp_mat N = W_arma + W_arma.t();
   arma::sp_mat::const_iterator first = N.begin();
   arma::sp_mat::const_iterator last  = N.end();
 
@@ -42,15 +42,15 @@ List ILSR(S4 W_R, int maxit = 100, double epsilon = 1e-2) {
   }
 
   // set up rowSums of W, which doesn't change during iterations
-  arma::vec r = arma::vec(sum(W, 1));
+  arma::vec r = arma::vec(sum(W_arma, 1));
 
   // Extract locations of non-zero elements in W
   std::vector<double> wij;
-  wij.reserve(W.n_nonzero);
+  wij.reserve(W_arma.n_nonzero);
 
-  arma::umat W_locations(2, W.n_nonzero);
+  arma::umat W_locations(2, W_arma.n_nonzero);
   ii = 0;
-  for(arma::sp_mat::const_iterator it = W.begin(); it != W.end(); ++it)
+  for(arma::sp_mat::const_iterator it = W_arma.begin(); it != W_arma.end(); ++it)
   {
     wij.push_back(*it);
     W_locations(0,ii) = it.row();
@@ -63,7 +63,7 @@ List ILSR(S4 W_R, int maxit = 100, double epsilon = 1e-2) {
 
   // Create storage outside of loop
   arma::vec N_values(nij.size()); // vector of values
-  arma::vec W_values(W.n_nonzero);
+  arma::vec W_values(W_arma.n_nonzero);
   arma::sp_mat fitted(nrow, ncol);
   arma::vec res(K);
   arma::rowvec Wcolsum(K);
@@ -81,7 +81,7 @@ List ILSR(S4 W_R, int maxit = 100, double epsilon = 1e-2) {
     for(int i = 0; i <  wij.size(); i++) {
       W_values[i] = wij[i] / (pi[W_locations.row(0)[i]] + pi[W_locations.row(1)[i]]);
     }
-    W = arma::sp_mat(W_locations, W_values, nrow, ncol);
+    W_arma = arma::sp_mat(W_locations, W_values, nrow, ncol);
 
     // Rescale N by the latest pi and save into N
     for(int i = 0; i <  nij.size(); i++) {
@@ -109,16 +109,16 @@ List ILSR(S4 W_R, int maxit = 100, double epsilon = 1e-2) {
 
     //rescale by colSums so that largest eigenvalue equal to one
     //(so that the stationary distribution (pi) is equal to the largest eigenvector)
-    Wcolsum = 1.0/arma::rowvec(sum(W,0));
+    Wcolsum = 1.0/arma::rowvec(sum(W_arma,0));
 
     int ii=0;
-    for(arma::sp_mat::const_iterator it = W.begin(); it != W.end(); ++it)
+    for(arma::sp_mat::const_iterator it = W_arma.begin(); it != W_arma.end(); ++it)
     {
       W_values[ii++] = (*it) * Wcolsum[it.row()];
     }
-    W = arma::sp_mat(W_locations, W_values, W.n_rows, W.n_cols);
+    W_arma = arma::sp_mat(W_locations, W_values, nrow, ncol);
 
-    arma::eigs_gen(eigval, eigvec, W, 1);
+    arma::eigs_gen(eigval, eigvec, W_arma, 1);
     pi = abs(eigvec);
 
   } // end while loop

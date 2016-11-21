@@ -28,5 +28,8 @@ Description: The Bradley-Terry model is a popular method for finding the probabi
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: Rcpp (>= 0.12.7), igraph, Matrix
+Imports: 
+    igraph, 
+    Matrix,
+    Rcpp (>= 0.12.7)
 LinkingTo: Rcpp, RcppArmadillo
