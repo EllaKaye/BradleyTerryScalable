@@ -57,13 +57,13 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   ### not whether they are actually the correct components
   if (a == 1 & !is.null(components)) {
 
-    if(!is.list(components)) stop("When a = 1, components should be NULL or a list of components (preferably the output of connected_components(W))")
+    if(!is.list(components)) stop("When a = 1, components should be NULL or a list of components (preferably the saved output of connected_components(W)$components)")
 
     comp_elements <- unlist(components, use.names = FALSE)
-    if(length(comp_elements) != nrow(W)) stop("There are a different number of elements in the components than there are rows/columns in W")
+    if(length(comp_elements) != nrow(W)) stop("There are a different number of elements in the components than there are rows/columns in W. Components should be saved output from connected_components(W)$components).")
 
     if (!is.null(rownames(W))) {
-      if (!setequal(comp_elements, rownames(W))) stop("Elements in components do not match the row/colnames of W")
+      if (!setequal(comp_elements, rownames(W))) stop("Elements in components do not match the row/colnames of W. Components should be saved output from connected_components(W)$components).")
     }
   }
 
