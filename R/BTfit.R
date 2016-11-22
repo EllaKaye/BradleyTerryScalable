@@ -43,9 +43,12 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
   if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
   if (any(W < 0)) stop("All entries of W must by non-negative")
   if (!is.numeric(a)) stop("a must be >= 1")
+  if (length(dim(a)) >= 2) stop("a must be a single value")
+  if (length(a) > 1) stop("a must be a single value")
   if (a < 1) stop("a must be >= 1")
-  if ((a > 1) && (!is.null(b)) && (b < 0)) stop("b must be positive or NULL when a > 1")
-  if (!(is.null(rownames(W)) & is.null(colnames(W)))) {
+  if ((a > 1) && (!is.null(b)) && (b <= 0)) stop("b must be strictly positive or NULL when a > 1")
+  if (!(is.null(dimnames(W)))) {
+    if(length(rownames(W)) != length(colnames(W))) stop("rownames and colnames of W should be the same")
     if(sum(rownames(W) != colnames(W)) > 0) stop("rownames and colnames of W should be the same")
   }
 
