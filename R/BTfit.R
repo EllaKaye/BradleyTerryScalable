@@ -104,6 +104,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
       names(pi) <- rownames(W)
       iters <- fit$iters
       converged <- fit$converged
+      if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
+
     } # end n == 1 if
 
     # When n > 1, return by component
@@ -161,7 +163,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
       } # end loop over components
 
       # check for convergence problems and provide warning
-      if (sum(converged) != n) warning("The algorithm did not converge in at least one component. See the 'converged' element of the output for which.")
+      if (sum(converged) != n) warning(paste("The algorithm did not converge in maxit = ", maxit, "iterations in at least one component. See the 'converged' element of the output for which."))
     } # end fit by component
 
     ### EM-algorithm on full W, if no components are provided
@@ -171,7 +173,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
       pi <- base::as.vector(fit$pi)
       iters <- fit$iters
       converged <- fit$converged
-
+      if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
     } # end EM on full W
 
   } ## end a > 1 if
