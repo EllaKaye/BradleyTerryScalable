@@ -4,8 +4,6 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
-// [[Rcpp::plugins(cpp11)]]
-
 // [[Rcpp::export]]
 List BT_EM(S4 W, double a, double b, int maxit = 100, double epsilon = 1e-2) {
 
