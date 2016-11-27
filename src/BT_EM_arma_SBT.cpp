@@ -4,8 +4,11 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
+// [[Rcpp::plugins(cpp11)]]
+
+//' @export
 // [[Rcpp::export]]
-List BT_EM(S4 W, double a, double b, int maxit = 100, double epsilon = 1e-2) {
+List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
 
   // Convert S4 Matrix to arma Sparse Matrix
   IntegerVector dims = W.slot("Dim");
@@ -105,7 +108,8 @@ List BT_EM(S4 W, double a, double b, int maxit = 100, double epsilon = 1e-2) {
     }
 
     rowsums += b * pi;
-    res = abs(numer - rowsums);
+    //res = abs(numer - rowsums);
+    res = abs(numer/rowsums - 1);
     converged = TRUE;
 
     for(int k = 0; k < res.size(); ++k) {

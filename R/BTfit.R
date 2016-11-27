@@ -36,7 +36,7 @@
 #' fit3 <- btfit(W_not_connected, 3)
 #' @export
 
-btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 100, epsilon = 1e-2) {
+btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"), maxit = 5000, epsilon = 1e-3) {
 
   ### Checks on the arguments
   if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")

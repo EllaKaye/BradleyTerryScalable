@@ -4,8 +4,11 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
+// [[Rcpp::plugins(cpp11)]]
+
+//' @export
 // [[Rcpp::export]]
-List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
+List ILSR(S4 W, int maxit = 5000, double epsilon = 1e-3) {
 
   // Convert S4 Matrix to arma Sparse Matrix
   IntegerVector dims = W.slot("Dim");
@@ -17,6 +20,8 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
 
   arma::sp_mat W_arma(W_i, W_p, W_x, nrow, ncol);
 
+  //Rcout << "W_arma created \n";
+
   int K = W_arma.n_rows;
 
   // Kill the diagonal (a fudge, but much quicker than .diag().zeros() on sparse matrix)
@@ -26,12 +31,17 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
 
   // Set up N and extract what remains unchanged
   arma::sp_mat N = W_arma + W_arma.t();
+
+  //Rcout << "N created \n";
+
   arma::sp_mat::const_iterator first = N.begin();
   arma::sp_mat::const_iterator last  = N.end();
 
   std::vector<double> nij;
   nij.reserve(N.n_nonzero);
   arma::umat N_locations(2, N.n_nonzero);
+
+  //Rcout << "N_locations created \n";
 
   int ii = 0;
   for(arma::sp_mat::const_iterator it = first; it != last; ++it)
@@ -43,6 +53,8 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
 
   // set up rowSums of W, which doesn't change during iterations
   arma::vec r = arma::vec(sum(W_arma, 1));
+
+  //Rcout << "r created \n";
 
   // Extract locations of non-zero elements in W
   std::vector<double> wij;
@@ -57,9 +69,13 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
     W_locations(1,ii++) = it.col();
   }
 
+  //Rcout << "W_locations extracted \n";
+
   // set up pi
   arma::vec pi(K);
   pi.fill(1.0/K); // equal start
+
+  //Rcout << "pi set up \n";
 
   // Create storage outside of loop
   arma::vec N_values(nij.size()); // vector of values
@@ -74,8 +90,10 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
   int iter = 0;
   bool converged = FALSE;
 
+  //Rcout << "start iterations \n";
   // do the iterations...
   while( iter++ < maxit && !converged ) {
+    //Rcout << "iter = " << iter << std::endl;
 
     // check for interrupt every 10 iterations
     if (iter % 10 == 0) Rcpp::checkUserInterrupt();
@@ -86,11 +104,15 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
     }
     W_arma = arma::sp_mat(W_locations, W_values, nrow, ncol);
 
+    //Rcout << "W rescaled \n";
+
     // Rescale N by the latest pi and save into N
     for(int i = 0; i <  nij.size(); i++) {
       N_values[i] = nij[i] / (pi[N_locations.row(0)[i]] + pi[N_locations.row(1)[i]]);
     }
     N = arma::sp_mat(N_locations, N_values, nrow, ncol);
+
+    //Rcout << "N rescaled \n";
 
     //check convergence by closeness to sufficient statistic
     arma::vec rowsums(K);
@@ -100,7 +122,8 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
       rowsums[it.row()] += *it * pi[it.row()];
     }
 
-    res = abs(r - rowsums);
+    //res = abs(r - rowsums);
+    res = abs(r/rowsums - 1);
     converged = TRUE;
 
     for(int k = 0; k < res.size(); ++k) {
@@ -109,6 +132,8 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
         break;
       }
     }
+
+    //Rcout << "checked convergence \n";
 
     //rescale by colSums so that largest eigenvalue equal to one
     //(so that the stationary distribution (pi) is equal to the largest eigenvector)
@@ -121,10 +146,24 @@ List ILSR(S4 W, int maxit = 100, double epsilon = 1e-2) {
     }
     W_arma = arma::sp_mat(W_locations, W_values, nrow, ncol);
 
+    //Rcout << "rescaled by colsums \n";
+
+    //Rcout << W_arma.has_nan() << std::endl;
+
+    // if (iter == 3) return List::create(_["W"] = W_arma);
+
     arma::eigs_gen(eigval, eigvec, W_arma, 1);
+
+
+    //Rcout << "something weird? \n";
+
     pi = abs(eigvec);
 
+    //Rcout << "eigenvector computed \n";
+
   } // end while loop
+
+  //Rcout << "Loop finished \n";
 
   return(List::create(
       _["pi"] = pi /= sum(pi),

@@ -40,3 +40,4 @@ Imports:
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 5.0.1
 Suggests: Matrix.utils
+SystemRequirements: C++11
