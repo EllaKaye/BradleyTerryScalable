@@ -2,7 +2,7 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-BT_EM <- function(W, a, b, maxit = 100L, epsilon = 1e-2) {
+BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call('SBT_BT_EM', PACKAGE = 'SBT', W, a, b, maxit, epsilon)
 }
 
@@ -16,7 +16,7 @@ btprob_vec <- function(pi) {
 }
 
 #' @export
-ILSR <- function(W, maxit = 100L, epsilon = 1e-2) {
+ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
     .Call('SBT_ILSR', PACKAGE = 'SBT', W, maxit, epsilon)
 }
 

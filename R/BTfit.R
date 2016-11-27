@@ -67,6 +67,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM")
     }
   }
 
+  ### Set diagonal of matrix to zero
+  diag(W) <- 0
 
   ### Make sure that matrix is of type dgCMatrix
   if (is.matrix(W)) W <- Matrix(W, sparse = TRUE)
