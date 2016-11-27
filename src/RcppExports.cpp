@@ -21,22 +21,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// BT_EM_arma
-List BT_EM_arma(S4 W_R, double a, double b, int maxit, std::string start, double epsilon);
-RcppExport SEXP SBT_BT_EM_arma(SEXP W_RSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP startSEXP, SEXP epsilonSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< S4 >::type W_R(W_RSEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< double >::type b(bSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< std::string >::type start(startSEXP);
-    Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
-    rcpp_result_gen = Rcpp::wrap(BT_EM_arma(W_R, a, b, maxit, start, epsilon));
-    return rcpp_result_gen;
-END_RCPP
-}
 // btprob_vec
 arma::mat btprob_vec(arma::vec pi);
 RcppExport SEXP SBT_btprob_vec(SEXP piSEXP) {

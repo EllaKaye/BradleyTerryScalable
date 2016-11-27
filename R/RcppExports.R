@@ -6,11 +6,6 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call('SBT_BT_EM', PACKAGE = 'SBT', W, a, b, maxit, epsilon)
 }
 
-#' @export
-BT_EM_arma <- function(W_R, a, b, maxit = 100L, start = "eig", epsilon = 1e-2) {
-    .Call('SBT_BT_EM_arma', PACKAGE = 'SBT', W_R, a, b, maxit, start, epsilon)
-}
-
 btprob_vec <- function(pi) {
     .Call('SBT_btprob_vec', PACKAGE = 'SBT', pi)
 }

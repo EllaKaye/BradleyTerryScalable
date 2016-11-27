@@ -39,5 +39,6 @@ Imports:
     Rcpp (>= 0.12.7)
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 5.0.1
-Suggests: Matrix.utils
-SystemRequirements: C++11
+Suggests:
+    Matrix.utils,
+    network

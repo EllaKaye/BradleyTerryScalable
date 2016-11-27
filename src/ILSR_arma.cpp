@@ -4,8 +4,6 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
-// [[Rcpp::plugins(cpp11)]]
-
 //' @export
 // [[Rcpp::export]]
 List ILSR(S4 W, int maxit = 5000, double epsilon = 1e-3) {

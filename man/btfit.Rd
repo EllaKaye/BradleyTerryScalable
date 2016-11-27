@@ -5,7 +5,7 @@
 \title{Fits the Bradley-Terry model}
 \usage{
 btfit(W, a, b = NULL, components = NULL, ML_method = c("ILSR", "MM"),
-  maxit = 100, epsilon = 0.01)
+  maxit = 5000, epsilon = 0.001)
 }
 \arguments{
 \item{W}{A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players.}
