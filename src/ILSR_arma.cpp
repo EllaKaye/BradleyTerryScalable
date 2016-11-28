@@ -152,6 +152,13 @@ List ILSR(S4 W, int maxit = 5000, double epsilon = 1e-3) {
 
     arma::eigs_gen(eigval, eigvec, W_arma, 1);
 
+    // try {
+    //   arma::eigs_gen(eigval, eigvec, W_arma, 1);
+    // } catch(std::exception &ex) {
+    //   forward_exception_to_r(ex);
+    // } catch(...) {
+    //   ::Rf_error("c++ exception (unknown reason)");
+    // }
 
     //Rcout << "something weird? \n";
 

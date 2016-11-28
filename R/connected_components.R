@@ -30,15 +30,51 @@
 #' W2 <- Matrix::rsparsematrix(20, 20 , 0.1, rand.x = function(n) rbinom(n, 10, 0.5))
 #' connected_components(W2)$components
 #' @export
-connected_components <- function(W, return_components = TRUE, return_graph = FALSE) {
+connected_components <- function(W = NULL, g = NULL, return_components = TRUE, return_graph = FALSE) {
 
-  # check that W is a square matrix of non-negative elements
-  if (length(dim(W)) != 2) stop("W must be a square matrix")
-  if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
-  if (any(W < 0)) stop("All entries of W must by non-negative")
+  # check that at least one of W and g is entered
+  if (is.null(W) & is.null(g)) stop("At least one of W or g must be provided")
 
-  # convert win matrix into directed graph and check if connected
-  g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
+  # if g is provided
+  if(!is.null(g)) {
+    # check if igraph, and if not check if network, and if neither stop
+    if(!igraph::is.igraph(g)) {
+      # Check for network, if required
+      if (!requireNamespace("network", quietly = TRUE)) {
+        stop("The package 'network' is needed if g is not an igraph object. Please install it.",
+             call. = FALSE)
+      }
+
+      if(!network::is.network(g)) stop("graph must be an igraph or network object")
+    }
+
+    # if g is a network, convert it to an igraph object
+
+    if (network::is.network(g)) {
+      if (!requireNamespace("intergraph", quietly = TRUE)) {
+        stop("The package 'intergraph' is needed to convert network object to igraph object. Please install it.",
+             call. = FALSE)
+      }
+
+      g <- intergraph::asIgraph(g)
+    }
+
+  }
+
+  # if W is provided and g is not
+  if(!is.null(W) & is.null(g)) {
+    # check that W is a square matrix of non-negative elements
+    if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
+    if (length(dim(W)) != 2) stop("W must be a square matrix")
+    if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
+    if (any(W < 0)) stop("All entries of W must by non-negative")
+
+    # convert win matrix into directed graph
+    g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
+
+  }
+
+  # Check if connected
   connected <- igraph::is.connected(g, mode = "strong")
 
   # calculate groups of components, if requested
