@@ -67,7 +67,9 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
     }
   }
 
-  ### Set diagonal of matrix to zero
+  ### Save diagonal (for fitted values) then set diagonal of matrix to zero
+  saved_diag <- Matrix::diag(W)
+  if(!is.null(rownames(W))) names(saved_diag) <- rownames(W)
   diag(W) <- 0
 
   ### Make sure that matrix is of type dgCMatrix
@@ -95,7 +97,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
     # When n == 1, just use all of W
     if (n == 1) {
 
-      if (K == 2) fit <- list(pi = c(W[1,2], W[2,1])/sum(W), iters = 1, converged = TRUE)
+      if (K == 2) fit <- list(pi = c(W[1,2], W[2,1])/sum(W), iters = 1, converged = TRUE, N = Wsub + Matrix::t(Wsub))
 
       else {
         if (ML_method == "ILSR") fit <- ILSR(W, maxit = maxit, epsilon = epsilon)
@@ -106,6 +108,12 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
       names(pi) <- rownames(W)
       iters <- fit$iters
       converged <- fit$converged
+      N <- fit$N
+      dimnames(N) <- dimnames(W)
+      diagonal <- saved_diag
+      #fitted <- 1/outer(pi, pi, "+")
+      #fitted <- fit$N * 1/outer(pi, pi, "+") * pi
+      #Matrix::diag(fitted) <- saved_diag
       if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
 
     } # end n == 1 if
@@ -113,6 +121,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
     # When n > 1, return by component
     else {
       pi <- vector("list", n) #  list to hold vectors of pi
+      N <- vector("list", n) #  list to hold orginal N matrices
+      diagonal <- vector("list", n) #  list to hold diagonal
       iters <- numeric(n) # vector to hold number of iterations per component
       converged <- logical(n)
 
@@ -120,7 +130,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
         compk <- components[[k]] # the players in component k
         Wsub <- W[compk, compk] # wins matrix for players in component k
 
-        if (length(compk) == 2) fit <- list(pi = c(Wsub[1,2], Wsub[2,1])/sum(Wsub), iters = 1, converged = TRUE)
+        if (length(compk) == 2) fit <- list(pi = c(Wsub[1,2], Wsub[2,1])/sum(Wsub), iters = 1, converged = TRUE, N = Wsub + Matrix::t(Wsub))
 
         else {
           if (ML_method == "ILSR") fit <- ILSR(Wsub, maxit = maxit, epsilon = epsilon)
@@ -128,9 +138,15 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
         }
 
         pi[[k]] <- base::as.vector(fit$pi)
+        N[[k]] <- fit$N
+        dimnames(N[[k]]) <- dimnames(Wsub)
+        diagonal[[k]] <- saved_diag[compk]
+        #fitted[[k]] <- fit$N * 1/outer(fit$pi, fit$pi, "+") * fit$pi
+        #Matrix::diag(fitted[[k]]) <- saved_diag[compk]
         names(pi[[k]]) <- compk
         iters[k] <- fit$iters
         converged[k] <- fit$converged
+
       }
 
       # check for convergence problems and provide warning
@@ -149,6 +165,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
     if (!is.null(components)) {
 
       pi <- vector("list", n) #  list to hold vectors of pi
+      N <- vector("list", n) #  list to hold original N matrices
+      diagonal <- vector("list", n) #  list to hold diagonal
       iters <- numeric(n) # vector to hold number of iterations per component
       converged <- logical(n)
 
@@ -159,6 +177,11 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
         fit <- BT_EM(Wsub, a = a, b = b, maxit = maxit, epsilon = epsilon)
 
         pi[[k]] <- base::as.vector(fit$pi)
+        N[[k]] <- fit$N
+        dimnames(N[[k]]) <- dimnames(Wsub)
+        diagonal[[k]] <- saved_diag[compk]
+        #fitted[[k]] <- fit$N * 1/outer(fit$pi, fit$pi, "+") * fit$pi
+        #Matrix::diag(fitted[[k]]) <- saved_diag[compk]
         names(pi[[k]]) <- compk
         iters[k] <- fit$iters
         converged[k] <- fit$converged
@@ -173,14 +196,21 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
 
       fit <- BT_EM(W, a = a, b = b, maxit = maxit, epsilon = epsilon)
       pi <- base::as.vector(fit$pi)
+      N <- fit$N
+      dimnames(N) <- dimnames(W)
       iters <- fit$iters
       converged <- fit$converged
+      diagonal <- saved_diag
+      #fitted <- fit$N * 1/outer(pi, pi, "+") * pi
+      #Matrix::diag(fitted) <- saved_diag
       if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
     } # end EM on full W
 
   } ## end a > 1 if
 
-  result <- list(pi = pi, iters = iters, converged = converged)
+  result <- list(pi = pi, iters = iters, converged = converged, N = N, diagonal = diagonal)
+
+  class(result) <- c("btfit", "list")
 
   return(result)
 }

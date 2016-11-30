@@ -29,6 +29,7 @@ List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
 
   // Set up N and store original values
   arma::sp_mat N = W_arma + W_arma.t();
+  arma::sp_mat N_orig = N;
 
   arma::sp_mat::const_iterator first = N.begin();
   arma::sp_mat::const_iterator last   = N.end();
@@ -125,5 +126,6 @@ List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
   return(List::create(
       _["pi"] = pi /= sum(pi),
       _["iters"] = iter - 1,
-      _["converged"] = converged));
+      _["converged"] = converged,
+      _["N"] = N_orig));
 }
