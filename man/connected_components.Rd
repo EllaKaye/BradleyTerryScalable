@@ -4,7 +4,8 @@
 \alias{connected_components}
 \title{Checks whether MLE exists for Bradley-Terry model.}
 \usage{
-connected_components(W, return_components = TRUE, return_graph = FALSE)
+connected_components(W = NULL, g = NULL, return_components = TRUE,
+  return_graph = FALSE)
 }
 \arguments{
 \item{W}{A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players.}
