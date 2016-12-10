@@ -35,30 +35,9 @@ connected_components <- function(W = NULL, g = NULL, return_components = TRUE, r
   # check that at least one of W and g is entered
   if (is.null(W) & is.null(g)) stop("At least one of W or g must be provided")
 
-  # if g is provided
+  # if g is provided, check it's a igraph
   if(!is.null(g)) {
-    # check if igraph, and if not check if network, and if neither stop
-    if(!igraph::is.igraph(g)) {
-      # Check for network, if required
-      if (!requireNamespace("network", quietly = TRUE)) {
-        stop("The package 'network' is needed if g is not an igraph object. Please install it.",
-             call. = FALSE)
-      }
-
-      if(!network::is.network(g)) stop("graph must be an igraph or network object")
-    }
-
-    # if g is a network, convert it to an igraph object
-
-    if (network::is.network(g)) {
-      if (!requireNamespace("intergraph", quietly = TRUE)) {
-        stop("The package 'intergraph' is needed to convert network object to igraph object. Please install it.",
-             call. = FALSE)
-      }
-
-      g <- intergraph::asIgraph(g)
-    }
-
+    if(!igraph::is.igraph(g))  stop("graph must be an igraph or network object")
   }
 
   # if W is provided and g is not
