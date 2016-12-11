@@ -5,7 +5,8 @@ my_diag <- function(x,y) {
 
 my_fitted <- function(pi, N) {
   p <- btprob_vec(pi)
-  p * N
+  p <- p * N
+  p <- as(p, "dgCMatrix") # may want to scrap this if too slow in profiling
 }
 
 as_df <- function(sM, N) {
@@ -60,6 +61,7 @@ fitted.btfit <- function(btfit, as_df = FALSE){
   else {
     p <- btprob_vec(pi)
     out <- p * N
+    out <- as(out, "dgCMatrix") # may want to scrap this if it takes too much time in profiling
     diag(out) <- diagonal
 
     if (as_df) out <- as_df(out, N)
