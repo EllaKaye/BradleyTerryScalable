@@ -40,4 +40,5 @@ Imports:
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 5.0.1
 Suggests:
-    Matrix.utils
+    Matrix.utils,
+    reshape2

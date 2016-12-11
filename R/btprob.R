@@ -1,3 +1,31 @@
+as_df_prob <- function(m) {
+
+  # Check for reshape2
+  if (!requireNamespace("reshape2", quietly = TRUE)) {
+    stop("The package reshape2 is needed for as_df = TRUE in btprob. Please install it.",
+         call. = FALSE)
+  }
+
+  m[lower.tri(m, diag = TRUE)] <- NA
+  out <- reshape2::melt(m, na.rm = TRUE)
+  colnames(out)[3] <- "prob1wins"
+  out$prob2wins <- 1 - out$prob1wins
+
+  out
+}
+
+rename_func <- function(df, names_dimnames) {
+
+  colnames(df)[1:2] <- c("player1", "player2")
+
+  if(!is.null(names_dimnames)) {
+    if(!is.na(names_dimnames[1])) colnames(df)[1] <- names_dimnames[1]
+    if(!is.na(names_dimnames[2])) colnames(df)[2] <- names_dimnames[2]
+  }
+
+  return(df)
+}
+
 #' Calculates Bradley-Terry probabiities
 #'
 #' Given the strength parameter from fitting the Bradley-Terry model, (e.g. the \code{pi} output of \code{\link{btfit}}), calculates the Bradley-Terry probabilities of each player in a fully-connected component of \eqn{G_W} winning against every other player in that component.
@@ -29,12 +57,16 @@
 #' @export
 
 
-btprob <- function(pi) {
+btprob <- function(btfit, as_df = FALSE) {
 
-  if(!is.vector(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
-  if(!is.list(pi) & !is.numeric(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
-  if(is.list(pi) & (sum(sapply(pi, is.numeric)) != length(pi))) stop("pi should be a numeric vector or a list of numeric vectors")
+  #if(!is.vector(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
+  #if(!is.list(pi) & !is.numeric(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
+  #if(is.list(pi) & (sum(sapply(pi, is.numeric)) != length(pi))) stop("pi should be a numeric vector or a list of numeric vectors")
 
+  if (!inherits(btfit, "btfit")) stop("Argument should be a 'btfit' object")
+
+  pi <- btfit$pi
+  names_dimnames <- btfit$names_dimnames
 
   if (is.list(pi)) {
     pi_list_names <- lapply(pi, names)
@@ -43,12 +75,22 @@ btprob <- function(pi) {
       dimnames(x) <- list(y, y)
       return(x)
     }, unnamed, pi_list_names)
+
+    if (as_df) {
+      p <- lapply(p, as_df_prob)
+      p <- lapply(p, rename_func, names_dimnames)
+    }
   }
 
   else {
     pi_names <- names(pi)
     p <- btprob_vec(pi)
     dimnames(p) <- list(pi_names, pi_names)
+
+    if(as_df) {
+      p <- as_df_prob(p)
+      p <- rename_func(p, names_dimnames)
+    }
   }
 
   p

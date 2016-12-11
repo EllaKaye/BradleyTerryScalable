@@ -74,6 +74,9 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
   if(!is.null(rownames(W))) names(saved_diag) <- rownames(W)
   diag(W) <- 0
 
+  ### Save names of dimnames (for naming df columns in fitted and btprobs)
+  names_dimnames <- names(dimnames(W))
+
   ### Make sure that matrix is of type dgCMatrix
   if (is.matrix(W)) W <- Matrix(W, sparse = TRUE)
   if (class(W) != "dgCMatrix") W <- as(W, "dgCMatrix")
@@ -170,6 +173,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
 
       fit <- BT_EM(W, a = a, b = b, maxit = maxit, epsilon = epsilon)
       pi <- base::as.vector(fit$pi)
+      names(pi) <- rownames(W)
       N <- fit$N
       dimnames(N) <- dimnames(W)
       names(dimnames(N)) <- names(dimnames(W))
@@ -189,7 +193,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
     diagonal <- unlist(diagonal)
   }
 
-  result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N, diagonal = diagonal)
+  result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
+                 diagonal = diagonal, names_dimnames = names_dimnames)
 
   class(result) <- c("btfit", "list")
 
