@@ -118,6 +118,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
       pi[[k]] <- base::as.vector(fit$pi)
       N[[k]] <- fit$N
       dimnames(N[[k]]) <- dimnames(Wsub)
+      names(dimnames(N[[k]])) <- names(dimnames(Wsub))
       diagonal[[k]] <- saved_diag[compk]
       names(pi[[k]]) <- compk
       iters[k] <- fit$iters
@@ -153,6 +154,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
         pi[[k]] <- base::as.vector(fit$pi)
         N[[k]] <- fit$N
         dimnames(N[[k]]) <- dimnames(Wsub)
+        names(dimnames(N[[k]])) <- names(dimnames(Wsub))
         diagonal[[k]] <- saved_diag[compk]
         names(pi[[k]]) <- compk
         iters[k] <- fit$iters
@@ -170,6 +172,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
       pi <- base::as.vector(fit$pi)
       N <- fit$N
       dimnames(N) <- dimnames(W)
+      names(dimnames(N)) <- names(dimnames(W))
       iters <- fit$iters
       converged <- fit$converged
       diagonal <- saved_diag

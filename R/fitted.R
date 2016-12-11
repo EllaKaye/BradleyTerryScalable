@@ -1,3 +1,42 @@
+my_diag <- function(x,y) {
+  diag(x) <- y
+  return(x)
+}
+
+my_fitted <- function(pi, N) {
+  p <- btprob_vec(pi)
+  p * N
+}
+
+as_df <- function(sM, N) {
+
+  # get upper triangle
+  sM[lower.tri(sM, diag = TRUE)] <- 0
+  N[lower.tri(N, diag = TRUE)] <- 0
+
+  if(class(sM) != "dgTMatrix") sM <- as(sM, "dgTMatrix")
+
+  if (!is.null(rownames(sM)) & !is.null(colnames(sM))) {
+    #df <- data.frame(winner = rownames(sM)[sM@i + 1], loser = rownames(sM)[sM@j + 1], fit = sM@x)
+
+    df <- data.frame(player1 = rownames(sM)[sM@i + 1], player2 = rownames(sM)[sM@j + 1],
+                     fit1 = sM@x, fit2 = N@x - sM@x)
+  }
+
+  else {
+    df <- data.frame(player1 = sM@i + 1, player2 = sM@j + 1, fit1 = sM@x, fit2 = N@x - sM@x)
+
+  }
+
+  if(!is.null(names(dimnames(N)))) {
+    if(!is.na(names(dimnames(N))[1])) colnames(df)[1] <- names(dimnames(N))[1]
+    if(!is.na(names(dimnames(N))[2])) colnames(df)[2] <- names(dimnames(N))[2]
+  }
+
+  return(df)
+}
+
+
 #' @export
 fitted.btfit <- function(btfit, as_df = FALSE){
   if (!inherits(btfit, "btfit")) stop("Argument should be a 'btfit' object")
@@ -7,22 +46,13 @@ fitted.btfit <- function(btfit, as_df = FALSE){
   diagonal <- btfit$diagonal
 
   if (is.list(pi)) {
-    my_fitted <- function(pi, N) {
-      p <- btprob_vec(pi)
-      p * N
-    }
 
     out <- Map(my_fitted, pi, N)
-
-    my_diag <- function(x,y) {
-      diag(x) <- y
-      return(x)
-    }
 
     out <- Map(my_diag, out, diagonal)
 
     if (as_df) {
-      out <- lapply(out, as_df)
+      out <- Map(as_df, out, N)
     }
 
   }
@@ -32,7 +62,7 @@ fitted.btfit <- function(btfit, as_df = FALSE){
     out <- p * N
     diag(out) <- diagonal
 
-    if (as_df) out <- as_df(out)
+    if (as_df) out <- as_df(out, N)
   }
 
   return(out)
