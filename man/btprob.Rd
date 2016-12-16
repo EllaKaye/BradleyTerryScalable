@@ -4,7 +4,7 @@
 \alias{btprob}
 \title{Calculates Bradley-Terry probabiities}
 \usage{
-btprob(pi)
+btprob(btfit, as_df = FALSE)
 }
 \arguments{
 \item{pi}{A numeric vector of Bradley-Terry strength parameters, or a list of numeric vectors of strength parameters by component. This should be the \code{pi} output of \code{\link{btfit}}.}
