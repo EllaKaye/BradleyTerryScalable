@@ -52,6 +52,8 @@ fitted.btfit <- function(btfit, as_df = FALSE){
 
     out <- Map(my_diag, out, diagonal)
 
+    # need something that deals with sparsity?
+
     if (as_df) {
       out <- Map(as_df, out, N)
     }
