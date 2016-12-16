@@ -21,6 +21,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// btprob_vec_sp
+arma::sp_mat btprob_vec_sp(arma::vec pi);
+RcppExport SEXP SBT_btprob_vec_sp(SEXP piSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
+    rcpp_result_gen = Rcpp::wrap(btprob_vec_sp(pi));
+    return rcpp_result_gen;
+END_RCPP
+}
 // btprob_vec
 arma::mat btprob_vec(arma::vec pi);
 RcppExport SEXP SBT_btprob_vec(SEXP piSEXP) {

@@ -6,6 +6,10 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call('SBT_BT_EM', PACKAGE = 'SBT', W, a, b, maxit, epsilon)
 }
 
+btprob_vec_sp <- function(pi) {
+    .Call('SBT_btprob_vec_sp', PACKAGE = 'SBT', pi)
+}
+
 btprob_vec <- function(pi) {
     .Call('SBT_btprob_vec', PACKAGE = 'SBT', pi)
 }
