@@ -3,12 +3,6 @@ my_diag <- function(x,y) {
   return(x)
 }
 
-my_fitted <- function(pi, N) {
-  p <- btprob_vec(pi)
-  p <- p * N
-  p <- as(p, "dgCMatrix") # may want to scrap this if too slow in profiling
-}
-
 as_df <- function(sM, N) {
 
   # get upper triangle
@@ -48,7 +42,7 @@ fitted.btfit <- function(btfit, as_df = FALSE){
 
   if (is.list(pi)) {
 
-    out <- Map(my_fitted, pi, N)
+    out <- Map(btfitted_vec_sp_sp, pi, N)
 
     out <- Map(my_diag, out, diagonal)
 
@@ -61,9 +55,10 @@ fitted.btfit <- function(btfit, as_df = FALSE){
   }
 
   else {
-    p <- btprob_vec(pi)
-    out <- p * N
-    out <- as(out, "dgCMatrix") # may want to scrap this if it takes too much time in profiling
+    #p <- btprob_vec(pi)
+    #out <- p * N
+    #out <- as(out, "dgCMatrix") # may want to scrap this if it takes too much time in profiling
+    out <- btfitted_vec_sp_sp(pi, N)
     diag(out) <- diagonal
 
     if (as_df) out <- as_df(out, N)

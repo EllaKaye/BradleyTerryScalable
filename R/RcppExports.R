@@ -17,6 +17,21 @@ btprob_vec <- function(pi) {
 }
 
 #' @export
+btfitted_vec_d <- function(pi, N) {
+    .Call('SBT_btfitted_vec_d', PACKAGE = 'SBT', pi, N)
+}
+
+#' @export
+btfitted_vec_sp <- function(pi, N) {
+    .Call('SBT_btfitted_vec_sp', PACKAGE = 'SBT', pi, N)
+}
+
+#' @export
+btfitted_vec_sp_sp <- function(pi, N) {
+    .Call('SBT_btfitted_vec_sp_sp', PACKAGE = 'SBT', pi, N)
+}
+
+#' @export
 ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
     .Call('SBT_ILSR', PACKAGE = 'SBT', W, maxit, epsilon)
 }

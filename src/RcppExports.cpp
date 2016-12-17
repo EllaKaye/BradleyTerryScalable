@@ -43,6 +43,42 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// btfitted_vec_d
+arma::mat btfitted_vec_d(arma::vec pi, arma::mat N);
+RcppExport SEXP SBT_btfitted_vec_d(SEXP piSEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(btfitted_vec_d(pi, N));
+    return rcpp_result_gen;
+END_RCPP
+}
+// btfitted_vec_sp
+arma::mat btfitted_vec_sp(arma::vec pi, arma::sp_mat N);
+RcppExport SEXP SBT_btfitted_vec_sp(SEXP piSEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(btfitted_vec_sp(pi, N));
+    return rcpp_result_gen;
+END_RCPP
+}
+// btfitted_vec_sp_sp
+arma::sp_mat btfitted_vec_sp_sp(arma::vec pi, arma::sp_mat N);
+RcppExport SEXP SBT_btfitted_vec_sp_sp(SEXP piSEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(btfitted_vec_sp_sp(pi, N));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ILSR
 List ILSR(S4 W, int maxit, double epsilon);
 RcppExport SEXP SBT_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
