@@ -6,29 +6,12 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call('SBT_BT_EM', PACKAGE = 'SBT', W, a, b, maxit, epsilon)
 }
 
-#' @export
-btprob_vec_sp <- function(pi) {
-    .Call('SBT_btprob_vec_sp', PACKAGE = 'SBT', pi)
-}
-
-#' @export
 btprob_vec <- function(pi) {
     .Call('SBT_btprob_vec', PACKAGE = 'SBT', pi)
 }
 
-#' @export
-btfitted_vec_d <- function(pi, N) {
-    .Call('SBT_btfitted_vec_d', PACKAGE = 'SBT', pi, N)
-}
-
-#' @export
-btfitted_vec_sp <- function(pi, N) {
-    .Call('SBT_btfitted_vec_sp', PACKAGE = 'SBT', pi, N)
-}
-
-#' @export
-btfitted_vec_sp_sp <- function(pi, N) {
-    .Call('SBT_btfitted_vec_sp_sp', PACKAGE = 'SBT', pi, N)
+btfitted_vec <- function(pi, N) {
+    .Call('SBT_btfitted_vec', PACKAGE = 'SBT', pi, N)
 }
 
 #' @export

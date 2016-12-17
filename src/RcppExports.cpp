@@ -21,17 +21,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// btprob_vec_sp
-arma::sp_mat btprob_vec_sp(arma::vec pi);
-RcppExport SEXP SBT_btprob_vec_sp(SEXP piSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
-    rcpp_result_gen = Rcpp::wrap(btprob_vec_sp(pi));
-    return rcpp_result_gen;
-END_RCPP
-}
 // btprob_vec
 arma::mat btprob_vec(arma::vec pi);
 RcppExport SEXP SBT_btprob_vec(SEXP piSEXP) {
@@ -43,39 +32,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// btfitted_vec_d
-arma::mat btfitted_vec_d(arma::vec pi, arma::mat N);
-RcppExport SEXP SBT_btfitted_vec_d(SEXP piSEXP, SEXP NSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type N(NSEXP);
-    rcpp_result_gen = Rcpp::wrap(btfitted_vec_d(pi, N));
-    return rcpp_result_gen;
-END_RCPP
-}
-// btfitted_vec_sp
-arma::mat btfitted_vec_sp(arma::vec pi, arma::sp_mat N);
-RcppExport SEXP SBT_btfitted_vec_sp(SEXP piSEXP, SEXP NSEXP) {
+// btfitted_vec
+arma::sp_mat btfitted_vec(arma::vec pi, arma::sp_mat N);
+RcppExport SEXP SBT_btfitted_vec(SEXP piSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
     Rcpp::traits::input_parameter< arma::sp_mat >::type N(NSEXP);
-    rcpp_result_gen = Rcpp::wrap(btfitted_vec_sp(pi, N));
-    return rcpp_result_gen;
-END_RCPP
-}
-// btfitted_vec_sp_sp
-arma::sp_mat btfitted_vec_sp_sp(arma::vec pi, arma::sp_mat N);
-RcppExport SEXP SBT_btfitted_vec_sp_sp(SEXP piSEXP, SEXP NSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
-    Rcpp::traits::input_parameter< arma::sp_mat >::type N(NSEXP);
-    rcpp_result_gen = Rcpp::wrap(btfitted_vec_sp_sp(pi, N));
+    rcpp_result_gen = Rcpp::wrap(btfitted_vec(pi, N));
     return rcpp_result_gen;
 END_RCPP
 }

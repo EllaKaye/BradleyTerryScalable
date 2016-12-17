@@ -42,7 +42,7 @@ fitted.btfit <- function(btfit, as_df = FALSE){
 
   if (is.list(pi)) {
 
-    out <- Map(btfitted_vec_sp_sp, pi, N)
+    out <- Map(btfitted_vec, pi, N)
 
     out <- Map(my_diag, out, diagonal)
 
@@ -58,7 +58,7 @@ fitted.btfit <- function(btfit, as_df = FALSE){
     #p <- btprob_vec(pi)
     #out <- p * N
     #out <- as(out, "dgCMatrix") # may want to scrap this if it takes too much time in profiling
-    out <- btfitted_vec_sp_sp(pi, N)
+    out <- btfitted_vec(pi, N)
     diag(out) <- diagonal
 
     if (as_df) out <- as_df(out, N)
