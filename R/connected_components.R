@@ -43,7 +43,7 @@ connected_components <- function(W = NULL, g = NULL, return_components = TRUE, r
   # if W is provided and g is not
   if(!is.null(W) & is.null(g)) {
     # check that W is a square matrix of non-negative elements
-    if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
+    if (!(methods::is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
     if (length(dim(W)) != 2) stop("W must be a square matrix")
     if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
     if (any(W < 0)) stop("All entries of W must by non-negative")

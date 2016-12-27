@@ -41,7 +41,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
   call <- match.call()
 
   ### Checks on the arguments
-  if (!(is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
+  if (!(methods::is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
   if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
   if (any(W < 0)) stop("All entries of W must by non-negative")
   if (!is.numeric(a)) stop("a must be >= 1")
@@ -78,8 +78,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
   names_dimnames <- names(dimnames(W))
 
   ### Make sure that matrix is of type dgCMatrix
-  if (is.matrix(W)) W <- Matrix(W, sparse = TRUE)
-  if (class(W) != "dgCMatrix") W <- as(W, "dgCMatrix")
+  if (is.matrix(W)) W <- Matrix::Matrix(W, sparse = TRUE)
+  if (class(W) != "dgCMatrix") W <- methods::as(W, "dgCMatrix")
 
   ### calculate components, if necessary
   if (a == 1 & is.null(components)) {

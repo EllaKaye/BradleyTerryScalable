@@ -9,7 +9,7 @@ as_df <- function(sM, N) {
   sM[lower.tri(sM, diag = TRUE)] <- 0
   N[lower.tri(N, diag = TRUE)] <- 0
 
-  if(class(sM) != "dgTMatrix") sM <- as(sM, "dgTMatrix")
+  if(class(sM) != "dgTMatrix") sM <- methods::as(sM, "dgTMatrix")
 
   if (!is.null(rownames(sM)) & !is.null(colnames(sM))) {
     #df <- data.frame(winner = rownames(sM)[sM@i + 1], loser = rownames(sM)[sM@j + 1], fit = sM@x)
@@ -33,12 +33,12 @@ as_df <- function(sM, N) {
 
 
 #' @export
-fitted.btfit <- function(btfit, as_df = FALSE){
-  if (!inherits(btfit, "btfit")) stop("Argument should be a 'btfit' object")
+fitted.btfit <- function(object, ..., as_df = FALSE){
+  if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
 
-  pi <- btfit$pi
-  N <- btfit$N
-  diagonal <- btfit$diagonal
+  pi <- object$pi
+  N <- object$N
+  diagonal <- object$diagonal
 
   if (is.list(pi)) {
 

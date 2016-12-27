@@ -36,9 +36,11 @@ LazyData: true
 Imports:
     igraph,
     Matrix,
-    Rcpp (>= 0.12.7)
+    Rcpp (>= 0.12.7),
+    methods
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 5.0.1
 Suggests:
     Matrix.utils,
-    reshape2
+    reshape2,
+    stringr

@@ -30,6 +30,12 @@ pairs_to_matrix <- function(df) {
          call. = FALSE)
   }
 
+  # Check for stringr
+  if (!requireNamespace("stringr", quietly = TRUE)) {
+    stop("The package stringr is needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+
   # check if data frame
   if(!(is.data.frame(df))) stop ("Argument must be a data frame")
 
@@ -40,7 +46,7 @@ pairs_to_matrix <- function(df) {
   if (!(ncol(df) %in% 3:4 )) stop("Argument must be a data frame with three or four columns")
 
   # get formula for dMcast
-  f <- as.formula(paste(names(df)[1:2], collapse= " ~ "))
+  f <- stats::as.formula(paste(names(df)[1:2], collapse= " ~ "))
 
   # create cross-tabs matrix (not square)
   mat <- Matrix.utils::dMcast(df, f, value.var = names(df)[3], as.factors = TRUE)
@@ -73,7 +79,7 @@ pairs_to_matrix <- function(df) {
   # repeat above steps if in 4-column format (for player2 beating player1)
   if (ncol(df) == 4) {
     cat("creating f2\n")
-    f2 <- as.formula(paste(names(df)[2:1], collapse= " ~ "))
+    f2 <- stats::as.formula(paste(names(df)[2:1], collapse= " ~ "))
     cat("creating mat2\n")
     mat2 <- Matrix.utils::dMcast(df, f2, value.var = names(df)[4], as.factors = TRUE)
     colnames(mat2) <- stringr::str_replace(colnames(mat2), names(df)[1], "")
