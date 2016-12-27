@@ -48,12 +48,12 @@ rename_func <- function(df, names_dimnames) {
 #' j <- c(1,2,2,3,4,4,6,6,6,7,7,7,8)
 #' W_not_connected <-  Matrix::sparseMatrix(i = i, j = j, x = 1:13, dims = c(8,8), dimnames = list(letters[1:8], letters[1:8]))
 #' W_components <- connected_components(W_not_connected)$components
-#' pi1 <- btfit(W_connected, 1)$pi
-#' pi2 <- btfit(W_not_connected, 1, components = W_components)$pi
-#' pi3 <- btfit(W_not_connected, 3)$pi
-#' btprob(pi1)
-#' btprob(pi2)
-#' btprob(pi3)
+#' fit1 <- btfit(W_connected, 1)
+#' fit2 <- btfit(W_not_connected, 1, components = W_components)
+#' fit3 <- btfit(W_not_connected, 3)
+#' btprob(fit1)
+#' btprob(fit2)
+#' btprob(fit3)
 #' @export
 
 

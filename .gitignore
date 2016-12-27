@@ -3,6 +3,8 @@
 .RData
 .RDataTmp
 .Ruserdata
+.Rd2pdf8629
+
 src/*.o
 src/*.so
 src/*.dll
