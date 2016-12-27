@@ -57,16 +57,16 @@ rename_func <- function(df, names_dimnames) {
 #' @export
 
 
-btprob <- function(btfit, as_df = FALSE) {
+btprob <- function(object, as_df = FALSE) {
 
   #if(!is.vector(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
   #if(!is.list(pi) & !is.numeric(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
   #if(is.list(pi) & (sum(sapply(pi, is.numeric)) != length(pi))) stop("pi should be a numeric vector or a list of numeric vectors")
 
-  if (!inherits(btfit, "btfit")) stop("Argument should be a 'btfit' object")
+  if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
 
-  pi <- btfit$pi
-  names_dimnames <- btfit$names_dimnames
+  pi <- object$pi
+  names_dimnames <- object$names_dimnames
 
   if (is.list(pi)) {
     pi_list_names <- lapply(pi, names)

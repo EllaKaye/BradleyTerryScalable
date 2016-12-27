@@ -20,16 +20,16 @@ Description: The Bradley-Terry model is a popular method for finding the
     assumptions about data configuration are required to ensure that a unique and
     finite MLE exists. Consider the graph where the players are the nodes and there
     is a directed edge from player i to player j if player i has beaten player j
-    at least once. Then a unique and finite MLE exists if and only iff this graph
+    at least once. Then a unique and finite MLE exists if and only if this graph
     is fully connected. There are two approaches available in this package when
     the graph is not fully connected. One is to find the MLE separately for each
     fully connected component of the graph. The other is to take a Bayesian approach
     on the whole dataset, which may also be thought of as penalising the strength
     parameters to ensure that none are zero or infinite. In this package there are
-    implementions of all these approaches to estimating the strength parameters, as
+    implementions of both these approaches to estimating the strength parameters, as
     well as a function to help the user determine which approaches are suitable for
-    their data, and a helper function to ensure that the data is in the appropriate
-    format for the main functions.
+    their data, and helper functions to ensure that the data is in the appropriate
+    format for the main btfit functions.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
