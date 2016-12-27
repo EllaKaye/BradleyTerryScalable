@@ -8,7 +8,7 @@ btfit(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR"),
   maxit = 10000, epsilon = 0.001)
 }
 \arguments{
-\item{W}{A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players.}
+\item{W}{A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players. Either \code{W} or \code{g} must be provided (see Details).}
 
 \item{a}{Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{pi} (by component, if necessary). When \code{a > 1}, a is the shape parameter for the Gamma prior (See Details).}
 
