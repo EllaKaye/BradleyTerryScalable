@@ -20,8 +20,8 @@ g <- igraph::make_graph(c(1,2, 1,2, 2,3, 3,4, 5,6), directed = TRUE)
 graph_to_matrix(g)
 
 g2 <- igraph::make_graph(c(1,2, 2,3, 3,4, 5,6), directed = TRUE)
-E(g2)$weight <- 1:4
-pairs_to_matrix(g2)
+igraph::E(g2)$weight <- 1:4
+graph_to_matrix(g2)
 }
 \seealso{
 \code{\link{connected_components}}, \code{\link{btfit}}.

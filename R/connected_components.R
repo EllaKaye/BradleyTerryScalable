@@ -10,6 +10,7 @@
 #'
 #' In \code{connected_components}, one of \code{W} or \code{g} must be provided. If the user already has the data represented as an \code{\link[igraph]{igraph}} object, it is faster to supply \code{g} than \code{W}, since if only given \code{W}, \code{connected_components} must converted it to an \code{\link[igraph]{igraph}} object anyway. \code{connected_components} then calls on functions from the \code{\link[igraph]{igraph}} package to check whether Ford's assumption holds for \eqn{G_W}. This will allow the user to decide how they wish to use the \code{\link{btfit}} function.
 #'
+#'
 #' @param W A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players. Either \code{W} or \code{g} must be provided (see Details).
 #' @param return_components Logical. When \code{TRUE}, the function will return the fully-connected components of the comparison graph \eqn{G_W} (see Details).
 #' @param return_graph Logical. When \code{TRUE}, the function will return the comparison graph \eqn{G_W}, an \code{\link[igraph]{igraph}} object (see Details).
