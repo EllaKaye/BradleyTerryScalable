@@ -2,18 +2,18 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
-    .Call('SBT_BT_EM', PACKAGE = 'SBT', W, a, b, maxit, epsilon)
+    .Call('BradleyTerryScalable_BT_EM', PACKAGE = 'BradleyTerryScalable', W, a, b, maxit, epsilon)
 }
 
 btprob_vec <- function(pi) {
-    .Call('SBT_btprob_vec', PACKAGE = 'SBT', pi)
+    .Call('BradleyTerryScalable_btprob_vec', PACKAGE = 'BradleyTerryScalable', pi)
 }
 
 btfitted_vec <- function(pi, N) {
-    .Call('SBT_btfitted_vec', PACKAGE = 'SBT', pi, N)
+    .Call('BradleyTerryScalable_btfitted_vec', PACKAGE = 'BradleyTerryScalable', pi, N)
 }
 
 ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
-    .Call('SBT_ILSR', PACKAGE = 'SBT', W, maxit, epsilon)
+    .Call('BradleyTerryScalable_ILSR', PACKAGE = 'BradleyTerryScalable', W, maxit, epsilon)
 }
 

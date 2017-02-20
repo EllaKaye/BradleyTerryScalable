@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // BT_EM
 List BT_EM(S4 W, double a, double b, int maxit, double epsilon);
-RcppExport SEXP SBT_BT_EM(SEXP WSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+RcppExport SEXP BradleyTerryScalable_BT_EM(SEXP WSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // btprob_vec
 arma::mat btprob_vec(arma::vec pi);
-RcppExport SEXP SBT_btprob_vec(SEXP piSEXP) {
+RcppExport SEXP BradleyTerryScalable_btprob_vec(SEXP piSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -34,7 +34,7 @@ END_RCPP
 }
 // btfitted_vec
 arma::sp_mat btfitted_vec(arma::vec pi, arma::sp_mat N);
-RcppExport SEXP SBT_btfitted_vec(SEXP piSEXP, SEXP NSEXP) {
+RcppExport SEXP BradleyTerryScalable_btfitted_vec(SEXP piSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // ILSR
 List ILSR(S4 W, int maxit, double epsilon);
-RcppExport SEXP SBT_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+RcppExport SEXP BradleyTerryScalable_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
