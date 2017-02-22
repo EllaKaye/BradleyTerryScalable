@@ -93,7 +93,7 @@ List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
 
     // E step
     //// update 'values' and batch insert back into N
-    for(int i = 0; i <  nij.size(); i++) {
+    for(size_t i = 0; i <  nij.size(); i++) {
       values[i] = nij[i] / (pi[n_locations.row(0)[i]] + pi[n_locations.row(1)[i]]);
     }
     N = arma::sp_mat(n_locations, values, nrow, ncol);
@@ -110,7 +110,7 @@ List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
     res = abs(numer/rowsums - 1);
     converged = TRUE;
 
-    for(int k = 0; k < res.size(); ++k) {
+    for(size_t k = 0; k < res.size(); ++k) {
       if(res(k) > epsilon) {
         converged = FALSE;
         break;

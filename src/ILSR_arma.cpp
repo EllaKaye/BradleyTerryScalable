@@ -96,7 +96,7 @@ List ILSR(S4 W, int maxit = 5000, double epsilon = 1e-3) {
     if (iter % 10 == 0) Rcpp::checkUserInterrupt();
 
     // Rescale W by the latest pi and save into W
-    for(int i = 0; i <  wij.size(); i++) {
+    for(size_t i = 0; i <  wij.size(); i++) {
       W_values[i] = wij[i] / (pi[W_locations.row(0)[i]] + pi[W_locations.row(1)[i]]);
     }
     W_arma = arma::sp_mat(W_locations, W_values, nrow, ncol);
@@ -104,7 +104,7 @@ List ILSR(S4 W, int maxit = 5000, double epsilon = 1e-3) {
     //Rcout << "W rescaled \n";
 
     // Rescale N by the latest pi and save into N
-    for(int i = 0; i <  nij.size(); i++) {
+    for(size_t i = 0; i <  nij.size(); i++) {
       N_values[i] = nij[i] / (pi[N_locations.row(0)[i]] + pi[N_locations.row(1)[i]]);
     }
     N = arma::sp_mat(N_locations, N_values, nrow, ncol);
@@ -123,7 +123,7 @@ List ILSR(S4 W, int maxit = 5000, double epsilon = 1e-3) {
     res = abs(r/rowsums - 1);
     converged = TRUE;
 
-    for(int k = 0; k < res.size(); ++k) {
+    for(size_t k = 0; k < res.size(); ++k) {
       if(res(k) > epsilon) {
         converged = FALSE;
         break;
