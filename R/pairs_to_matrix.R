@@ -78,14 +78,11 @@ pairs_to_matrix <- function(df) {
 
   # repeat above steps if in 4-column format (for player2 beating player1)
   if (ncol(df) == 4) {
-    cat("creating f2\n")
     f2 <- stats::as.formula(paste(names(df)[2:1], collapse= " ~ "))
-    cat("creating mat2\n")
     mat2 <- Matrix.utils::dMcast(df, f2, value.var = names(df)[4], as.factors = TRUE)
     colnames(mat2) <- stringr::str_replace(colnames(mat2), names(df)[1], "")
 
     # add in zeros for missing rows
-    cat("add missing rows\n")
     if (nrow(mat2) < n) {
       new_rows2 <- Matrix::Matrix(0, n - nrow(mat2), ncol(mat2),
                           dimnames = list(base::setdiff(players, rownames(mat2)), colnames(mat2)))
@@ -93,13 +90,11 @@ pairs_to_matrix <- function(df) {
     }
 
     # add in zeros for missing columns
-    cat("add missing cols\n")
     if (ncol(mat2) < n) {
       new_cols2 <- Matrix::Matrix(0, n, n - ncol(mat2),
                           dimnames = list(rownames(mat2), base::setdiff(players, colnames(mat2))))
       mat2 <- cbind(mat2, new_cols2)
     }
-    cat("missing cols added\n")
 
     # get rows and columns in same, sorted order and return
     mat2 <- mat2[players,]
@@ -108,6 +103,8 @@ pairs_to_matrix <- function(df) {
     # add the result to mat
     mat <- mat + mat2
   }
-
+  
+  if(!is.null(colnames(df)[1]) & !is.null(colnames(df)[2])) names(dimnames(mat)) <- colnames(df)[1:2]
+  
   return(mat)
 }
