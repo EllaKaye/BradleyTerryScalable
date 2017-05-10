@@ -6,6 +6,7 @@ Version: 0.1.0
 Authors@R: c(
   person("Ella", "Kaye", email = "E.Kaye.1@warwick.ox.ac.uk", role = c("aut", "cre")),
   person("David", "Firth", role = c("aut")))
+Author: Ella Kaye [aut, cre], David Firth [aut]
 Maintainer: Ella Kaye <E.Kaye.1@warwick.ac.uk>
 Description: The Bradley-Terry model is a popular method for finding the
     probabilities for each item in a set being preferred over each of the others,
@@ -37,7 +38,8 @@ Imports:
     igraph,
     Matrix,
     Rcpp (>= 0.12.7),
-    methods
+    methods,
+    MASS
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 5.0.1
 Suggests:
