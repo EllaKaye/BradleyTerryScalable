@@ -55,14 +55,26 @@
 #' fit3 <- btfit(W_not_connected, 3)
 #' @export
 
-btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR"), maxit = 10000, epsilon = 1e-3) {
+btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, epsilon = 1e-3) {
 
   call <- match.call()
+  
+  ### Check for correct data object, and extract elements
+  if (!inherits(btdata, "btdata")) stop("btdata argument must be a 'btdata' object, as created by btdata() function.")
+  
+  W <- btdata$wins
+  components <- btdata$components
+  
+  ML_method <- "MM" 
+  # ILSR method buggy, so don't allow in user interface for now, 
+  # but keep code in case underlying RcppArmadillo issue is resolved.
+  
 
   ### Checks on the arguments
-  if (!(methods::is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
-  if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
-  if (any(W < 0)) stop("All entries of W must by non-negative")
+  # if (!(methods::is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
+  # if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
+  # if (any(W < 0)) stop("All entries of W must by non-negative")
+  # Don't need checks on W now as taken care of in btdata()
   if (!is.numeric(a)) stop("a must be >= 1")
   if (length(dim(a)) >= 2) stop("a must be a single value")
   if (length(a) > 1) stop("a must be a single value")
@@ -76,17 +88,18 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
   ### check if provided components appear to match W
   ### NB, this only covers checking the elements of the components match the row/colnames of W,
   ### not whether they are actually the correct components
-  if (a == 1 & !is.null(components)) {
-
-    if(!is.list(components)) stop("When a = 1, components should be NULL or a list of components (preferably the saved output of connected_components(W)$components)")
-
-    comp_elements <- unlist(components, use.names = FALSE)
-    if(length(comp_elements) != nrow(W)) stop("There are a different number of elements in the components than there are rows/columns in W. Components should be saved output from connected_components(W)$components).")
-
-    if (!is.null(rownames(W))) {
-      if (!setequal(comp_elements, rownames(W))) stop("Elements in components do not match the row/colnames of W. Components should be saved output from connected_components(W)$components).")
-    }
-  }
+  # if (a == 1 & !is.null(components)) {
+  # 
+  #   if(!is.list(components)) stop("When a = 1, components should be NULL or a list of components (preferably the saved output of connected_components(W)$components)")
+  # 
+  #   comp_elements <- unlist(components, use.names = FALSE)
+  #   if(length(comp_elements) != nrow(W)) stop("There are a different number of elements in the components than there are rows/columns in W. Components should be saved output from connected_components(W)$components).")
+  # 
+  #   if (!is.null(rownames(W))) {
+  #     if (!setequal(comp_elements, rownames(W))) stop("Elements in components do not match the row/colnames of W. Components should be saved output from connected_components(W)$components).")
+  #   }
+  # }
+  ## Don't need this section now that W and its components stored together as btdata object
 
   ### Save diagonal (for fitted values) then set diagonal of matrix to zero
   saved_diag <- Matrix::diag(W)
@@ -97,14 +110,16 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
   names_dimnames <- names(dimnames(W))
 
   ### Make sure that matrix is of type dgCMatrix
-  if (is.matrix(W)) W <- Matrix::Matrix(W, sparse = TRUE)
-  if (class(W) != "dgCMatrix") W <- methods::as(W, "dgCMatrix")
+  # if (is.matrix(W)) W <- Matrix::Matrix(W, sparse = TRUE)
+  # if (class(W) != "dgCMatrix") W <- methods::as(W, "dgCMatrix")
+  ## Now taken care of in btdata()
 
   ### calculate components, if necessary
-  if (a == 1 & is.null(components)) {
-    g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
-    components <- igraph::groups(igraph::components(g, mode = "strong"))
-  }
+  #if (a == 1 & is.null(components)) {
+  #  g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
+  #  components <- igraph::groups(igraph::components(g, mode = "strong"))
+  # }
+  ## Don't need this section now that W and its components stored together as btdata object
 
   ### remove components of length 1
   components <- Filter(function(x) length(x) > 1, components)
@@ -116,7 +131,7 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
   ### Get MLE per component if a = 1
   if (a == 1) {
 
-    ML_method <- match.arg(ML_method)
+    # ML_method <- match.arg(ML_method)
 
     # return by component
 
@@ -158,8 +173,8 @@ btfit <- function(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR")
 
     if (is.null(b)) b <- a * K - 1
 
-    ### penalised by component, if components are provided
-    if (!is.null(components)) {
+    ### penalised by component, if MAP_by_component = TRUE
+    if (MAP_by_component) {
 
       pi <- vector("list", n) #  list to hold vectors of pi
       N <- vector("list", n) #  list to hold original N matrices
