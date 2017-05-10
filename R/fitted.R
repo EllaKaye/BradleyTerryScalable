@@ -74,7 +74,7 @@ as_df <- function(sM, N) {
 #'
 #' @export
 fitted.btfit <- function(object, ..., as_df = FALSE){
-  if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
+  if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
 
   pi <- object$pi
   N <- object$N
