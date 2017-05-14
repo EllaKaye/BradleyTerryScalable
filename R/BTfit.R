@@ -136,6 +136,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
     # return by component
 
     pi <- vector("list", n) #  list to hold vectors of pi
+    lambda <- vector("list", n) #  list to hold vectors of pi
     N <- vector("list", n) #  list to hold orginal N matrices
     diagonal <- vector("list", n) #  list to hold diagonal
     iters <- numeric(n) # vector to hold number of iterations per component
@@ -153,6 +154,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
       }
 
       pi[[k]] <- base::as.vector(fit$pi)
+      lambda[[k]] <- log(pi[[k]]) - mean(log(pi[[k]]))
       N[[k]] <- fit$N
       dimnames(N[[k]]) <- dimnames(Wsub)
       names(dimnames(N[[k]])) <- names(dimnames(Wsub))
@@ -177,6 +179,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
     if (MAP_by_component) {
 
       pi <- vector("list", n) #  list to hold vectors of pi
+      lambda <- vector("list", n) #  list to hold vectors of pi
       N <- vector("list", n) #  list to hold original N matrices
       diagonal <- vector("list", n) #  list to hold diagonal
       iters <- numeric(n) # vector to hold number of iterations per component
@@ -189,6 +192,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
         fit <- BT_EM(Wsub, a = a, b = b, maxit = maxit, epsilon = epsilon)
 
         pi[[k]] <- base::as.vector(fit$pi)
+        lambda[[k]] <- log(pi[[k]]) - mean(log(pi[[k]]))
         N[[k]] <- fit$N
         dimnames(N[[k]]) <- dimnames(Wsub)
         names(dimnames(N[[k]])) <- names(dimnames(Wsub))
@@ -207,6 +211,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
 
       fit <- BT_EM(W, a = a, b = b, maxit = maxit, epsilon = epsilon)
       pi <- base::as.vector(fit$pi)
+      lambda <- log(pi) - mean(log(pi))
       names(pi) <- rownames(W)
       N <- fit$N
       dimnames(N) <- dimnames(W)
@@ -223,11 +228,12 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
   # unlist pi, N and diagonal when n = 1
   if (n == 1) {
     pi <- unlist(pi)
+    lambda <- unlist(lambda)
     N <- N[[1]]
     diagonal <- unlist(diagonal)
   }
 
-  result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
+  result <- list(call = call, pi = pi, lambda = lambda, iters = iters, converged = converged, N = N,
                  diagonal = diagonal, names_dimnames = names_dimnames)
 
   class(result) <- c("btfit", "list")
