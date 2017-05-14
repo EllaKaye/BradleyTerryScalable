@@ -4,23 +4,23 @@
 \alias{btfit}
 \title{Fits the Bradley-Terry model}
 \usage{
-btfit(W, a, b = NULL, components = NULL, ML_method = c("MM", "ILSR"),
-  maxit = 10000, epsilon = 0.001)
+btfit(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000,
+  epsilon = 0.001)
 }
 \arguments{
-\item{W}{A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players.}
-
 \item{a}{Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior (See Details).}
 
 \item{b}{The rate parameter for the Gamma prior (See Details). When \code{a = 1}, \code{btfit} returns the MLE and this argument is ignored. If \code{b = NULL} (the default) when \code{a > 1}, then \code{b} is set to \eqn{aK - 1}.}
 
-\item{components}{The fully-connected components of \eqn{G_W}, as calculated by \code{\link{connected_components}}. If the MLE is requested (i.e. if \code{a = 1}) and \code{components = NULL}, \code{btfit} will calculate the components within the function, but for large matrices, this is time consuming, so we recommend passing in the components as an argument (especially as \code{\link{connected_components}} should be run before \code{btfit} in any case). If \code{a > 1} then components are not necessary, but if they are provided, the function will return the penalised \eqn{pi} by component.}
-
-\item{ML_method}{The algorithm to be used when finding the MLE. By default this is set to \code{MM} but \code{ILSR} can also be selected (See Details).}
-
 \item{maxit}{The maximum number of iterations for the algorithm. If returning \code{pi} by component, this will be the maximum number of iterations for each component.}
 
 \item{epsilon}{Determines when the algorithm is deemed to have converged. (See Details.)}
+
+\item{W}{A \eqn{K} by \eqn{K} square wins matrix (e.g. the output of \code{\link{pairs_to_matrix}}), where the \eqn{i,j}-th element is the number of times player \eqn{i} wins against player \eqn{j}, and \eqn{K} is the total number of players.}
+
+\item{components}{The fully-connected components of \eqn{G_W}, as calculated by \code{\link{connected_components}}. If the MLE is requested (i.e. if \code{a = 1}) and \code{components = NULL}, \code{btfit} will calculate the components within the function, but for large matrices, this is time consuming, so we recommend passing in the components as an argument (especially as \code{\link{connected_components}} should be run before \code{btfit} in any case). If \code{a > 1} then components are not necessary, but if they are provided, the function will return the penalised \eqn{pi} by component.}
+
+\item{ML_method}{The algorithm to be used when finding the MLE. By default this is set to \code{MM} but \code{ILSR} can also be selected (See Details).}
 }
 \value{
 \code{btfit} returns an S3 object of class \code{"btfit"}, which has \code{print}, \code{summary} and \code{\link{fitted.btfit}} methods. It is a list containing at least the following components:
