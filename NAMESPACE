@@ -2,6 +2,8 @@
 
 S3method(fitted,btfit)
 S3method(summary,btdata)
+S3method(summary,btfit)
+S3method(vcov,btfit)
 export(btdata)
 export(btfit)
 export(btprob)
