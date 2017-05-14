@@ -1,4 +1,8 @@
+#' @export
 summary.btfit <- function(object, ref = NULL, ...){
+  
+  if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
+  
     pvec <- object$pi
     k <- length(pvec)
     lambda <- log(pvec)
