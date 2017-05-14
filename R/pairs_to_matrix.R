@@ -4,8 +4,8 @@
 #'
 #' @param df A data frame (either a \code{\link[base]{data.frame}} or an object that inherits that class, such as a \code{\link[dplyr]{tbl_df}} or a \code{\link[data.table]{data.table}}). It must have 3 or 4 columns:
 #' \describe{
-#'   \item{Ordered}{If a 3-column data-frame, the first column contains the name of the winning player, the second column contains the name of the losing player and the third columns contains the number of times that the winner has beaten the loser.}
-#'   \item{Unordered}{If a 4-column data-frame, the first column contains the name of Player 1, the second column contains the name of Player 2, the third column contains the number of times that Player 1 has beaten Player 2 and the fourth column contains the number of times Player 2 has beaten Player 1.}
+#'   \item{Ordered}{If a 3-column data-frame, the first column contains the name of the winning player, the second column contains the name of the losing player and the third columns contains the number of times that the winner has beaten the loser. Multiple entries for the same pair of teams are handled correctly.}
+#'   \item{Unordered}{If a 4-column data-frame, the first column contains the name of Player 1, the second column contains the name of Player 2, the third column contains the number of times that Player 1 has beaten Player 2 and the fourth column contains the number of times Player 2 has beaten Player 1. Multiple entries for the same pair of teams are handled correctly.}
 #' }
 #' In both cases, if there is a repeated pairing in \code{df}, \code{pairs_to_matrix} aggregates the number of wins, as one would expect.
 #' @return A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}. This output is in the correct format to pass as the \code{W} argument to \code{\link{connected_components}} and \code{\link{btfit}}.
