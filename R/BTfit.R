@@ -160,6 +160,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
       names(dimnames(N[[k]])) <- names(dimnames(Wsub))
       diagonal[[k]] <- saved_diag[compk]
       names(pi[[k]]) <- compk
+      names(lambda[[k]]) <- compk
       iters[k] <- fit$iters
       converged[k] <- fit$converged
 
@@ -198,6 +199,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
         names(dimnames(N[[k]])) <- names(dimnames(Wsub))
         diagonal[[k]] <- saved_diag[compk]
         names(pi[[k]]) <- compk
+        names(lambda[[k]]) <- compk
         iters[k] <- fit$iters
         converged[k] <- fit$converged
       } # end loop over components
@@ -213,6 +215,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
       pi <- base::as.vector(fit$pi)
       lambda <- log(pi) - mean(log(pi))
       names(pi) <- rownames(W)
+      names(lambda) <- rownames(W)
       N <- fit$N
       dimnames(N) <- dimnames(W)
       names(dimnames(N)) <- names(dimnames(W))
