@@ -76,7 +76,9 @@ as_df <- function(sM, N) {
 fitted.btfit <- function(object, ..., as_df = FALSE){
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
 
-  pi <- object$pi
+  # pi <- object$pi
+  lambda <- object$lambda
+  pi <- exp(lambda)
   N <- object$N
   diagonal <- object$diagonal
 
