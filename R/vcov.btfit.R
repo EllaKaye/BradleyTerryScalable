@@ -27,7 +27,6 @@ vcov_vec <- function(pi, N, ref = NULL) {
   result
 }
 
-
 #' @export
 vcov.btfit <- function(object, ref = NULL, ...){
   

@@ -44,7 +44,7 @@ btdata <- function(x) {
   # return
   result <- list(wins = W, components = components)
   class(result) <- c("btdata", "list")
-  return(result)
+  result
 }
 
 #' @export

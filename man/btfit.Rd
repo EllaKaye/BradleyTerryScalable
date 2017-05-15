@@ -62,9 +62,11 @@ j <- c(1,2,2,3,4,4,6,6,6,7,7,7,8)
 dimnames = list(letters[1:8], letters[1:8])
 W_not_connected <-  Matrix::sparseMatrix(i, j, x = 1:13, dims = c(8,8), dimnames = dimnames)
 W_components <- connected_components(W_not_connected)$components
-fit1 <- btfit(W_connected, 1)
-fit2 <- btfit(W_not_connected, 1, components = W_components)
-fit3 <- btfit(W_not_connected, 3)
+W_connected_data <- btdata(W_connected)
+W_not_connected_data <- btdata(W_not_connected)
+fit1 <- btfit(W_connected_data, 1)
+fit2 <- btfit(W_not_connected_data, 1)
+fit3 <- btfit(W_not_connected_data, 3)
 }
 \references{
 Caron, F. and Doucet, A. (2012) Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
