@@ -61,7 +61,6 @@ i <- c(3,1,5,4,2,5,5,7,8,5,6,8,7)
 j <- c(1,2,2,3,4,4,6,6,6,7,7,7,8)
 dimnames = list(letters[1:8], letters[1:8])
 W_not_connected <-  Matrix::sparseMatrix(i, j, x = 1:13, dims = c(8,8), dimnames = dimnames)
-W_components <- connected_components(W_not_connected)$components
 W_connected_data <- btdata(W_connected)
 W_not_connected_data <- btdata(W_not_connected)
 fit1 <- btfit(W_connected_data, 1)

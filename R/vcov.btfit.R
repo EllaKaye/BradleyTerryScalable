@@ -3,8 +3,8 @@ vcov_vec <- function(pi, N, ref = NULL) {
   wmat <- btfitted_vec(pi, N)
   pmat <- btprob_vec(pi)
   result <- wmat * t(pmat)
-  diag(result) <- Matrix:::rowSums(wmat * pmat) + Matrix:::diag(wmat)
-  result <- MASS:::ginv(as.matrix(((diag(Matrix:::rowSums(wmat)) - result))))
+  diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix:::diag(wmat)
+  result <- MASS::ginv(as.matrix(((diag(Matrix::rowSums(wmat)) - result))))
   
   ##  That's the essence of the calculation all done.  We have computed the Moore-Penrose generalized
   ##  inverse for the over-parameterized set of log-ability parameters.
