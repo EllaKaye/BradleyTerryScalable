@@ -77,9 +77,7 @@ as_df <- function(sM, N) {
 fitted.btfit <- function(object, ..., as_df = FALSE){
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
 
-  # pi <- object$pi
-  lambda <- object$lambda
-  pi <- exp(lambda)
+  pi <- object$pi
   N <- object$N
   diagonal <- object$diagonal
 
@@ -94,6 +92,10 @@ fitted.btfit <- function(object, ..., as_df = FALSE){
 
     if (as_df) {
       out <- Map(as_df, out, N)
+      comp_num <- 1:length(pi)
+      out <- purrr::map2(out, comp_num, ~ .x %>% dplyr::mutate(component = .y)) %>%
+        dplyr::bind_rows()
+      
     }
 
   }
