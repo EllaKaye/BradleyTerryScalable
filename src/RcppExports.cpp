@@ -32,15 +32,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// btfitted_vec
-arma::sp_mat btfitted_vec(arma::vec pi, arma::sp_mat N);
-RcppExport SEXP BradleyTerryScalable_btfitted_vec(SEXP piSEXP, SEXP NSEXP) {
+// fitted_vec
+arma::sp_mat fitted_vec(arma::vec pi, arma::sp_mat N);
+RcppExport SEXP BradleyTerryScalable_fitted_vec(SEXP piSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type pi(piSEXP);
     Rcpp::traits::input_parameter< arma::sp_mat >::type N(NSEXP);
-    rcpp_result_gen = Rcpp::wrap(btfitted_vec(pi, N));
+    rcpp_result_gen = Rcpp::wrap(fitted_vec(pi, N));
     return rcpp_result_gen;
 END_RCPP
 }

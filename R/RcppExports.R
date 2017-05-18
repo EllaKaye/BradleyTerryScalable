@@ -9,8 +9,8 @@ btprob_vec <- function(pi) {
     .Call('BradleyTerryScalable_btprob_vec', PACKAGE = 'BradleyTerryScalable', pi)
 }
 
-btfitted_vec <- function(pi, N) {
-    .Call('BradleyTerryScalable_btfitted_vec', PACKAGE = 'BradleyTerryScalable', pi, N)
+fitted_vec <- function(pi, N) {
+    .Call('BradleyTerryScalable_fitted_vec', PACKAGE = 'BradleyTerryScalable', pi, N)
 }
 
 ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {

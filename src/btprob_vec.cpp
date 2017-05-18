@@ -18,7 +18,7 @@ arma::mat btprob_vec(arma::vec pi) {
 }
 
 // [[Rcpp::export]]
-arma::sp_mat btfitted_vec(arma::vec pi, arma::sp_mat N) {
+arma::sp_mat fitted_vec(arma::vec pi, arma::sp_mat N) {
 
   arma::mat outer(pi.size(), pi.size());
   outer.each_col() = pi;
