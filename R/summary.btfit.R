@@ -22,7 +22,7 @@ summary.btfit <- function(object, ref = NULL, combine_df = FALSE, ...){
       
       if (combine_df) {
         comp_num <- 1:length(pi)
-        result <- purrr::map2(result, comp_num, ~ .x %>% mutate(component = .y)) %>%
+        result <- purrr::map2(result, comp_num, ~ .x %>% dplyr::mutate(component = .y)) %>%
           dplyr::bind_rows()
       }
     }
