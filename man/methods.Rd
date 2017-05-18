@@ -20,7 +20,7 @@ summary.btfit(object, ref = NULL, ...)
 A Bradley-Terry model object produced by the \code{\link{btfit}} function.
 }
   \item{ref}{
-Either \code{NULL} (the default), or the length-1 index to specify a particular element of the coefficient vector as the reference value.  If \code{NULL} is used, the constraint applied is that the mean of the coefficients is zero.  
+Either \code{NULL} (the default), or the length-1 index to specify a particular element of the coefficient vector as the reference value.  If \code{NULL} is used, the constraint applied is that the mean of the coefficients is zero. If \code{object$pi} is a list, i.e. with estimates for multiple components, then \code{ref} must be either \code{NULL} or \code{1}.  
 }
   \item{\dots}{
 Other possible arguments.

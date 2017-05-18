@@ -18,6 +18,10 @@ summary.btfit <- function(object, ref = NULL, combine = FALSE, ...){
     N <- object$N
     
     if (is.list(pi)) {
+        
+      ## Restrict 'ref' value to NULL or 1 if there is >1 component
+      if (!(is.null(ref)) && (ref != 1)) stop("The value of 'ref' should be 1 or NULL")
+        
       result <- purrr::map2(pi, N, summary_vec, ref = ref)
       
       if (combine) {
