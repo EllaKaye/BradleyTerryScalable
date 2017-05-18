@@ -123,7 +123,7 @@ List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
   } // end while loop
 
   return(List::create(
-      _["pi"] = pi /= sum(pi),
+      _["pi"] = pi /= mean(pi),
       _["iters"] = iter - 1,
       _["converged"] = converged,
       _["N"] = N_orig));

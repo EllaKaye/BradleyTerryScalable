@@ -237,7 +237,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
     diagonal <- unlist(diagonal)
   }
 
-  result <- list(call = call, pi = pi, lambda = lambda, iters = iters, converged = converged, N = N,
+  result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
                  diagonal = diagonal, names_dimnames = names_dimnames)
 
   class(result) <- c("btfit", "list")
