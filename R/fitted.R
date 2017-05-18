@@ -85,7 +85,7 @@ fitted.btfit <- function(object, ..., as_df = FALSE){
 
   if (is.list(pi)) {
     pi_list_names <- lapply(pi, names)
-    out <- Map(btfitted_vec, pi, N)
+    out <- Map(fitted_vec, pi, N)
     out <- Map(my_diag, out, diagonal)
     out <- Map(function(x,y) {
       dimnames(x) <- list(y, y)
@@ -101,7 +101,7 @@ fitted.btfit <- function(object, ..., as_df = FALSE){
   else {
 
     pi_names <- names(pi)
-    out <- btfitted_vec(pi, N)
+    out <- fitted_vec(pi, N)
     diag(out) <- diagonal
     dimnames(out) <- list(pi_names, pi_names)
 

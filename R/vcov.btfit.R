@@ -1,6 +1,7 @@
+#' @export
 vcov_vec <- function(pi, N, ref = NULL) {
   K <- length(pi)
-  wmat <- btfitted_vec(pi, N)
+  wmat <- fitted_vec(pi, N)
   pmat <- btprob_vec(pi)
   result <- wmat * t(pmat)
   diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix:::diag(wmat)
@@ -34,16 +35,7 @@ vcov.btfit <- function(object, ref = NULL, ...){
     pi <- object$pi
     N <- object$N
     
-    if (is.list(pi)) {
-      
-      # Check for purrr
-      if (!requireNamespace("purrr", quietly = TRUE)) {
-        stop("The package purrr is needed for this function to work. Please install it.",
-             call. = FALSE)
-      }      
-      
-      result <- purrr::map2(pi, N, vcov_vec, ref = ref)
-    }
+    if (is.list(pi)) result <- purrr::map2(pi, N, vcov_vec, ref = ref)
     
     else result <- vcov_vec(pi, N, ref = ref)
     

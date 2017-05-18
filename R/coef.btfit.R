@@ -1,3 +1,4 @@
+#' @export
 coef_vec <- function(pi, ref = NULL, ...){
   coefs <- log(pi)
   ncoefs <- length(coefs)
@@ -11,7 +12,11 @@ coef_vec <- function(pi, ref = NULL, ...){
 
 #' @export
 coef.btfit <- function(object, ref = NULL, ...){
- ##  This still needs the purrr magic!  For now just do the single component case:
     pi <- object$pi
-    return(coef_vec(pi, ref = ref))
+    
+    if (is.list(pi)) result <- purrr::map(pi, coef_vec, ref = ref)
+    
+    else result <- coef_vec(pi, ref = ref)
+    
+    result
 }

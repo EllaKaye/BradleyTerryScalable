@@ -1,3 +1,4 @@
+#' @export
 summary_vec <- function(pi, N, ref = NULL){
     lambda <- coef_vec(pi, ref)
     vc <- vcov_vec(pi, N, ref)
@@ -10,11 +11,15 @@ summary_vec <- function(pi, N, ref = NULL){
 
 #' @export
 summary.btfit <- function(object, ref = NULL, ...){
- ##  This still needs the purrr magic!  For now just do the single component case:  
+    
     if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
     
     pi <- object$pi
     N <- object$N
-    return(summary_vec(pi, N, ref))
-
+    
+    if (is.list(pi)) result <- purrr::map2(pi, N, summary_vec, ref = ref)
+    
+    else result <- summary_vec(pi, N, ref = ref)
+    
+    result
 }
