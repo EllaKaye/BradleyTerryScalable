@@ -54,14 +54,15 @@ summary.btdata <- function(object, ...){
   num_comps <- length(object$components)
   connected <- num_comps == 1
   components_greater_than_one <- Filter(function(x) length(x) > 1, object$components)
-  #my_tab <- table(sapply(object$components, length))
+  my_tab <- table(sapply(object$components, length))
+  my_df <- as.data.frame(my_tab)
   #my_df <- as.data.frame(rbind(as.integer(names(my_tab)), unname(my_tab)))
   #rownames(my_df) <- c("Num. players in component:", "Number of components:")
   #colnames(my_df) <- NULL
   
   colnames(my_df) <- c("Component size", "Freq")
   
-  cat("Number of players (K):", K, "\n")
+  cat("Number of players:", K, "\n")
   cat("Fully-connected:", connected, "\n")
   if (num_comps > 1) {
     cat("Number of fully-connected components:", num_comps, "\n")
