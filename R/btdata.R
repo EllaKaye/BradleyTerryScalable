@@ -1,5 +1,5 @@
 #' @export
-btdata <- function(x) {
+btdata <- function(x, return_graph = FALSE) {
   
   # check x is of an appropriate type
   
@@ -43,6 +43,7 @@ btdata <- function(x) {
   
   # return
   result <- list(wins = W, components = components)
+  if (return_graph) result$graph <- g
   class(result) <- c("btdata", "list")
   result
 }
