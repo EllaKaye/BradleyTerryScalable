@@ -71,8 +71,18 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, 
   # but keep code in case underlying RcppArmadillo issue is resolved.
   
 
-  ### Checks on the arguments
+  ### Checks on the arguments (keep these in in case of issues in subseting)
   # if (!(methods::is(W, "Matrix") | is.matrix(W) )) stop("W must be a square matrix")
+ 
+  ### Check there is more than one player (something may have gone awry in select_components) 
+  if (is.numeric(W)) stop("there is only data for one item in btdata")
+  if (nrow(W) == 1) stop("there is only data for one item in btdata")
+  
+  ### Check there is at least one component with more than one element
+  if(is.list(components)) {
+    if (sum(purrr::map_int(components, length) > 1) == 0) stop("Each component in btdata only has data for one item")
+  }
+  
   # if (dim(W)[1] != dim(W)[2]) stop("W must be a square matrix")
   # if (any(W < 0)) stop("All entries of W must by non-negative")
   # Don't need checks on W now as taken care of in btdata()
