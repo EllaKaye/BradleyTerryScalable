@@ -2,13 +2,17 @@
 #' Simulate data from a specified Bradley-Terry model
 #'
 #' @aliases simulate.btfit
-#' @param pi a numeric vector, with all values positive
-#' @param N  a symmetric, numeric matrix with dimensions the same as \code{length(pi)}
-#' @param nsim  a scalar integer, the number of datasets to be generated
+#' @param pi a numeric vector, with all values finite and positive.
+#' @param N  a symmetric, numeric matrix with dimensions the same as \code{length(pi)}.  The elements should
+#' be numeric representations of non-negative integers.
+#' @param nsim  a scalar integer, the number of datasets to be generated.
 #' @param seed  an object specifying if and how the random number generator should be initialized (‘seeded’).  
 #' For details see \code{\link{simulate}}.
+#' @param result.class a character vector specifying whether the generated datasets should be of class 
+#' "sparseMatrix" or of class "btfit".  The first match among those alternatives is used. 
 #' @return a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
 #' same dimensions as \code{N}.
+#' @author David Firth
 #' @examples
 #' library(BradleyTerry2)
 #' data(citations)
@@ -59,7 +63,6 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMa
   
   result <- matrix(as.numeric(rbinom(nsim * number_of_binomials, N, probs)), 
                           number_of_binomials, nsim)
-  
   result <- split(result, col(result))  ## to get a list, rather than a matrix
   names(result) <- paste("sim", seq_len(nsim), sep = "_")
                   
