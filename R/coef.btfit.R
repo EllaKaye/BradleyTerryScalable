@@ -15,32 +15,18 @@ coef_vec <- function(pi, ref = NULL, ...){
 #' @export
 coef.btfit <- function(object, ref = NULL, ...) {
     pi <- object$pi
-    
-    if (is.list(pi)) {
         
-      ## Restrict 'ref' value to NULL or 1 if there is >1 component
-      #if (!(is.null(ref)) && (ref != 1)) stop("The value of 'ref' should be 1 or NULL")
-      if (!(is.null(ref))) {
-        names <- purrr::map(pi, ~ names(.x)) %>% unlist()
-        if (!(ref %in% names)) {
-          ref <- NULL
-          warning("The value of ref is not an item name. Using ref = NULL instead")
-        }
+    ## Restrict 'ref' value to NULL or 1 if there is >1 component
+    #if (!(is.null(ref)) && (ref != 1)) stop("The value of 'ref' should be 1 or NULL")
+    if (!(is.null(ref))) {
+      names <- purrr::map(pi, ~ names(.x)) %>% unlist()
+      if (!(ref %in% names)) {
+        ref <- NULL
+        warning("The value of ref is not an item name. Using ref = NULL instead")
       }
+    }
           
-      
-      result <- purrr::map(pi, coef_vec, ref = ref)
-    }
-    
-    else {
-      if (!is.null(ref)) {
-        if (!(ref %in% names(pi))) {
-          ref <- NULL
-          warning("The value of ref is not an item name. Using ref = NULL instead")
-        }
-      }
-      result <- coef_vec(pi, ref = ref)
-    }
-    
+    result <- purrr::map(pi, coef_vec, ref = ref)
+    if (length(pi) == 1) result <- unlist(result)
     result
 }
