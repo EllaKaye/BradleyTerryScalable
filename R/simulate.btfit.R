@@ -1,4 +1,3 @@
-#' @export
 #' Simulate data from a specified Bradley-Terry model
 #'
 #' @aliases simulate.btfit
@@ -19,6 +18,7 @@
 #' cit.btdata <- btdata(citations)
 #' citmodel <- btfit(cit.btdata, a = 1)
 #' simulate(citmodel, nsim = 3, seed = 1987)
+#' @export
 
 simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMatrix", "btdata")){
 

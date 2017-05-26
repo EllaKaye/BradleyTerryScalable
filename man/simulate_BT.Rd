@@ -3,6 +3,7 @@
 \name{simulate_BT}
 \alias{simulate.btfit}
 \alias{simulate_BT}
+\title{Simulate data from a specified Bradley-Terry model}
 \usage{
 simulate_BT(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMatrix",
   "btdata"))
@@ -24,6 +25,9 @@ For details see \code{\link{simulate}}.}
 \value{
 a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
 same dimensions as \code{N}.
+}
+\description{
+Simulate data from a specified Bradley-Terry model
 }
 \examples{
 library(BradleyTerry2)
