@@ -8,13 +8,16 @@ name_matrix_function <- function(x, y) {
   return(x)
 }
 
-name_dimnames_function <- function(x) {
-  names(dimnames(x)) <- names_dimnames
-  return(x)
-}
+
 
 #' @export
 btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
+  
+  # set up helper function
+  name_dimnames_function <- function(x) {
+    names(dimnames(x)) <- names_dimnames
+    return(x)
+  }
   
   call <- match.call()
   
@@ -59,7 +62,7 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   ### Save diagonal (for fitted values) then set diagonal of matrix to zero
   saved_diag <- Matrix::diag(wins)
   if(!is.null(rownames(wins))) names(saved_diag) <- rownames(wins)
-  diag(W) <- 0
+  diag(wins) <- 0
   
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
@@ -70,7 +73,7 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
     
   ### get necessary dimensions and set up storage
   n <- length(components)
-  K <- nrow(W)
+  K <- nrow(wins)
   if (is.null(b)) b <- a * K - 1
   
   ### By component, if necessary or by_comp requested
