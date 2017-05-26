@@ -8,14 +8,14 @@ btdata <- function(x, return_graph = FALSE) {
   # if x is a df
   if (is.data.frame(x)) {
     if (!(ncol(x) %in% 3:4 )) stop("If x is a dataframe, it must have 3 or 4 columns.")
-    W <- pairs_to_matrix(x)
-    g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
+    wins <- pairs_to_matrix(x)
+    g <- igraph::graph.adjacency(wins, weighted = TRUE, diag = FALSE)
   }
   
   # if x is a graph
   else if (igraph::is.igraph(x)) {
     if(!igraph::is.directed(x))  stop("If x is a graph, it must be a directed igraph object")
-    W <- graph_to_matrix(x)
+    wins <- graph_to_matrix(x)
     g <- x
   }
   
@@ -27,11 +27,11 @@ btdata <- function(x, return_graph = FALSE) {
     if(methods::is(x, "Matrix")) {if (!is.numeric(as.vector(x))) stop("If x is a matrix, all elements must be numeric")}
     if (any(x < 0)) stop("If x is a matrix, all elements must be non-negative")
     
-    # ensure W is a dgCMatrix
-    if (is.matrix(x)) W <- Matrix::Matrix(x, sparse = TRUE)
-    else W <- x
-    if (class(W) != "dgCMatrix") W <- methods::as(W, "dgCMatrix")
-    g <- igraph::graph.adjacency(W, weighted = TRUE, diag = FALSE)
+    # ensure wins is a dgCMatrix
+    if (is.matrix(x)) wins <- Matrix::Matrix(x, sparse = TRUE)
+    else wins <- x
+    if (class(wins) != "dgCMatrix") wins <- methods::as(wins, "dgCMatrix")
+    g <- igraph::graph.adjacency(wins, weighted = TRUE, diag = FALSE)
   }
   
   else stop("x must be a square matrix, a directed igraph object, or a 3 or 4 column dataframe.") 
@@ -42,7 +42,7 @@ btdata <- function(x, return_graph = FALSE) {
   components <- igraph::groups(comp)
   
   # return
-  result <- list(wins = W, components = components)
+  result <- list(wins = wins, components = components)
   if (return_graph) result$graph <- g
   class(result) <- c("btdata", "list")
   result
