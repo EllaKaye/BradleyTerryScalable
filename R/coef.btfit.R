@@ -5,6 +5,7 @@ coef_vec <- function(pi, ref = NULL, ...){
   if (is.null(ref)) return(coefs - mean(coefs))
   object_names <- names(coefs)
   if (ref %in% object_names) return(coefs - coefs[ref])
+  if (ref == 1) return(coefs - coefs[1])
   else return(coefs - mean(coefs))
   #if (ref %in% object_names) ref <- which(object_names == ref)
   #if (ref %in% seq(coefs)) {
@@ -15,17 +16,25 @@ coef_vec <- function(pi, ref = NULL, ...){
 #' @export
 coef.btfit <- function(object, ref = NULL, ...) {
     pi <- object$pi
+    
+    # check the value of ref
+    if (!is.null(ref)) {
+      if (is.character(ref)) {
+        if (length(ref) != 1) stop("'ref' should be the name of an item, 1, or NULL")
+        names <- purrr::map(pi, ~ names(.x)) %>% unlist()
+        if (!(ref %in% names)) {
+          ref <- NULL
+          warning("The value of 'ref' is not an item name. Using ref = NULL instead")
+        }
         
-    ## Restrict 'ref' value to NULL or 1 if there is >1 component
-    #if (!(is.null(ref)) && (ref != 1)) stop("The value of 'ref' should be 1 or NULL")
-    if (!(is.null(ref))) {
-      names <- purrr::map(pi, ~ names(.x)) %>% unlist()
-      if (!(ref %in% names)) {
-        ref <- NULL
-        warning("The value of ref is not an item name. Using ref = NULL instead")
       }
+      else if (is.numeric(ref)) {
+        if (length(ref) != 1) stop("'ref' should be the name of an item, 1, or NULL")
+        if (ref != 1) stop("'ref' should be the name of an item, 1, or NULL")
+      }
+      else stop("invalid value of ref")
     }
-          
+    
     result <- purrr::map(pi, coef_vec, ref = ref)
     if (length(pi) == 1) {
       if(names(pi) == "full_dataset") {
