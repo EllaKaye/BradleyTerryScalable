@@ -69,9 +69,7 @@ btprob <- function(object, as_df = FALSE) {
 
   if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
 
-  # pi <- object$pi
-  lambda <- object$lambda
-  pi <- exp(lambda)
+  pi <- object$pi
   names_dimnames <- object$names_dimnames
 
   if (is.list(pi)) {
@@ -98,7 +96,7 @@ btprob <- function(object, as_df = FALSE) {
       p <- rename_func(p, names_dimnames)
     }
   }
-
+  
   p
 }
 
