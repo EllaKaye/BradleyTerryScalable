@@ -24,6 +24,8 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   wins <- btdata$wins
   components <- btdata$components
   
+  orig_n <- length(components)
+  
   if (length(components) == 1 & !is.null(subset)) {
     warning("There is only one component, so subset argument ignored")
     subset <- NULL
@@ -35,6 +37,7 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   
   wins <- btdata$wins
   components <- btdata$components
+
   
   ### Check there's enough data to fit the model
   if (is.numeric(wins)) stop("there is not enough data to fit the model")
@@ -71,7 +74,7 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   if (is.null(b)) b <- a * K - 1
   
   ### By component, if necessary or by_comp requested
-  if ((a == 1 & n > 1) | (a > 1 & MAP_by_component)) {
+  if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
     
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
     
@@ -110,9 +113,13 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
     iters <- fit$iters
     converged <- fit$converged
     diagonal <- list(saved_diag)
+    names(pi) <- names(N) <- names(diagonal) <- "full_dataset"
     
     if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
   }
+  
+  if (a > 1 & MAP_by_component & orig_n == 1) names(pi) <- "full_dataset"
+
   
   result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
                  diagonal = diagonal, names_dimnames = names_dimnames)
