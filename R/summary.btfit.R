@@ -3,9 +3,9 @@ summary_vec <- function(pi, N, ref = NULL){
     lambda <- coef_vec(pi, ref)
     vc <- vcov_vec(pi, N, ref)
     se <- sqrt(diag(vc))
-    result <- data.frame(player = names(lambda), estimate = lambda, SE = se)
-    rownames(result) <- names(lambda)
-    class(result) <- c("summary.btfit", "data.frame")
+    result <- dplyr::data_frame(item = names(lambda), estimate = lambda, SE = se)
+    # rownames(result) <- names(lambda)
+    class(result) <- c("summary.btfit", "tbl_df", "tbl", "data.frame")
     result
 }
 
@@ -25,13 +25,14 @@ summary.btfit <- function(object, ref = NULL, combine = FALSE, ...){
       result <- purrr::map2(pi, N, summary_vec, ref = ref)
       
       if (combine) {
-        comp_num <- 1:length(pi)
-        result <- purrr::map2(result, comp_num, ~ .x %>% dplyr::mutate(component = .y)) %>%
+        comp_names <- names(pi)
+        result <- purrr::map2(result, comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
           dplyr::bind_rows()
       }
     }
     
     else result <- summary_vec(pi, N, ref = ref) 
     
+    #class(result) <- c("summary.btfit", "list")
     result
 }
