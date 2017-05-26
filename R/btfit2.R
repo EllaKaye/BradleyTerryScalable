@@ -14,7 +14,7 @@ name_dimnames_function <- function(x) {
 }
 
 #' @export
-btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3, simplify = TRUE) {
+btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
   
   call <- match.call()
   
@@ -70,16 +70,8 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   K <- nrow(W)
   if (is.null(b)) b <- a * K - 1
   
-  ### whether to fit by component or not
-  fit_by_component <- FALSE
-  if (!simplify) fit_by_component <- TRUE
-  if ((a == 1 & n > 1) | (a > 1 & MAP_by_component)) {
-    fit_by_component <- TRUE
-    # if (simplify) warning("cannot simplify the result") - do we need this, or just good documentation
-  }
-  
   ### By component, if necessary or by_comp requested
-  if (fit_by_component) {
+  if ((a == 1 & n > 1) | (a > 1 & MAP_by_component)) {
     
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
     
@@ -110,12 +102,14 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
     if(a > 1) fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
     pi <- base::as.vector(fit$pi)
     names(pi) <- rownames(wins)
+    pi <- list(pi)
     N <- fit$N
     dimnames(N) <- dimnames(wins)
     names(dimnames(N)) <- names(dimnames(wins))
+    N <- list(N)
     iters <- fit$iters
     converged <- fit$converged
-    diagonal <- saved_diag
+    diagonal <- list(saved_diag)
     
     if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
   }
