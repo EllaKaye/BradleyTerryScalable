@@ -27,6 +27,9 @@ coef.btfit <- function(object, ref = NULL, ...) {
     }
           
     result <- purrr::map(pi, coef_vec, ref = ref)
-    if (length(pi) == 1) result <- unlist(result)
+    if (length(pi) == 1) {
+      result <- unlist(result)
+      names(result) <- names(pi[[1]])
+    }
     result
 }
