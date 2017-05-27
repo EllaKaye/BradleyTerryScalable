@@ -42,6 +42,7 @@ coef.btfit <- function(object, ref = NULL, ...) {
     
     # iterate over components
     result <- purrr::map(pi, coef_vec, ref = ref)
+    
     if (length(pi) == 1) {
       if(names(pi) == "full_dataset") {
         result <- unlist(result)

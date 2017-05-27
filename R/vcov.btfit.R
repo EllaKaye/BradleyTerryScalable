@@ -3,7 +3,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
   K <- length(pi)
   wmat <- fitted_vec(pi, N)
   pmat <- btprob_vec(pi)
-  result <- wmat * t(pmat)
+  result <- wmat * Matrix::t(pmat)
   diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix:::diag(wmat)
   result <- MASS::ginv(as.matrix(((diag(Matrix::rowSums(wmat)) - result))))
   

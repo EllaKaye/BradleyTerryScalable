@@ -1,5 +1,9 @@
+#' @export
 as_df_prob <- function(m) {
-
+  
+  # convert to matrix
+  if (!is.matrix(m)) m <- as.matrix(m)
+  
   # Check for reshape2
   if (!requireNamespace("reshape2", quietly = TRUE)) {
     stop("The package reshape2 is needed for as_df = TRUE in btprob. Please install it.",
@@ -7,16 +11,17 @@ as_df_prob <- function(m) {
   }
 
   m[lower.tri(m, diag = TRUE)] <- NA
-  out <- reshape2::melt(m, na.rm = TRUE)
+  out <- as_data_frame(reshape2::melt(m, na.rm = TRUE))
+  #class(out) <- c("tbl_df", "tbl", "data.frame")
   colnames(out)[3] <- "prob1wins"
   out$prob2wins <- 1 - out$prob1wins
 
   out
 }
 
-rename_func <- function(df, names_dimnames) {
+df_col_rename_func <- function(df, names_dimnames) {
 
-  colnames(df)[1:2] <- c("player1", "player2")
+  colnames(df)[1:2] <- c("item1", "item2")
 
   if(!is.null(names_dimnames)) {
     if(!is.na(names_dimnames[1])) colnames(df)[1] <- names_dimnames[1]
@@ -59,8 +64,6 @@ rename_func <- function(df, names_dimnames) {
 #' btprob(fit2, as_df = TRUE)
 #' btprob(fit3)
 #' @export
-
-
 btprob <- function(object, as_df = FALSE) {
 
   #if(!is.vector(pi)) stop("pi should be a numeric vector or a list of numeric vectors")
@@ -82,7 +85,7 @@ btprob <- function(object, as_df = FALSE) {
 
     if (as_df) {
       p <- lapply(p, as_df_prob)
-      p <- lapply(p, rename_func, names_dimnames)
+      p <- lapply(p, df_col_rename_func, names_dimnames)
     }
   }
 
@@ -100,4 +103,36 @@ btprob <- function(object, as_df = FALSE) {
   p
 }
 
+#' @export
+btprob2 <- function(object, as_df = FALSE) {
+  
+  if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
+  
+  pi <- object$pi
+  components <- purrr::map(pi, names)
 
+  # set up names of dimnames  
+  names_dimnames <- object$names_dimnames  
+  names_dimnames_list <- list(names_dimnames)
+  names_dimnames_rep <- rep(names_dimnames_list, length(pi))
+  
+  p <- purrr::map(pi, btprob_vec) %>%
+    purrr::map2(components, name_matrix_function) %>%
+    purrr::map2(names_dimnames_list, name_dimnames_function)
+    
+  if (as_df) {
+    comp_names <- names(pi)
+    p <- purrr::map(p, as_df_prob)
+    p <- purrr::map(p, df_col_rename_func, names_dimnames)
+    p <- purrr::map2(p, comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
+      dplyr::bind_rows()
+  }
+  
+  if (length(pi) == 1) {
+    if (names(pi) == "full_dataset") {
+      p <- p[[1]]
+    }
+  }
+  
+  p
+}
