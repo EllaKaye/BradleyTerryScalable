@@ -1,5 +1,5 @@
 #' @export
-as_df_prob <- function(m) {
+as_df_btprob <- function(m) {
   
   # convert to matrix
   if (!is.matrix(m)) m <- as.matrix(m)
@@ -123,7 +123,7 @@ btprob2 <- function(object, as_df = FALSE) {
   if (as_df) {
     comp_names <- names(pi)
     
-    p <- purrr::map(p, as_df_prob) %>%
+    p <- purrr::map(p, as_df_btprob) %>%
      purrr::map(df_col_rename_func, names_dimnames) %>%
      purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
      dplyr::bind_rows()
