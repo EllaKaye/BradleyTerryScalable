@@ -11,13 +11,10 @@ as_df_prob <- function(m) {
   }
 
   m[lower.tri(m, diag = TRUE)] <- NA
-  out <- reshape2::melt(m, na.rm = TRUE)
-    #dplyr::mutate_if(is.factor, as.character) %>%
-    #dplyr::rename("prob1wins" = value) %>%
-    #dplyr::mutate("prob2wins" = 1 - prob1wins)
-  colnames(out)[3] <- "prob1wins"
-  out$prob2wins <- 1 - out$prob1wins
-  out <- as_data_frame(out)
+  out <- as_data_frame(reshape2::melt(m, na.rm = TRUE)) %>%
+    dplyr::mutate_if(is.factor, as.character) %>%
+    dplyr::rename("prob1wins" = value) %>%
+    dplyr::mutate("prob2wins" = 1 - prob1wins)
 
   out
 }
