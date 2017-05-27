@@ -1,5 +1,5 @@
 #' @export
-summary_vec <- function(pi, N, ref = NULL){
+item_summary_vec <- function(pi, N, ref = NULL){
     lambda <- coef_vec(pi, ref)
     vc <- vcov_vec(pi, N, ref)
     se <- sqrt(diag(vc))
@@ -32,10 +32,10 @@ summary.btfit <- function(object, ref = NULL, ...){
     converged <- object$converged
 
         
-    ## Restrict 'ref' value to NULL or 1 if there is >1 component
-    if (!(is.null(ref)) && (ref != 1)) stop("The value of 'ref' should be 1 or NULL")
+    ## check ref
+    ref <- ref_check(ref, pi)
         
-    summary_by_comp <- purrr::map2(pi, N, summary_vec, ref = ref)
+    summary_by_comp <- purrr::map2(pi, N, item_summary_vec, ref = ref)
       
     comp_names <- names(pi)
     summary_result <- purrr::map2(summary_by_comp, comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%

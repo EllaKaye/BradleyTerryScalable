@@ -1,26 +1,4 @@
 #' @export
-ref_check <- function(ref, pi) {
-  if (!is.null(ref)) {
-    if (is.character(ref)) {
-      if (length(ref) != 1) stop("'ref' should be the name of an item, 1, or NULL")
-      names <- purrr::map(pi, ~ names(.x)) %>% unlist()
-      if (!(ref %in% names)) {
-        ref <- NULL
-        warning("The value of 'ref' is not an item name. Using ref = NULL instead")
-      }
-      
-    }
-    else if (is.numeric(ref)) {
-      if (length(ref) != 1) stop("'ref' should be the name of an item, 1, or NULL")
-      if (ref != 1) stop("'ref' should be the name of an item, 1, or NULL")
-    }
-    else stop("invalid value of ref")
-  }
-  
-  ref
-}
-
-#' @export
 coef_vec <- function(pi, ref = NULL, ...){
   coefs <- log(pi)
   ncoefs <- length(coefs)

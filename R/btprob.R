@@ -19,18 +19,6 @@ as_df_btprob <- function(m) {
   out
 }
 
-df_col_rename_func <- function(df, names_dimnames) {
-
-  colnames(df)[1:2] <- c("item1", "item2")
-
-  if(!is.null(names_dimnames)) {
-    if(!is.na(names_dimnames[1])) colnames(df)[1] <- names_dimnames[1]
-    if(!is.na(names_dimnames[2])) colnames(df)[2] <- names_dimnames[2]
-  }
-
-  return(df)
-}
-
 #' Calculates Bradley-Terry probabiities
 #'
 #' Calculates the Bradley-Terry probabilities of each player in a fully-connected component of \eqn{G_W} winning against every other player in that component.

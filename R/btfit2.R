@@ -1,18 +1,3 @@
-name_vec_function <- function(x, y) {
-  names(x) <- y 
-  return(x)
-}
-
-name_matrix_function <- function(x, y) {
-  dimnames(x) <- list(y,y)
-  return(x)
-}
-
-name_dimnames_function <- function(x, names_dimnames) {
-  names(dimnames(x)) <- names_dimnames
-  return(x)
-}
-
 #' @export
 btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
   

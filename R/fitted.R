@@ -1,8 +1,3 @@
-my_diag <- function(x,y) {
-  diag(x) <- y
-  return(x)
-}
-
 #' @export
 as_df_fitted <- function(sM, N) {
 
