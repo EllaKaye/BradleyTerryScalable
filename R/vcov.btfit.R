@@ -15,12 +15,17 @@ vcov_vec <- function(pi, N, ref = NULL) {
   if (is.null(ref)) {
     ##  Default contrasts are with mean(log(pi)):
     theContrasts <- diag(K) - matrix(1/K, K, K, byrow = TRUE)
-  } else {  ## The specified constraint is that one of the log-ability parameters is zero
-    if (ref %in% names(pi)) ref <- which(names(pi) == ref)
-    if (ref %in% 1:K) {
-      theContrasts <- diag(K)
+  } 
+  
+  else {  ## The specified constraint is that one of the log-ability parameters is zero
+    object_names <- names(pi)
+    theContrasts <- diag(K)
+    if (ref %in% object_names) {
+      ref <- which(names(pi) == ref)
       theContrasts[, ref] <- theContrasts[, ref] - 1
-    } else stop("Invalid value for the 'ref' argument")
+    }
+    else if (ref == 1) theContrasts[, ref] <- theContrasts[, ref] - 1
+    else theContrasts <- diag(K) - matrix(1/K, K, K, byrow = TRUE)
   }
   result <- theContrasts %*% tcrossprod(result, theContrasts)
   rownames(result) <- colnames(result) <- names(pi)
@@ -36,7 +41,7 @@ vcov.btfit <- function(object, ref = NULL, ...){
     N <- object$N
     
     # check the value of ref
-    ref_check(ref, pi)
+    ref <- ref_check(ref, pi)
     
     # iterate over components
     result <- purrr::map2(pi, N, vcov_vec, ref = ref)
