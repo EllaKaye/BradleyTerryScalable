@@ -8,16 +8,13 @@ name_matrix_function <- function(x, y) {
   return(x)
 }
 
-
+name_dimnames_function <- function(x, names_dimnames) {
+  names(dimnames(x)) <- names_dimnames
+  return(x)
+}
 
 #' @export
-btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
-  
-  # set up helper function
-  name_dimnames_function <- function(x) {
-    names(dimnames(x)) <- names_dimnames
-    return(x)
-  }
+btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) 
   
   call <- match.call()
   
@@ -66,6 +63,8 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
+  names_dimnames_list <- list(names_dimnames)
+  names_dimnames_rep <- rep(names_dimnames_list, length(components))
   
   ### remove components of length 1
   components <- purrr::discard(components, function(x) length(x) == 1)
@@ -90,7 +89,7 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
     pi <- purrr::map(btfit_map$pi, as.vector) %>%
       purrr::map2(components, name_vec_function)
     N <- purrr::map2(btfit_map$N, components, name_matrix_function) %>%
-      purrr::map(name_dimnames_function)
+      purrr::map2(names_dimnames_list, name_dimnames_function)
     iters <- unlist(btfit_map$iters)
     converged <- unlist(btfit_map$converged)
 
