@@ -3,6 +3,7 @@ my_diag <- function(x,y) {
   return(x)
 }
 
+#' @export
 as_df_fitted <- function(sM, N) {
 
   # get upper triangle
@@ -14,19 +15,19 @@ as_df_fitted <- function(sM, N) {
   if (!is.null(rownames(sM)) & !is.null(colnames(sM))) {
     #df <- data.frame(winner = rownames(sM)[sM@i + 1], loser = rownames(sM)[sM@j + 1], fit = sM@x)
 
-    df <- data.frame(player1 = rownames(sM)[sM@i + 1], player2 = rownames(sM)[sM@j + 1],
+    df <- data_frame(item1 = rownames(sM)[sM@i + 1], item2 = rownames(sM)[sM@j + 1],
                      fit1 = sM@x, fit2 = N@x - sM@x)
   }
 
   else {
-    df <- data.frame(player1 = sM@i + 1, player2 = sM@j + 1, fit1 = sM@x, fit2 = N@x - sM@x)
+    df <- data_frame(item1 = sM@i + 1, item2 = sM@j + 1, fit1 = sM@x, fit2 = N@x - sM@x)
 
   }
 
-  if(!is.null(names(dimnames(N)))) {
-    if(!is.na(names(dimnames(N))[1])) colnames(df)[1] <- names(dimnames(N))[1]
-    if(!is.na(names(dimnames(N))[2])) colnames(df)[2] <- names(dimnames(N))[2]
-  }
+  #if(!is.null(names(dimnames(N)))) {
+  #  if(!is.na(names(dimnames(N))[1])) colnames(df)[1] <- names(dimnames(N))[1]
+  #  if(!is.na(names(dimnames(N))[2])) colnames(df)[2] <- names(dimnames(N))[2]
+  #}
 
   return(df)
 }
