@@ -48,7 +48,7 @@ summary.btfit <- function(object, ref = NULL, ...){
       dplyr::select(component, num_items:converged)
 
     
-    result <- list(summary_result = summary_result, component_summary_result = component_summary_result)
+    result <- list(item_summary = summary_result, component_summary = component_summary_result)
     
     class(result) <- c("summary.btfit", "list")
     result
