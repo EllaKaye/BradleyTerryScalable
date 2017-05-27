@@ -1,10 +1,3 @@
-bind_if <- function(p) {
-  if(is.list(p)) {
-    return(dplyr::bind_rows(p))
-  }
-  else return(p)
-}
-
 #' @export
 as_df_prob <- function(m) {
   
@@ -132,22 +125,18 @@ btprob2 <- function(object, as_df = FALSE) {
     
   if (as_df) {
     comp_names <- names(pi)
-    # p <- purrr::map(p, as_df_prob)
-    # p <- purrr::map(p, df_col_rename_func, names_dimnames)
-    # p <- purrr::map2(p, comp_names, ~ .x %>% dplyr::mutate(component = .y)) 
-    # p <- purrr::map(p, bind_if)
     
     p <- purrr::map(p, as_df_prob) %>%
-      purrr::map(df_col_rename_func, names_dimnames) %>%
-      purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) #%>%
-        #bind_rows()    
+     purrr::map(df_col_rename_func, names_dimnames) %>%
+     purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
+     dplyr::bind_rows()
   }
   
-  if (length(pi) == 1) {
-    if (names(pi) == "full_dataset") {
-      p <- p[[1]]
-    }
-  }
+  # if (length(pi) == 1) {
+  #   if (names(pi) == "full_dataset") {
+  #     p <- p[[1]]
+  #   }
+  # }
   
   p
 }
