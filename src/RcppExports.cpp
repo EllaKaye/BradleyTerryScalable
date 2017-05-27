@@ -22,7 +22,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // btprob_vec
-arma::mat btprob_vec(arma::vec pi);
+arma::sp_mat btprob_vec(arma::vec pi);
 RcppExport SEXP BradleyTerryScalable_btprob_vec(SEXP piSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

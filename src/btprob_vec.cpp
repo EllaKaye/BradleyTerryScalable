@@ -4,8 +4,9 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
+//' @export
 // [[Rcpp::export]]
-arma::mat btprob_vec(arma::vec pi) {
+arma::sp_mat btprob_vec(arma::vec pi) {
 
   arma::mat outer(pi.size(), pi.size());
   outer.each_col() = pi;
@@ -13,10 +14,12 @@ arma::mat btprob_vec(arma::vec pi) {
   outer = 1/outer;
   outer.diag().zeros();
   outer.each_col() %= pi;
+  arma::sp_mat outer_sp(outer);
 
-  return outer;
+  return outer_sp;
 }
 
+//' @export
 // [[Rcpp::export]]
 arma::sp_mat fitted_vec(arma::vec pi, arma::sp_mat N) {
 
