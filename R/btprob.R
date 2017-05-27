@@ -132,11 +132,11 @@ btprob2 <- function(object, as_df = FALSE) {
      dplyr::bind_rows()
   }
   
-  # if (length(pi) == 1) {
-  #   if (names(pi) == "full_dataset") {
-  #     p <- p[[1]]
-  #   }
-  # }
+  if (length(pi) == 1 & !as_df) {
+   if (names(pi) == "full_dataset") {
+     p <- p[[1]]
+   }
+  }
   
   p
 }
