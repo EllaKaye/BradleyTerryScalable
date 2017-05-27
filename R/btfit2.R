@@ -14,19 +14,17 @@ name_dimnames_function <- function(x, names_dimnames) {
 }
 
 #' @export
-btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) 
+btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
   
   call <- match.call()
   
   ### Check for correct data object, and extract elements
   if (!inherits(btdata, "btdata")) stop("btdata argument must be a 'btdata' object, as created by btdata() function.")
 
-  wins <- btdata$wins
-  components <- btdata$components
+  orig_components <- btdata$components
+  orig_n <- length(orig_components)
   
-  orig_n <- length(components)
-  
-  if (length(components) == 1 & !is.null(subset)) {
+  if (length(orig_components) == 1 & !is.null(subset)) {
     warning("There is only one component, so subset argument ignored")
     subset <- NULL
   }
@@ -61,19 +59,18 @@ btfit2 <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
   if(!is.null(rownames(wins))) names(saved_diag) <- rownames(wins)
   diag(wins) <- 0
   
-  ### Save names of dimnames (for naming df columns in fitted and btprob)
-  names_dimnames <- names(dimnames(wins))
-  names_dimnames_list <- list(names_dimnames)
-  names_dimnames_rep <- rep(names_dimnames_list, length(components))
-  
   ### remove components of length 1
   components <- purrr::discard(components, function(x) length(x) == 1)
-  
-    
+      
   ### get necessary dimensions and set up storage
   n <- length(components)
   K <- nrow(wins)
   if (is.null(b)) b <- a * K - 1
+  
+  ### Save names of dimnames (for naming df columns in fitted and btprob)
+  names_dimnames <- names(dimnames(wins))
+  names_dimnames_list <- list(names_dimnames)
+  names_dimnames_rep <- rep(names_dimnames_list, n)
   
   ### By component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
