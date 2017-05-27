@@ -1,3 +1,10 @@
+bind_if <- function(p) {
+  if(is.list(p)) {
+    return(dplyr::bind_rows(p))
+  }
+  else return(p)
+}
+
 #' @export
 as_df_prob <- function(m) {
   
@@ -11,10 +18,13 @@ as_df_prob <- function(m) {
   }
 
   m[lower.tri(m, diag = TRUE)] <- NA
-  out <- as_data_frame(reshape2::melt(m, na.rm = TRUE))
-  #class(out) <- c("tbl_df", "tbl", "data.frame")
+  out <- reshape2::melt(m, na.rm = TRUE)
+    #dplyr::mutate_if(is.factor, as.character) %>%
+    #dplyr::rename("prob1wins" = value) %>%
+    #dplyr::mutate("prob2wins" = 1 - prob1wins)
   colnames(out)[3] <- "prob1wins"
   out$prob2wins <- 1 - out$prob1wins
+  out <- as_data_frame(out)
 
   out
 }
@@ -122,10 +132,15 @@ btprob2 <- function(object, as_df = FALSE) {
     
   if (as_df) {
     comp_names <- names(pi)
-    p <- purrr::map(p, as_df_prob)
-    p <- purrr::map(p, df_col_rename_func, names_dimnames)
-    p <- purrr::map2(p, comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
-      dplyr::bind_rows()
+    # p <- purrr::map(p, as_df_prob)
+    # p <- purrr::map(p, df_col_rename_func, names_dimnames)
+    # p <- purrr::map2(p, comp_names, ~ .x %>% dplyr::mutate(component = .y)) 
+    # p <- purrr::map(p, bind_if)
+    
+    p <- purrr::map(p, as_df_prob) %>%
+      purrr::map(df_col_rename_func, names_dimnames) %>%
+      purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) #%>%
+        #bind_rows()    
   }
   
   if (length(pi) == 1) {
