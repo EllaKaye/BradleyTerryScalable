@@ -3,7 +3,7 @@ my_diag <- function(x,y) {
   return(x)
 }
 
-as_df <- function(sM, N) {
+as_df_fitted <- function(sM, N) {
 
   # get upper triangle
   sM[lower.tri(sM, diag = TRUE)] <- 0
@@ -113,3 +113,51 @@ fitted.btfit <- function(object, ..., as_df = FALSE){
   return(out)
 
 }
+
+#' @export
+fitted2 <- function(object, as_df = FALSE){
+  if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
+  
+  pi <- object$pi
+  N <- object$N
+  diagonal <- object$diagonal
+  
+  components <- purrr::map(pi, names)
+  
+  # set up names of dimnames  
+  names_dimnames <- object$names_dimnames  
+  names_dimnames_list <- list(names_dimnames)
+  names_dimnames_rep <- rep(names_dimnames_list, length(pi))
+  
+  out <- purrr::map2(pi, N, fitted_vec) %>%
+    purrr::map2(components, name_matrix_function) %>%
+    purrr::map2(names_dimnames_list, name_dimnames_function) %>%
+    purrr::map2(diagonal, my_diag)
+
+    # if (as_df) {
+    #   out <- Map(as_df, out, N)
+    #   comp_num <- 1:length(pi)
+    #   out <- purrr::map2(out, comp_num, ~ .x %>% dplyr::mutate(component = .y)) %>%
+    #     dplyr::bind_rows()
+    # 
+    # }
+  
+  if (as_df) {
+    comp_names <- names(pi)
+    
+    out <- purrr::map2(out, N, as_df_fitted) %>%
+      purrr::map(df_col_rename_func, names_dimnames) %>%
+      purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
+      dplyr::bind_rows()
+  }
+    
+    if (length(pi) == 1 & !as_df) {
+      if (names(pi) == "full_dataset") {
+        out <- out[[1]]
+      }
+    }
+  
+  out
+    
+}
+
