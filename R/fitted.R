@@ -31,23 +31,23 @@ as_df_fitted <- function(sM, N) {
 #'
 #' \code{fitted.btfit} returns the fitted values from a fitted brfit model object.
 #'
-#' Consider a set of \eqn{K} players. Let the players be nodes in a graph and let there be a directed edge \eqn{(i, j)} when \eqn{i} has won against \eqn{j} at least once. We call this the comparison graph of the data, and denote it by \eqn{G_W}. Assuming that \eqn{G_W} is fully connected, the Bradley-Terry model states that the probability that player \eqn{i} beats player \eqn{j} is
+#' Consider a set of \eqn{K} items. Let the items be nodes in a graph and let there be a directed edge \eqn{(i, j)} when \eqn{i} has won against \eqn{j} at least once. We call this the comparison graph of the data, and denote it by \eqn{G_W}. Assuming that \eqn{G_W} is fully connected, the Bradley-Terry model states that the probability that item \eqn{i} beats item \eqn{j} is
 #' \deqn{p_{ij} = \frac{\pi_i}{\pi_i + \pi_j},}
-#' where \eqn{\pi_i} and \eqn{\pi_j} are positive-valued parameters representing the skills of players \eqn{i} and \eqn{j}, for \eqn{1 \le i, j, \le K}.
+#' where \eqn{\pi_i} and \eqn{\pi_j} are positive-valued parameters representing the skills of items \eqn{i} and \eqn{j}, for \eqn{1 \le i, j, \le K}.
 #'
 #' The expected, or fitted, values under the Bradley-Terry model are therefore:
 #'
 #' \deqn{m_{ij} = n_{ij}p_{ij},}
 #'
-#' where \eqn{n_ij} is the number of times player \eqn{i} plays against player \eqn{j}.
+#' where \eqn{n_ij} is the number of times item \eqn{i} plays against item \eqn{j}.
 #'
 #' The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilties \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 #'
-#' If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the K players beating any of the others. Alternatively, the MLE can be found for each fully connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each player in each component beating any other player in that component can be found.
+#' If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the K items beating any of the others. Alternatively, the MLE can be found for each fully connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each item in each component beating any other item in that component can be found.
 #' @param ... Other arguments
 #' @inheritParams btprob
 #'
-#' @return If \code{as_df = FALSE}, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}}, or, if \eqn{G_W} is not fully-connected and \code{\link{btfit}} has been run with \code{a = 1}, a list of such matrices for each fully-connected component of \eqn{G_W}. If \code{as_df = TRUE}, returns a four-column data frame, where the first column is \code{player1}, the second column is \code{player2}, the third column, \code{fit1}, is the expected number of times that player 1 beats player 2 and the fourth column, \code{fit2}, is the expected number of times that player 2 beats player 1, (or a list of such data frames for each fully-connected component). If \code{W} has named dimnames, these will be the \code{colnames} for columns one and two. See Details.
+#' @return If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}}. Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is \code{item1}, the second column is \code{item2}, the third column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fourth column, \code{fit2}, is the expected number of times that item 2 beats item 1 and the fifth column is the component that the two items are in. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. See Details.
 #' @references Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block designs: 1. The method of paired comparisons. \emph{Biometrika}, \strong{39}(3/4), 324-345.
 #' @references Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
 #' @seealso \code{\link{connected_components}}, \code{\link{btfit}}, \code{\link{btprob}}
@@ -66,11 +66,10 @@ as_df_fitted <- function(sM, N) {
 #' fitted(fit2)
 #' fitted(fit2, as_df = TRUE)
 #' fitted(fit3)
-
 #'
 #'
 #' @export
-fitted.btfit <- function(object, ..., as_df = FALSE){
+fitted_old <- function(object, as_df = FALSE){
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
 
   pi <- object$pi
@@ -110,8 +109,11 @@ fitted.btfit <- function(object, ..., as_df = FALSE){
 
 }
 
+
+
+
 #' @export
-fitted2 <- function(object, as_df = FALSE){
+fitted.btfit <- function(object, ..., as_df = FALSE){
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
   
   pi <- object$pi
