@@ -1,3 +1,15 @@
+#' Subset a btdata object
+#' 
+#' Subset a btdata object by selecting components from it.
+#' 
+#' @param btdata A \code{\link{btdata}} object
+#' @param subset A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function, or a logical vector of the same length as the number of components (i.e. of length \code{length(btdata$components)}).
+#' @inheritParams btdata
+#' @return A \code{\link{btdata}} object, which is a list containing:
+#' \item{wins}{A square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}.}
+#' \item{components}{A list of the fully-connected components. The names of the list preserve the names of the original \code{btdata} object.}
+#' \item{graph}{The comparison graph of the data (if return_graph = TRUE).}
+#' @seealso \code{\link{btdata}}, \code{\link{btfit}}
 #' @export
 select_components <- function(btdata, subset, return_graph = FALSE) {
 

@@ -31,4 +31,7 @@ Alternatively, \code{x} can be an igraph object representing the comparison grap
 
 Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns.
 }
+\seealso{
+\code{\link{select_components}}
+}
 

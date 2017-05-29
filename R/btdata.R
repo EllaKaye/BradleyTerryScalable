@@ -18,6 +18,7 @@
 #' \item{wins}{A square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}.}
 #' \item{components}{A list of the fully-connected components.}
 #' \item{graph}{The comparison graph of the data (if return_graph = TRUE).}
+#' @seealso \code{\link{select_components}}
 #' @export
 btdata <- function(x, return_graph = FALSE) {
   
