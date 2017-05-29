@@ -56,7 +56,7 @@
 #' fit3 <- btfit(W_not_connected_data, 3)
 #' @export
 
-btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, epsilon = 1e-3) {
+btfit_old <- function(btdata, a, b = NULL, MAP_by_component = FALSE, maxit = 10000, epsilon = 1e-3) {
 
   call <- match.call()
   
