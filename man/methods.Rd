@@ -7,7 +7,7 @@
 Standard methods for model objects of class 'btfit'
 }
 \description{
-These are S3 methods for the generic \code{link(coef}}, \code{\link{vcov}} and \code{\link{summary}} functions.  
+These are S3 methods for the generic \code{\link{coef}}, \code{\link{vcov}} and \code{\link{summary}} functions.  
 }
 \usage{
 coef.btfit(object, ref = NULL, ...)

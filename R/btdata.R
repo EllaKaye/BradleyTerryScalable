@@ -1,3 +1,23 @@
+#' Create a btdata object
+#' 
+#' Creates a btdata object, primarily for use in the \link{btfit} function.
+#' 
+#' If \code{x} is a data frame, it must have three or four columns.
+#' 
+#' If \code{x} is 3-column data-frame, the first column contains the name of the winning item, the second column contains the name of the losing item and the third columns contains the number of times that the winner has beaten the loser. Multiple entries for the same pair of items are handled correctly.
+#' 
+#' If \code{x} is a 4-column data-frame, the first column contains the name of item 1, the second column contains the name of item 2, the third column contains the number of times that item 1 has beaten item 2 and the fourth column contains the number of times item 2 has beaten item 1. Multiple entries for the same pair of items are handled correctly.
+#' 
+#' Alternatively, \code{x} can be an igraph object representing the comparison graph of the data, i.e. the graph where the nodes are the items, and there is a directed edge from node \eqn{i} to node \eqn{j} whenever item \eqn{i} has beaten item \eqn{j} at least once. Then, if \code{x} is a weighted graph, the weight on each edge \eqn{i-j} represents the number of times item \eqn{i} has beaten item \eqn{j}. If \code{x} is not weighted, there is a separate edge from node \eqn{i} to node \eqn{j} for each time item \eqn{i} has beaten item \eqn{j}.
+#' 
+#' Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns.
+#' 
+#' @param x The data, which is either a three- or four-column data frame, a directed igraph object, or a square matrix. See Details.
+#' @param return_graph Logical. If TRUE, an igraph object representing the comparison graph will be returned.
+#' @return A btdata object, which is a list containing:
+#' \item{wins}{A square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}.}
+#' \item{components}{A list of the fully-connected components.}
+#' \item{graph}{The comparison graph of the data (if return_graph = TRUE).}
 #' @export
 btdata <- function(x, return_graph = FALSE) {
   
