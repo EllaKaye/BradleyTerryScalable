@@ -5,7 +5,7 @@
 \alias{simulate_BT}
 \title{Simulate data from a specified Bradley-Terry model}
 \usage{
-simulate_BT(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMatrix",
+simulate_BT(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix",
   "btdata"))
 }
 \arguments{

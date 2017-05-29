@@ -20,11 +20,10 @@
 #' simulate(citmodel, nsim = 3, seed = 1987)
 #' @export
 
-simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMatrix", "btdata")){
+simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata")){
 
   ## A simulate function that takes a vector pi and a matrix N as its arguments
   
-  require(Matrix)
   # set the seed, exactly as in simulate.lm 
   if (is.null(seed)) 
         RNGstate <- get(".Random.seed", envir = .GlobalEnv)
@@ -44,19 +43,19 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMa
   if (!is.vector(pi)) stop("pi is not a vector")
   if (!is.numeric(pi)) stop("pi is not numeric")
   if (any (pi < 0)) stop("pi has one or more negative elements")
-  result.class <- match.arg(result.class)
-  if (!(result.class %in% c("sparseMatrix", "btdata"))) stop("invalid value of result.class")
+  result_class <- match.arg(result_class)
+  if (!(result_class %in% c("sparseMatrix", "btdata"))) stop("invalid value of result.class")
     
   template <- N <- as(N, "dgCMatrix")  ## template is the matrix container for a single sample
   
-  N <- as.matrix(Matrix:::summary(N))
+  N <- as.matrix(Matrix::summary(N))
   i <- N[, "i"]
   j <- N[, "j"]
   lower <- i > j               ## lower-triangle index vector
   upper <- order(i, j)[i > j]  ## upper-triangle indices in the right order
   N <- N[lower, 3]             ## all of the binomial totals
   number_of_binomials <- length(N) 
-  probs <- BradleyTerryScalable:::btprob_vec(pi)
+  probs <- btprob_vec(pi)
   probs <- probs[lower.tri(probs)]
   
   # simulate the new datasets
@@ -71,7 +70,7 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result.class = c("sparseMa
       res <- template
       res@x[lower] <- contents
       res@x[upper] <- N - contents
-      if (result.class == "sparseMatrix") return(res)
+      if (result_class == "sparseMatrix") return(res)
       else return(btdata(res))
   }  
   
