@@ -95,9 +95,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
       
   ### get necessary dimensions and set up storage
   n <- length(components)
-  K <- nrow(wins)
-  if (is.null(b)) b <- a * K - 1
-  
+
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
   names_dimnames_list <- list(names_dimnames)
@@ -106,10 +104,16 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
   ### By component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
     
+    # get b/K
+    K <- purrr::map_int(components, length)
+    if (a == 1) b <- 0
+    else if (is.null(b)) b <- a * K - 1
+    
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
     
     if (a == 1) btfit_map <- purrr::map(wins_by_comp, BT_EM, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-    if (a > 1)  btfit_map <- purrr::map(wins_by_comp, BT_EM, a = a, b = b, maxit = maxit, epsilon = epsilon)     
+    # if (a > 1)  btfit_map <- purrr::map(wins_by_comp, BT_EM, a = a, b = b, maxit = maxit, epsilon = epsilon) 
+    if (a > 1)  btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
     # transpose
     btfit_map <- purrr::transpose(btfit_map)
     
@@ -131,6 +135,10 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
     
   ### Or on whole matrix
   else {
+    K <- nrow(wins)
+    if (a == 1) b <- 0
+    else if (is.null(b)) b <- a * K - 1
+    
     if(a == 1) fit <- BT_EM(wins, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
     if(a > 1) fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
     pi <- base::as.vector(fit$pi)
@@ -152,7 +160,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
 
   
   result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
-                 diagonal = diagonal, names_dimnames = names_dimnames)
+                 diagonal = diagonal, names_dimnames = names_dimnames, b = b)
   
   class(result) <- c("btfit", "list")
   
