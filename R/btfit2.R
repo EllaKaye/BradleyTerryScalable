@@ -88,13 +88,7 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   saved_diag <- Matrix::diag(wins)
   if(!is.null(rownames(wins))) names(saved_diag) <- rownames(wins)
   diag(wins) <- 0
-  
-  ### remove components of length 1
-  components <- purrr::discard(components, function(x) length(x) == 1)
       
-  ### get necessary dimensions and set up storage
-  n <- length(components)
-
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
   names_dimnames_list <- list(names_dimnames)
@@ -102,6 +96,9 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   
   ### By component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
+    
+    ### remove components of length 1
+    components <- purrr::discard(components, function(x) length(x) == 1)
     
     # get K and b
     K <- purrr::map_int(components, length)
@@ -130,6 +127,7 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
       purrr::map2(components, name_vec_function)      
     
     # check for convergence problems and provide warning
+    n <- length(components)
     if (sum(converged) != n) warning("The algorithm did not converge in at least one component. See the 'converged' element of the output for which.")    
   }
     
