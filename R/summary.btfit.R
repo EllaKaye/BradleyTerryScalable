@@ -36,6 +36,7 @@ summary.btfit <- function(object, ref = NULL, ...){
     
     if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
     
+    call <- object$call
     pi <- object$pi
     N <- object$N
     iters <- object$iters
@@ -56,9 +57,8 @@ summary.btfit <- function(object, ref = NULL, ...){
       dplyr::bind_rows() %>% 
       dplyr::mutate(component = comp_names) %>%
       dplyr::select(component, num_items:converged)
-
     
-    result <- list(item_summary = summary_result, component_summary = component_summary_result)
+    result <- list(call = call, item_summary = summary_result, component_summary = component_summary_result)
     
     class(result) <- c("summary.btfit", "list")
     result
