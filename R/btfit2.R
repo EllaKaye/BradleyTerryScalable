@@ -111,9 +111,10 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
     
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
     
-    if (a == 1) btfit_map <- purrr::map(wins_by_comp, BT_EM, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
+    #if (a == 1) btfit_map <- purrr::map(wins_by_comp, BT_EM, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
     # if (a > 1)  btfit_map <- purrr::map(wins_by_comp, BT_EM, a = a, b = b, maxit = maxit, epsilon = epsilon) 
-    if (a > 1)  btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
+    #if (a > 1)  btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
+    btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
     # transpose
     btfit_map <- purrr::transpose(btfit_map)
     
