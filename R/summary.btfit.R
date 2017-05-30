@@ -60,6 +60,6 @@ summary.btfit <- function(object, ref = NULL, ...){
     
     result <- list(call = call, item_summary = summary_result, component_summary = component_summary_result)
     
-    class(result) <- c("summary.btfit", "list")
+    #class(result) <- c("summary.btfit", "list")
     result
 }
