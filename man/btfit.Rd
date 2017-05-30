@@ -4,15 +4,13 @@
 \alias{btfit}
 \title{Fits the Bradley-Terry model}
 \usage{
-btfit(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL,
-  maxit = 10000, epsilon = 0.001)
+btfit(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000,
+  epsilon = 0.001)
 }
 \arguments{
 \item{btdata}{A \code{\link{btdata}} object}
 
 \item{a}{Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior (See Details).}
-
-\item{b}{The rate parameter for the Gamma prior (See Details). When \code{a = 1}, \code{btfit} returns the MLE and this argument is ignored. If \code{b = NULL} (the default) when \code{a > 1}, then \code{b} is set to \eqn{aK - 1}.}
 
 \item{MAP_by_component}{Logical. Only considered if a > 1. Then, if FALSE, the MAP estimate will be found on the full dataset. If TRUE, the MAP estimate will be found separately for each fully-connected component.}
 
@@ -44,7 +42,7 @@ The comparison graph, \eqn{G_W}, has the \eqn{K} players as the nodes and a dire
 
 Assuming that the comparison graph of the data is fully-connected, the MLE of the Bradley-Terry model can be found using the MM-algorithm (Hunter, 2004).
 
-If the comparison graph of the data is not fully-connected, there are two principled options for fitting the Bradley-Terry model. One is to find the MLE within each fully-connected component. The other is to find the Bayesian MAP estimate, as suggested by Caron & Doucet (2012), where a \eqn{Gamma(a,b)}  gamma prior is placed on each \eqn{\pi_i}, and the product of these is taken as a prior on \eqn{\pi}. The MAP estimate can then be found with an EM-algorithm. When \eqn{a = 1} and \eqn{b = 0}, the EM and MM-algorithms are eqivalent and the MAP estimate and MLE are identical.
+If the comparison graph of the data is not fully-connected, there are two principled options for fitting the Bradley-Terry model. One is to find the MLE within each fully-connected component. The other is to find the Bayesian MAP estimate, as suggested by Caron & Doucet (2012), where a \eqn{Gamma(a,b)}  gamma prior is placed on each \eqn{\pi_i}, and the product of these is taken as a prior on \eqn{\pi}. The MAP estimate can then be found with an EM-algorithm. When \eqn{a = 1} and \eqn{b = 0}, the EM and MM-algorithms are eqivalent and the MAP estimate and MLE are identical. The rate parameter of the Gamma prior, \eqn{b}, is not likelihood identifiable. When \eqn{a > 1}, \eqn{b} is set to \eqn{a *K - 1}, where K is the number of items in the component; this minimises the number of iterations needed for the algorithm to converge.
 
 The likelihood equations give
 

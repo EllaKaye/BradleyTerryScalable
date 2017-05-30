@@ -10,7 +10,7 @@
 #'
 #' Assuming that the comparison graph of the data is fully-connected, the MLE of the Bradley-Terry model can be found using the MM-algorithm (Hunter, 2004).
 #'
-#' If the comparison graph of the data is not fully-connected, there are two principled options for fitting the Bradley-Terry model. One is to find the MLE within each fully-connected component. The other is to find the Bayesian MAP estimate, as suggested by Caron & Doucet (2012), where a \eqn{Gamma(a,b)}  gamma prior is placed on each \eqn{\pi_i}, and the product of these is taken as a prior on \eqn{\pi}. The MAP estimate can then be found with an EM-algorithm. When \eqn{a = 1} and \eqn{b = 0}, the EM and MM-algorithms are eqivalent and the MAP estimate and MLE are identical.
+#' If the comparison graph of the data is not fully-connected, there are two principled options for fitting the Bradley-Terry model. One is to find the MLE within each fully-connected component. The other is to find the Bayesian MAP estimate, as suggested by Caron & Doucet (2012), where a \eqn{Gamma(a,b)}  gamma prior is placed on each \eqn{\pi_i}, and the product of these is taken as a prior on \eqn{\pi}. The MAP estimate can then be found with an EM-algorithm. When \eqn{a = 1} and \eqn{b = 0}, the EM and MM-algorithms are eqivalent and the MAP estimate and MLE are identical. The rate parameter of the Gamma prior, \eqn{b}, is not likelihood identifiable. When \eqn{a > 1}, \eqn{b} is set to \eqn{a *K - 1}, where K is the number of items in the component; this minimises the number of iterations needed for the algorithm to converge.
 #'
 #' The likelihood equations give
 #'
@@ -23,7 +23,6 @@
 #'for all \eqn{i}.
 #'
 #' @param a Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior (See Details).
-#' @param b The rate parameter for the Gamma prior (See Details). When \code{a = 1}, \code{btfit} returns the MLE and this argument is ignored. If \code{b = NULL} (the default) when \code{a > 1}, then \code{b} is set to \eqn{aK - 1}.
 #' @param MAP_by_component Logical. Only considered if a > 1. Then, if FALSE, the MAP estimate will be found on the full dataset. If TRUE, the MAP estimate will be found separately for each fully-connected component.
 #' @param maxit The maximum number of iterations for the algorithm. If returning \code{pi} by component, this will be the maximum number of iterations for each component.
 #' @param epsilon Determines when the algorithm is deemed to have converged. (See Details.)
@@ -45,7 +44,7 @@
 #' @export
 
 #' @export
-btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
+btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
   
   call <- match.call()
   
@@ -80,10 +79,10 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
   if (length(dim(a)) >= 2) stop("a must be a single value")
   if (length(a) > 1) stop("a must be a single value")
   if (a < 1) stop("a must be >= 1")
-  if ((a > 1) && (!is.null(b))) {
-    if (!is.numeric(b)) stop("b must be strictly positive or NULL when a > 1")
-    if ((b <= 0)) stop("b must be strictly positive or NULL when a > 1")
-  } 
+  #if ((a > 1) && (!is.null(b))) {
+  #  if (!is.numeric(b)) stop("b must be strictly positive or NULL when a > 1")
+  #  if ((b <= 0)) stop("b must be strictly positive or NULL when a > 1")
+  #} 
   
   ### Save diagonal (for fitted values) then set diagonal of matrix to zero
   saved_diag <- Matrix::diag(wins)
@@ -104,10 +103,10 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
   ### By component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
     
-    # get b/K
+    # get K and b
     K <- purrr::map_int(components, length)
     if (a == 1) b <- 0
-    else if (is.null(b)) b <- a * K - 1
+    else b <- a * K - 1
     
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
     
@@ -138,10 +137,10 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
   else {
     K <- nrow(wins)
     if (a == 1) b <- 0
-    else if (is.null(b)) b <- a * K - 1
+    else b <- a * K - 1
     
-    if(a == 1) fit <- BT_EM(wins, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-    if(a > 1) fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
+    fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
+    #if(a > 1) fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
     pi <- base::as.vector(fit$pi)
     names(pi) <- rownames(wins)
     pi <- list(pi)
@@ -161,7 +160,7 @@ btfit <- function(btdata, a, b = NULL, MAP_by_component = FALSE, subset = NULL, 
 
   
   result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
-                 diagonal = diagonal, names_dimnames = names_dimnames, b = b)
+                 diagonal = diagonal, names_dimnames = names_dimnames)
   
   class(result) <- c("btfit", "list")
   
