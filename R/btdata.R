@@ -47,6 +47,7 @@ btdata <- function(x, return_graph = FALSE) {
     if(is.matrix(x)) {if (!is.numeric(x)) stop("If x is a matrix, all elements must be numeric")}
     if(methods::is(x, "Matrix")) {if (!is.numeric(as.vector(x))) stop("If x is a matrix, all elements must be numeric")}
     if (any(x < 0)) stop("If x is a matrix, all elements must be non-negative")
+    if(!identical(rownames(x), colnames(x))) stop("If x is a matrix, rownames and colnames of x should be the same")
     
     # ensure wins is a dgCMatrix
     if (is.matrix(x)) wins <- Matrix::Matrix(x, sparse = TRUE)
