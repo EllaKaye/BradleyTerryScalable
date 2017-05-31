@@ -5,7 +5,8 @@ item_summary_vec <- function(pi, N, ref = NULL){
     se <- sqrt(diag(vc))
     if (!is.null(names(lambda))) item <- names(lambda)
     else item <- 1:length(lambda)
-    result <- dplyr::data_frame(item = item, estimate = lambda, SE = se)
+    result <- dplyr::data_frame(item = item, estimate = lambda, SE = se) %>%
+      arrange(desc(estimate))
     class(result) <- c("tbl_df", "tbl", "data.frame")
     result
 }
