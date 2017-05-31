@@ -7,8 +7,8 @@
 #' @param nsim  a scalar integer, the number of datasets to be generated.
 #' @param seed  an object specifying if and how the random number generator should be initialized (‘seeded’).  
 #' For details see \code{\link{simulate}}.
-#' @param result.class a character vector specifying whether the generated datasets should be of class 
-#' "sparseMatrix" or of class "btfit".  The first match among those alternatives is used. 
+#' @param result_class a character vector specifying whether the generated datasets should be of class 
+#' "sparseMatrix" or of class "btdata".  The first match among those alternatives is used. 
 #' @return a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
 #' same dimensions as \code{N}.
 #' @author David Firth
@@ -82,17 +82,21 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
 }
 
 #' @export
-simulate.btfit <- function(object, nsim = 1, seed = NULL, result.class = c("sparseMatrix", "btdata"), ...){
+simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
     
     ##  The S3 method to apply to btfit model objects -- a wrapper for simulate_BT
     
     if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
     
     pi <- object$pi
-    if (is.list(pi)) stop("simulate.btfit cannot be used for multi-component data/models")
+    if (length(pi) != 1) stop("simulate.btfit cannot be used for multi-component data/models")
+    pi <- pi[[1]]
     
-    N <- object$N
+    N <- object$N[[1]]
     
-    simulate_BT(pi, N, nsim = nsim, seed = seed, result.class = result.class) 
+    result_class <- match.arg(result_class)
+    
+    simulate_BT(pi, N, nsim = nsim, seed = seed, result_class = result_class) 
     
 }
+

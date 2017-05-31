@@ -19,8 +19,8 @@ be numeric representations of non-negative integers.}
 \item{seed}{an object specifying if and how the random number generator should be initialized (‘seeded’).
 For details see \code{\link{simulate}}.}
 
-\item{result.class}{a character vector specifying whether the generated datasets should be of class 
-"sparseMatrix" or of class "btfit".  The first match among those alternatives is used.}
+\item{result_class}{a character vector specifying whether the generated datasets should be of class 
+"sparseMatrix" or of class "btdata".  The first match among those alternatives is used.}
 }
 \value{
 a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
