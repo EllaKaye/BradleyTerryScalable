@@ -104,7 +104,7 @@ btprob_old <- function(object, as_df = FALSE) {
 #'
 #' @param object An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.
 #' @param as_df Logical scalar, determining class of output. If \code{TRUE}, the function returns a data frame. If \code{FALSE} (the default), the function returns a matrix (or list of matrices).
-#'
+#'@param subset A character vector of names of components
 #' @return If \code{as_df = FALSE}, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry probability \eqn{p_{ij}}, or, if \eqn{G_W} is not fully-connected and \code{\link{btfit}} has been run with \code{a = 1}, a list of such matrices for each fully-connected component of \eqn{G_W}. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is \code{item1}, the second column is \code{item2}, the third column is the Bradley-Terry probability that item 1 beats item 2 and the fourth column is the Bradley-Terry probability that item 2 beats item 1, and the fifth column is the component that the two items are in. If the original \code{btdata$wins} matrix has named dimnames, these will be the \code{colnames} for columns one and two. See Details.
 #' @references Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block designs: 1. The method of paired comparisons. \emph{Biometrika}, \strong{39}(3/4), 324-345.
 #' @references Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
@@ -125,12 +125,20 @@ btprob_old <- function(object, as_df = FALSE) {
 #' btprob(fit2, as_df = TRUE)
 #' btprob(fit3)
 #' @export
-btprob <- function(object, as_df = FALSE) {
+btprob <- function(object, as_df = FALSE, subset = NULL) {
   
   if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
   
   pi <- object$pi
   components <- purrr::map(pi, names)
+  
+  # check and get subset
+  if (!is.null(subset)) {
+    if (!is.character(subset)) stop("subset should be a character vector")
+    if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
+    pi <- pi[subset]
+    components <- components[subset]
+  }
 
   # set up names of dimnames  
   names_dimnames <- object$names_dimnames  

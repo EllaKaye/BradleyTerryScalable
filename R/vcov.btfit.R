@@ -40,6 +40,14 @@ vcov.btfit <- function(object, ref = NULL, ...){
     pi <- object$pi
     N <- object$N
     
+    # check and get subset
+    if (!is.null(subset)) {
+      if (!is.character(subset)) stop("subset should be a character vector")
+      if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
+      pi <- pi[subset]
+      N <- N[subset]
+    }
+    
     # check the value of ref
     ref <- ref_check(ref, pi)
     
