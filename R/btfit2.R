@@ -65,6 +65,9 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   
   wins <- btdata$wins
   components <- btdata$components
+  n <- length(components)
+  
+  if(!identical(rownames(wins), colnames(wins))) stop("The wins matrix should have identical row and column names")
 
   
   ### Check there's enough data to fit the model
