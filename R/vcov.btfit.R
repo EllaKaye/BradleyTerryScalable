@@ -39,6 +39,8 @@ vcov.btfit <- function(object, ref = NULL, subset = NULL, ...){
   
     pi <- object$pi
     N <- object$N
+    names_dimnames <- object$names_dimnames  
+    names_dimnames_list <- list(names_dimnames)
     
     # check and get subset
     if (!is.null(subset)) {
@@ -52,7 +54,8 @@ vcov.btfit <- function(object, ref = NULL, subset = NULL, ...){
     ref <- ref_check(ref, pi)
     
     # iterate over components
-    result <- purrr::map2(pi, N, vcov_vec, ref = ref)
+    result <- purrr::map2(pi, N, vcov_vec, ref = ref) %>%
+      purrr::map2(names_dimnames_list, name_dimnames_function)
     
     if (length(pi) == 1) {
       if(names(pi) == "full_dataset") {
