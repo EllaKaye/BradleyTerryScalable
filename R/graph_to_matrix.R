@@ -22,8 +22,12 @@ graph_to_matrix <- function(g) {
 
   if(!igraph::is.directed(g))  stop("g must be a directed igraph object")
 
-  if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight")
-  else W <- igraph::as_adjacency_matrix(g, sparse = TRUE)
+  if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight", names = TRUE)
+  else W <- igraph::as_adjacency_matrix(g, sparse = TRUE, names = TRUE)
+  
+  #if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight")
+  #else W <- igraph::as_adjacency_matrix(g, sparse = TRUE)
+  
 
   return(W)
 
