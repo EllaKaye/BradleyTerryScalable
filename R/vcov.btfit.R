@@ -33,7 +33,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
 }
 
 #' @export
-vcov.btfit <- function(object, ref = NULL, ...){
+vcov.btfit <- function(object, ref = NULL, subset = NULL, ...){
   
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
   

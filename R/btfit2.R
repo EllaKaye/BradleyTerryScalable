@@ -95,7 +95,7 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
   names_dimnames_list <- list(names_dimnames)
-  names_dimnames_rep <- rep(names_dimnames_list, n)
+  #names_dimnames_rep <- rep(names_dimnames_list, n)
   
   ### By component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {

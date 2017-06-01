@@ -143,7 +143,7 @@ btprob <- function(object, as_df = FALSE, subset = NULL) {
   # set up names of dimnames  
   names_dimnames <- object$names_dimnames  
   names_dimnames_list <- list(names_dimnames)
-  names_dimnames_rep <- rep(names_dimnames_list, length(pi))
+  #names_dimnames_rep <- rep(names_dimnames_list, length(pi))
   
   p <- purrr::map(pi, btprob_vec) %>%
     purrr::map2(components, name_matrix_function) %>%
