@@ -12,14 +12,6 @@
 #' @return a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
 #' same dimensions as \code{N}.
 #' @author David Firth
-#' @examples
-#' library(BradleyTerry2)
-#' data(citations)
-#' cit.btdata <- btdata(citations)
-#' citmodel <- btfit(cit.btdata, a = 1)
-#' simulate(citmodel, nsim = 3, seed = 1987)
-#' @export
-
 simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata")){
 
   ## A simulate function that takes a vector pi and a matrix N as its arguments
@@ -81,7 +73,6 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
   return(result)
 }
 
-#' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
     
     ##  The S3 method to apply to btfit model objects -- a wrapper for simulate_BT

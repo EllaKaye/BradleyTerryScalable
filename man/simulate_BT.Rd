@@ -29,13 +29,6 @@ same dimensions as \code{N}.
 \description{
 Simulate data from a specified Bradley-Terry model
 }
-\examples{
-library(BradleyTerry2)
-data(citations)
-cit.btdata <- btdata(citations)
-citmodel <- btfit(cit.btdata, a = 1)
-simulate(citmodel, nsim = 3, seed = 1987)
-}
 \author{
 David Firth
 }

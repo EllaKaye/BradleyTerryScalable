@@ -10,12 +10,12 @@ as_df_fitted <- function(sM, N) {
   if (!is.null(rownames(sM)) & !is.null(colnames(sM))) {
     #df <- data.frame(winner = rownames(sM)[sM@i + 1], loser = rownames(sM)[sM@j + 1], fit = sM@x)
 
-    df <- data_frame(item1 = rownames(sM)[sM@i + 1], item2 = rownames(sM)[sM@j + 1],
+    df <- dplyr::tibble(item1 = rownames(sM)[sM@i + 1], item2 = rownames(sM)[sM@j + 1],
                      fit1 = sM@x, fit2 = N@x - sM@x)
   }
 
   else {
-    df <- data_frame(item1 = sM@i + 1, item2 = sM@j + 1, fit1 = sM@x, fit2 = N@x - sM@x)
+    df <- dplyr::tibble(item1 = sM@i + 1, item2 = sM@j + 1, fit1 = sM@x, fit2 = N@x - sM@x)
 
   }
 
@@ -176,18 +176,27 @@ fitted.btfit <- function(object, as_df = FALSE, subset = NULL, ...){
   names_dimnames_list <- list(names_dimnames)
   #names_dimnames_rep <- rep(names_dimnames_list, length(pi))
   
-  out <- purrr::map2(pi, N, fitted_vec) %>%
-    purrr::map2(components, name_matrix_function) %>%
-    purrr::map2(names_dimnames_list, name_dimnames_function) %>%
-    purrr::map2(diagonal, my_diag)
+  out <- purrr::map2(pi, N, fitted_vec)
+  out <- purrr::map2(out, components, name_matrix_function)
+  out <- purrr::map2(out, names_dimnames_list, name_dimnames_function)
+  out <- purrr::map2(out, diagonal, my_diag)
   
   if (as_df) {
     comp_names <- names(pi)
     
-    out <- purrr::map2(out, N, as_df_fitted) %>%
-      purrr::map(df_col_rename_func, names_dimnames) %>%
-      purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
-      dplyr::bind_rows()
+    out <- purrr::map2(out, N, as_df_fitted)
+    
+    reps <- purrr::map_int(out, nrow)
+    
+    out <- purrr::map(out, df_col_rename_func, names_dimnames)
+      #purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
+    out <- dplyr::bind_rows(out)
+    
+    
+    comps_for_df <- purrr::map2(comp_names, reps, ~rep(.x, each = .y))
+    comps_for_df <- unlist(comps_for_df)
+    
+    out <- dplyr::mutate(out, component = comps_for_df)
   }
     
     if (length(pi) == 1 & !as_df) {

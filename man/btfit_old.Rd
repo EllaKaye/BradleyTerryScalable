@@ -55,18 +55,6 @@ for \eqn{i = 1, \ldots, K}. For the algorithm to have converged, we \eqn{\pi} to
 
 for all \eqn{i}.
 }
-\examples{
-W_connected <- Matrix::rsparsematrix(10, 10 , 0.5, rand.x = function(n) rbinom(n, 10, 0.5))
-i <- c(3,1,5,4,2,5,5,7,8,5,6,8,7)
-j <- c(1,2,2,3,4,4,6,6,6,7,7,7,8)
-dimnames = list(letters[1:8], letters[1:8])
-W_not_connected <-  Matrix::sparseMatrix(i, j, x = 1:13, dims = c(8,8), dimnames = dimnames)
-W_connected_data <- btdata(W_connected)
-W_not_connected_data <- btdata(W_not_connected)
-fit1 <- btfit(W_connected_data, 1)
-fit2 <- btfit(W_not_connected_data, 1)
-fit3 <- btfit(W_not_connected_data, 3)
-}
 \references{
 Caron, F. and Doucet, A. (2012) Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
 

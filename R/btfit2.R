@@ -118,16 +118,16 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
     btfit_map <- purrr::transpose(btfit_map)
     
     # extract elements and make sure things are properly named
-    pi <- purrr::map(btfit_map$pi, as.vector) %>%
-      purrr::map2(components, name_vec_function)
-    N <- purrr::map2(btfit_map$N, components, name_matrix_function) %>%
-      purrr::map2(names_dimnames_list, name_dimnames_function)
+    pi <- purrr::map(btfit_map$pi, as.vector) 
+    pi <- purrr::map2(pi, components, name_vec_function)
+    N <- purrr::map2(btfit_map$N, components, name_matrix_function)
+    N <- purrr::map2(N, names_dimnames_list, name_dimnames_function)
     iters <- unlist(btfit_map$iters)
     converged <- unlist(btfit_map$converged)
 
     # diagonal
-    diagonal <- purrr::map(components, ~ saved_diag[.x]) %>%
-      purrr::map2(components, name_vec_function)      
+    diagonal <- purrr::map(components, ~ saved_diag[.x]) 
+    diagonal <- purrr::map2(diagonal, components, name_vec_function)      
     
     # check for convergence problems and provide warning
     n <- length(components)
