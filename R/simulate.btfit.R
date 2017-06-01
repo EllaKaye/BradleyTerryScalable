@@ -56,7 +56,7 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
   N <- N[lower, 3]             ## all of the binomial totals
   number_of_binomials <- length(N) 
   probs <- btprob_vec(pi)
-  probs <- probs[lower.tri(probs)]
+  probs <- suppressMessages(probs[lower.tri(probs)])
   
   # simulate the new datasets
   
