@@ -13,8 +13,12 @@ coef_vec <- function(pi, ref = NULL, ...){
   #} else stop("Invalid value for the 'ref' argument")
 }
 
+as_df_coef <- function(vec) {
+  dplyr::tibble(item = names(vec), coef = unname(vec))
+}
+
 #' @export
-coef.btfit <- function(object, ref = NULL, subset = NULL, ...) {
+coef.btfit <- function(object, ref = NULL, subset = NULL, as_df = FALSE, ...) {
     pi <- object$pi
     
     # check and get subset
@@ -30,7 +34,17 @@ coef.btfit <- function(object, ref = NULL, subset = NULL, ...) {
     # iterate over components
     result <- purrr::map(pi, coef_vec, ref = ref)
     
-    if (length(pi) == 1) {
+    # put into data frame, if requested
+    if (as_df) {
+      
+      comp_names <- names(pi)
+
+      result <- purrr::map(result, as_df_coef) %>%
+        purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
+        dplyr::bind_rows()        
+    }
+    
+    if (length(pi) == 1 & !as_df) {
       if(names(pi) == "full_dataset") {
         result <- unlist(result)
         names(result) <- names(pi[[1]])
