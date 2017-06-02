@@ -4,6 +4,14 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
+
+//' Fit the Bradley-Terry model using the EM or MM algorithm
+//' @param W a K*K square matrix of class "dgCMatrix"
+//' @param a the shape paramater of the gamma prior 
+//' @param b the rate parameter of the gamma prior
+//' @param maxit the maximum number of interations
+//' @param epsilon controls the convergence criteria
+//' @return A list containing a K*1 matrix with the pi estimate, the N matrix, the number of iterations, and whether the algorithm converged.
 //' @export
 // [[Rcpp::export]]
 List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {

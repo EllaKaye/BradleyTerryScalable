@@ -16,6 +16,10 @@ as_df_coef <- function(vec) {
   dplyr::tibble(item = names(vec), coef = unname(vec))
 }
 
+#' Extract coefficients of a 'btfit' object
+#' @inheritParams btprob
+#' @inheritParams summary.btfit
+#' @return  a numeric vector of estimated coefficients, or a list of such vectors if \code{object} has more than one component. 
 #' @export
 coef.btfit <- function(object, ref = NULL, subset = NULL, as_df = TRUE, ...) {
     pi <- object$pi
