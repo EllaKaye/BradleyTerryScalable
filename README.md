@@ -1,6 +1,6 @@
 # BradleyTerryScalable
 
-[![Travis-CI Build Status](https://travis-ci.org/NA/NA.svg?branch=master)](https://travis-ci.org/NA/NA)
+[![Travis-CI Build Status](https://travis-ci.org/EllaKaye/BradleyTerryScalable.svg?branch=master)](https://travis-ci.org/EllaKaye/BradleyTerryScalable)
 
 An R package for fitting the Bradley-Terry model to pair-comparison data, to enable statistically principled ranking of a potentially large number of objects.
 
