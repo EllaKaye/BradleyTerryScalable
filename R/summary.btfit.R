@@ -74,6 +74,7 @@ summary.btfit <- function(object, subset = NULL, ref = NULL,  ...){
     comps_for_df <- unlist(comps_for_df)
     
     item_summary_result <- dplyr::mutate(item_summary_result, component = comps_for_df)
+    item_summary_result <- dplyr::select(item_summary_result, component, item:SE)
     
     
     # component summary

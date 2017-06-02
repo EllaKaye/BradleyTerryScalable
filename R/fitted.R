@@ -112,6 +112,7 @@ fitted.btfit <- function(object, subset = NULL, as_df = TRUE, ...){
     comps_for_df <- unlist(comps_for_df)
     
     out <- dplyr::mutate(out, component = comps_for_df)
+    out <- dplyr::select(out, component, 1:4)
   }
     
     if (length(pi) == 1 & !as_df) {

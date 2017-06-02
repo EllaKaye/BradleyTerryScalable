@@ -97,6 +97,7 @@ btprob <- function(object, subset = NULL, as_df = TRUE) {
     comps_for_df <- unlist(comps_for_df)
     
     p <- dplyr::mutate(p, component = comps_for_df)
+    p <- dplyr::select(p, component, 1:4)
   }
   
   if (length(pi) == 1 & !as_df) {
