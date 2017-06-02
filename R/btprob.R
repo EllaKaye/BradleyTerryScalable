@@ -1,4 +1,3 @@
-#' @export
 as_df_btprob <- function(m) {
   
   # convert to matrix
@@ -11,7 +10,12 @@ as_df_btprob <- function(m) {
   }
 
   m[lower.tri(m, diag = TRUE)] <- NA
-    
+  
+  # hack to avoid NOTES on global variables
+  value <- NULL
+  prob1wins <- NULL
+  
+  # make the data frame  
   out <- dplyr::as_data_frame(reshape2::melt(m, na.rm = TRUE)) 
   out <- dplyr::mutate_if(out, is.factor, as.character)
   out <- dplyr::rename(out, "prob1wins" = value)

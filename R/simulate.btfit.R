@@ -12,6 +12,7 @@
 #' @return a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
 #' same dimensions as \code{N}.
 #' @author David Firth
+#' @export
 simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata")){
 
   ## A simulate function that takes a vector pi and a matrix N as its arguments
@@ -38,7 +39,7 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
   result_class <- match.arg(result_class)
   if (!(result_class %in% c("sparseMatrix", "btdata"))) stop("invalid value of result.class")
     
-  template <- N <- as(N, "dgCMatrix")  ## template is the matrix container for a single sample
+  template <- N <- methods::as(N, "dgCMatrix")  ## template is the matrix container for a single sample
   
   N <- as.matrix(Matrix::summary(N))
   i <- N[, "i"]
@@ -52,7 +53,7 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
   
   # simulate the new datasets
   
-  result <- matrix(as.numeric(rbinom(nsim * number_of_binomials, N, probs)), 
+  result <- matrix(as.numeric(stats::rbinom(nsim * number_of_binomials, N, probs)), 
                           number_of_binomials, nsim)
   result <- split(result, col(result))  ## to get a list, rather than a matrix
   names(result) <- paste("sim", seq_len(nsim), sep = "_")
@@ -73,6 +74,7 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
   return(result)
 }
 
+#' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
     
     ##  The S3 method to apply to btfit model objects -- a wrapper for simulate_BT

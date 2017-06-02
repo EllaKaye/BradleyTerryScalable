@@ -3,5 +3,6 @@
 #' @docType package
 #' @name BradleyTerryScalable
 #' @importFrom Rcpp evalCpp
+#' @importFrom stats simulate
 #' @useDynLib BradleyTerryScalable
 NULL
