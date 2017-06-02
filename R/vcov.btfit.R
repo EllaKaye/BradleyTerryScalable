@@ -36,7 +36,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
 #' @inheritParams summary.btfit
 #' @return  A square numeric matrix, which is a non-full-rank variance-covariance matrix for the estimates in \code{coef(object, subset = subset, ref = ref)}; or a list of such matrices if \code{object} has more than one component.
 #' @export
-vcov.btfit <- function(object, ref = NULL, subset = NULL, ...){
+vcov.btfit <- function(object, subset = NULL, ref = NULL, ...){
   
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
   

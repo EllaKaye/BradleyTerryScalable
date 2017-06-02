@@ -4,14 +4,14 @@
 \alias{coef.btfit}
 \title{Extract coefficients of a 'btfit' object}
 \usage{
-\method{coef}{btfit}(object, ref = NULL, subset = NULL, as_df = TRUE, ...)
+\method{coef}{btfit}(object, subset = NULL, ref = NULL, as_df = TRUE, ...)
 }
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
 
-\item{ref}{the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
-
 \item{subset}{A character vector of names of components (i.e. a subset of names(object$pi))}
+
+\item{ref}{the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
 
 \item{as_df}{Logical scalar, determining class of output. If \code{TRUE}, the function returns a data frame. If \code{FALSE} (the default), the function returns a matrix (or list of matrices).}
 

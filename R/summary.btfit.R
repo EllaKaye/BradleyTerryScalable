@@ -33,7 +33,7 @@ component_summary_vec <- function(pi, iters, converged) {
 #' \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
 #' 
 #' @export
-summary.btfit <- function(object, ref = NULL, subset = NULL, ...){
+summary.btfit <- function(object, subset = NULL, ref = NULL,  ...){
     
     if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
     

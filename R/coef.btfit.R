@@ -21,7 +21,7 @@ as_df_coef <- function(vec) {
 #' @inheritParams summary.btfit
 #' @return  a numeric vector of estimated coefficients, or a list of such vectors if \code{object} has more than one component. 
 #' @export
-coef.btfit <- function(object, ref = NULL, subset = NULL, as_df = TRUE, ...) {
+coef.btfit <- function(object, subset = NULL, ref = NULL,  as_df = TRUE, ...) {
     pi <- object$pi
     
     # check and get subset
