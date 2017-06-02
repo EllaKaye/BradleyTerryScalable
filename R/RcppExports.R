@@ -6,12 +6,10 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call('BradleyTerryScalable_BT_EM', PACKAGE = 'BradleyTerryScalable', W, a, b, maxit, epsilon)
 }
 
-#' @export
 btprob_vec <- function(pi) {
     .Call('BradleyTerryScalable_btprob_vec', PACKAGE = 'BradleyTerryScalable', pi)
 }
 
-#' @export
 fitted_vec <- function(pi, N) {
     .Call('BradleyTerryScalable_fitted_vec', PACKAGE = 'BradleyTerryScalable', pi, N)
 }

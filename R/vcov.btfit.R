@@ -1,4 +1,3 @@
-#' @export
 vcov_vec <- function(pi, N, ref = NULL) {
   K <- length(pi)
   wmat <- fitted_vec(pi, N)
@@ -32,6 +31,9 @@ vcov_vec <- function(pi, N, ref = NULL) {
   result
 }
 
+#' Calculate variance-covariance matrix for a btfit object
+#' @inheritParams btprob
+#' @inheritParams summary.btfit
 #' @export
 vcov.btfit <- function(object, ref = NULL, subset = NULL, ...){
   

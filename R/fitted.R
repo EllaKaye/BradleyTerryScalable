@@ -1,4 +1,3 @@
-#' @export
 as_df_fitted <- function(sM, N) {
 
   # get upper triangle

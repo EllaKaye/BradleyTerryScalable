@@ -4,7 +4,6 @@ using namespace arma;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//' @export
 // [[Rcpp::export]]
 arma::sp_mat btprob_vec(arma::vec pi) {
 
@@ -19,7 +18,6 @@ arma::sp_mat btprob_vec(arma::vec pi) {
   return outer_sp;
 }
 
-//' @export
 // [[Rcpp::export]]
 arma::sp_mat fitted_vec(arma::vec pi, arma::sp_mat N) {
 

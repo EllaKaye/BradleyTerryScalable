@@ -3,7 +3,7 @@
 #' Subset a btdata object by selecting components from it.
 #' 
 #' @param btdata A \code{\link{btdata}} object
-#' @param subset A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function, or a logical vector of the same length as the number of components (i.e. of length \code{length(btdata$components)}).
+#' @param subset A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function (that takes a component as its argument), or a logical vector of the same length as the number of components).
 #' @inheritParams btdata
 #' @return A \code{\link{btdata}} object, which is a list containing:
 #' \item{wins}{A square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}.}

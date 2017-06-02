@@ -1,4 +1,3 @@
-#' @export
 item_summary_vec <- function(pi, N, ref = NULL){
     lambda <- coef_vec(pi, ref)
     vc <- vcov_vec(pi, N, ref)
@@ -11,7 +10,6 @@ item_summary_vec <- function(pi, N, ref = NULL){
     result
 }
 
-#' @export
 component_summary_vec <- function(pi, iters, converged) {
   
   num_items <- length(pi)
@@ -27,13 +25,15 @@ component_summary_vec <- function(pi, iters, converged) {
 #' \code{summary} method for class "btfit"
 #' 
 #' @inheritParams btprob 
+#' @param ref the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.
+#' @param ... other arguments
 #' 
 #' @return An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
 #' \item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in.}
 #' \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
 #' 
 #' @export
-summary.btfit <- function(object, ref = NULL, ...){
+summary.btfit <- function(object, ref = NULL, subset = NULL, ...){
     
     if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
     

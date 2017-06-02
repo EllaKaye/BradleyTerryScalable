@@ -9,7 +9,7 @@ select_components(btdata, subset, return_graph = FALSE)
 \arguments{
 \item{btdata}{A \code{\link{btdata}} object}
 
-\item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function, or a logical vector of the same length as the number of components (i.e. of length \code{length(btdata$components)}).}
+\item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function (that takes a component as its argument), or a logical vector of the same length as the number of components).}
 
 \item{return_graph}{Logical. If TRUE, an igraph object representing the comparison graph will be returned.}
 }

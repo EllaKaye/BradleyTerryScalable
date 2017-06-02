@@ -14,7 +14,7 @@ btfit(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000,
 
 \item{MAP_by_component}{Logical. Only considered if a > 1. Then, if FALSE, the MAP estimate will be found on the full dataset. If TRUE, the MAP estimate will be found separately for each fully-connected component.}
 
-\item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function, or a logical vector of the same length as the number of components (i.e. of length \code{length(btdata$components)}).}
+\item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function (that takes a component as its argument), or a logical vector of the same length as the number of components).}
 
 \item{maxit}{The maximum number of iterations for the algorithm. If returning \code{pi} by component, this will be the maximum number of iterations for each component.}
 

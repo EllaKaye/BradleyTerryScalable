@@ -39,7 +39,6 @@ df_col_rename_func <- function(df, names_dimnames) {
 
 # checks that the value for ref if valid - will stop or default to ref = NULL
 # used in vcov.btfit, coef.btfit and summary.btfit
-#' @export
 ref_check <- function(ref, pi) {
   if (!is.null(ref)) {
     if (is.character(ref)) {
@@ -62,5 +61,29 @@ ref_check <- function(ref, pi) {
   ref
 }
 
+subset_in_btfit_methods_check <- function(subset, pi) {
+  
+  # check that subset is of the correct form
+  if (!is.function(subset) & !is.character(subset) & !(is.logical(subset))) stop(
+    "subset is not of the correct form - see the documentation for more details."
+  )
+  
+  # check on character condition
+  if(is.character(subset)) {
+    if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
+  }
+  
+  # check on logical condition
+  if(is.logical(subset)) {
+    if (length(subset) != length(pi)) stop("length(subset) is not equal to the number of components")
+  }
+  
+  #if(is.function(subset)) {
+  #  test_of_function <- subset(components[[1]])
+  #  if (!is.logical(test_of_function)) stop("if subset is a function, it must return either TRUE or FALSE")
+  #  if (length(test_of_function) > 1) stop("if subset is a function, it must return either TRUE or FALSE")
+  #}
+  
+}
 
 

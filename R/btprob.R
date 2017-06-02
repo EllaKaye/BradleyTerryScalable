@@ -36,7 +36,7 @@ as_df_btprob <- function(m) {
 #'
 #' @param object An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.
 #' @param as_df Logical scalar, determining class of output. If \code{TRUE}, the function returns a data frame. If \code{FALSE} (the default), the function returns a matrix (or list of matrices).
-#'@param subset A character vector of names of components
+#'@param subset A character vector of names of components (i.e. a subset of names(object$pi))
 #' @return If \code{as_df = FALSE}, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry probability \eqn{p_{ij}}, or, if \eqn{G_W} is not fully-connected and \code{\link{btfit}} has been run with \code{a = 1}, a list of such matrices for each fully-connected component of \eqn{G_W}. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is \code{item1}, the second column is \code{item2}, the third column is the Bradley-Terry probability that item 1 beats item 2 and the fourth column is the Bradley-Terry probability that item 2 beats item 1, and the fifth column is the component that the two items are in. If the original \code{btdata$wins} matrix has named dimnames, these will be the \code{colnames} for columns one and two. See Details.
 #' @references Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block designs: 1. The method of paired comparisons. \emph{Biometrika}, \strong{39}(3/4), 324-345.
 #' @references Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
@@ -68,8 +68,18 @@ btprob <- function(object, as_df = FALSE, subset = NULL) {
   if (!is.null(subset)) {
     if (!is.character(subset)) stop("subset should be a character vector")
     if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
-    pi <- pi[subset]
-    components <- components[subset]
+    
+    #subset_in_btfit_methods_check(subset, pi)
+    
+    #if (is.character(subset)) {
+      pi <- pi[subset]
+      components <- components[subset]
+    #}
+    
+    #else {
+    #  purrr::keep(pi, subset)
+    #  purrr::keep(components, subset)
+    #}
   }
 
   # set up names of dimnames  

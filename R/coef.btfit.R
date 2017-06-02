@@ -1,4 +1,3 @@
-#' @export
 coef_vec <- function(pi, ref = NULL, ...){
   coefs <- log(pi)
   ncoefs <- length(coefs)
