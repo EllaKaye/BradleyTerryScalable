@@ -39,9 +39,17 @@ coef.btfit <- function(object, ref = NULL, subset = NULL, as_df = FALSE, ...) {
       
       comp_names <- names(pi)
 
-      result <- purrr::map(result, as_df_coef) %>%
-        purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
-        dplyr::bind_rows()        
+      result <- purrr::map(result, as_df_coef)
+      
+      reps <- purrr::map_int(result, nrow)
+      
+      result <- dplyr::bind_rows(result)        
+        
+      comps_for_df <- purrr::map2(comp_names, reps, ~rep(.x, each = .y))
+      comps_for_df <- unlist(comps_for_df)
+        
+      result <- dplyr::mutate(result, component = comps_for_df)
+        
     }
     
     if (length(pi) == 1 & !as_df) {
