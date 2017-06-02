@@ -4,7 +4,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
   wmat <- fitted_vec(pi, N)
   pmat <- btprob_vec(pi)
   result <- wmat * Matrix::t(pmat)
-  diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix:::diag(wmat)
+  diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix::diag(wmat)
   result <- MASS::ginv(as.matrix(((diag(Matrix::rowSums(wmat)) - result))))
   
   ##  That's the essence of the calculation all done.  We have computed the Moore-Penrose generalized
@@ -54,8 +54,8 @@ vcov.btfit <- function(object, ref = NULL, subset = NULL, ...){
     ref <- ref_check(ref, pi)
     
     # iterate over components
-    result <- purrr::map2(pi, N, vcov_vec, ref = ref) %>%
-      purrr::map2(names_dimnames_list, name_dimnames_function)
+    result <- purrr::map2(pi, N, vcov_vec, ref = ref)
+    result <- purrr::map2(result, names_dimnames_list, name_dimnames_function)
     
     if (length(pi) == 1) {
       if(names(pi) == "full_dataset") {

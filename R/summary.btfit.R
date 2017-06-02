@@ -5,8 +5,8 @@ item_summary_vec <- function(pi, N, ref = NULL){
     se <- sqrt(diag(vc))
     if (!is.null(names(lambda))) item <- names(lambda)
     else item <- 1:length(lambda)
-    result <- dplyr::data_frame(item = item, estimate = lambda, SE = se) %>%
-      arrange(desc(estimate))
+    result <- dplyr::data_frame(item = item, estimate = lambda, SE = se)
+    result <- dplyr::arrange(result, dplyr::desc(estimate))
     class(result) <- c("tbl_df", "tbl", "data.frame")
     result
 }
@@ -46,20 +46,33 @@ summary.btfit <- function(object, ref = NULL, ...){
         
     ## check ref
     ref <- ref_check(ref, pi)
-        
+    
+    
+    # hack to avoid CRAN notes 
+    component <- NULL
+    
+    # item summary
     summary_by_comp <- purrr::map2(pi, N, item_summary_vec, ref = ref)
-      
+    
     comp_names <- names(pi)
-    summary_result <- purrr::map2(summary_by_comp, comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
-        dplyr::bind_rows()
+    
+    reps <- purrr::map_int(summary_by_comp, nrow)
+    
+    item_summary_result <- dplyr::bind_rows(summary_by_comp)
+    
+    comps_for_df <- purrr::map2(comp_names, reps, ~rep(.x, each = .y))
+    comps_for_df <- unlist(comps_for_df)
+    
+    item_summary_result <- dplyr::mutate(item_summary_result, component = comps_for_df)
     
     
-    component_summary_result <- purrr::pmap(list(pi, iters, converged), component_summary_vec) %>%
-      dplyr::bind_rows() %>% 
-      dplyr::mutate(component = comp_names) %>%
-      dplyr::select(component, num_items:converged)
+    # component summary
+    component_summary_result <- purrr::pmap(list(pi, iters, converged), component_summary_vec)
+    component_summary_result <- dplyr::bind_rows(component_summary_result)
+    component_summary_result <- dplyr::mutate(component_summary_result, component = comp_names)
+    component_summary_result <- dplyr::select(component_summary_result, component, num_items:converged)
     
-    result <- list(call = call, item_summary = summary_result, component_summary = component_summary_result)
+    result <- list(call = call, item_summary = item_summary_result, component_summary = component_summary_result)
     
     #class(result) <- c("summary.btfit", "list")
     result

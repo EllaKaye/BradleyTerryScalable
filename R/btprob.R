@@ -12,8 +12,8 @@ as_df_btprob <- function(m) {
   m[lower.tri(m, diag = TRUE)] <- NA
   
   # hack to avoid NOTES on global variables
-  value <- NULL
-  prob1wins <- NULL
+  #value <- NULL
+  #prob1wins <- NULL
   
   # make the data frame  
   out <- dplyr::as_data_frame(reshape2::melt(m, na.rm = TRUE)) 

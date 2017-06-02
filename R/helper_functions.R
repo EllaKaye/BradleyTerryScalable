@@ -44,7 +44,8 @@ ref_check <- function(ref, pi) {
   if (!is.null(ref)) {
     if (is.character(ref)) {
       if (length(ref) != 1) stop("'ref' should be the name of an item, 1, or NULL")
-      names <- purrr::map(pi, ~ names(.x)) %>% unlist()
+      names <- purrr::map(pi, ~ names(.x)) 
+      names <- unlist(names)
       if (!(ref %in% names)) {
         ref <- NULL
         warning("The value of 'ref' is not an item name. Using ref = NULL instead")
