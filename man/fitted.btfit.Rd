@@ -4,7 +4,7 @@
 \alias{fitted.btfit}
 \title{Fitted Method for "btfit"}
 \usage{
-\method{fitted}{btfit}(object, as_df = FALSE, subset = NULL, ...)
+\method{fitted}{btfit}(object, as_df = TRUE, subset = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
