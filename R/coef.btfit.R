@@ -17,7 +17,7 @@ as_df_coef <- function(vec) {
 }
 
 #' @export
-coef.btfit <- function(object, ref = NULL, subset = NULL, as_df = FALSE, ...) {
+coef.btfit <- function(object, ref = NULL, subset = NULL, as_df = TRUE, ...) {
     pi <- object$pi
     
     # check and get subset
