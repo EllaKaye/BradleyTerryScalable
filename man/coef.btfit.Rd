@@ -18,7 +18,7 @@
 \item{...}{other arguments}
 }
 \value{
-a numeric vector of estimated coefficients, or a list of such vectors if \code{object} has more than one component.
+If as_df = TRUE, a data frame a numeric vector of estimated coefficients, where the first column is the component the item is in, the second column in the item and the third column in the coefficient. If as_df = FALSE, then a numeric vector is returned if the model is fitted on the full dataset, or else a list of numeric vectors is returned, one for each fully connected component. Within each component, the items are arranged by estimate, in descending order.
 }
 \description{
 Extract coefficients of a 'btfit' object

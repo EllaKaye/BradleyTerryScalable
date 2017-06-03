@@ -23,10 +23,10 @@ btfit(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000,
 \value{
 \code{btfit} returns an S3 object of class \code{"btfit"}. It is a list containing the following components:
 \item{call}{The matched call}
-\item{pi}{A list of length \eqn{M}, where \eqn{M} is the number of fully-connected components of \eqn{G_W} (or the requested subset) of two or more items. The \eqn{m}-th item is a vector \eqn{\pi}, the strength parameter, for the items in the \eqn{m}-th fully connected component, \eqn{m = 1, \ldots, M}.}
+\item{pi}{A list of length \eqn{M}, where \eqn{M} is the number of fully-connected components of \eqn{G_W} (or the requested subset) of two or more items. The \eqn{m}-th item is a vector \eqn{\pi}, the strength parameter, for the items in the \eqn{m}-th fully connected component, \eqn{m = 1, \ldots, M}. These are sorted in descending order.}
 \item{iters}{A vector of length \eqn{M}. The \eqn{m}-th entry is the number of iterations it took for the algorithm to converge for the \eqn{m}-th component, for \eqn{m = 1, \ldots, M}. Note that if the algorithm has not converged in any component, a warning will be produced.}
 \item{converged}{A logical vector of length \eqn{M}, indicating whether the algorithm has converged for the \eqn{m}-th component in \code{maxit} iterations.}
-\item{N}{A list of length \eqn{M}. The \eqn{m}-th item is a matrix where each element \eqn{n_{ij}} is the number of times item \eqn{i} played against item \eqn{j}, for the items in the \eqn{m}-th component.}
+\item{N}{A list of length \eqn{M}. The \eqn{m}-th item is a matrix where each element \eqn{n_{ij}} is the number of times item \eqn{i} played against item \eqn{j}, for the items in the \eqn{m}-th component. The rows and columns are arranged in the same order as the ordered pi vector(s).}
 \item{diagonal}{A list of length \eqn{M}. The \eqn{m}-th item is a vector of the diagonal elements of the \code{btdata$wins} matrix, for the items in the \eqn{m}-th fully-connected component}
 \item{names_dimnames}{The names of the dimnames of the original \code{btdata$wins} matrix.}
 }

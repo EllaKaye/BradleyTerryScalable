@@ -15,7 +15,7 @@
 #' @param x The data, which is either a three- or four-column data frame, a directed igraph object, or a square matrix. See Details.
 #' @param return_graph Logical. If TRUE, an igraph object representing the comparison graph will be returned.
 #' @return A btdata object, which is a list containing:
-#' \item{wins}{A square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}.}
+#' \item{wins}{A K*K square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
 #' \item{components}{A list of the fully-connected components.}
 #' \item{graph}{The comparison graph of the data (if return_graph = TRUE).}
 #' @seealso \code{\link{select_components}}
@@ -62,6 +62,12 @@ btdata <- function(x, return_graph = FALSE) {
   ## get components
   comp <- igraph::components(g, mode = "strong")
   components <- igraph::groups(comp)
+  
+  # name the rows and columns of the wins matrix, if NULL
+  if (is.null(unlist(dimnames(wins)))) {
+    K <- nrow(wins)
+    dimnames(wins) <- list(1:K, 1:K)
+  }
   
   # return
   result <- list(wins = wins, components = components)

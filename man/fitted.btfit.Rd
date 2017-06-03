@@ -16,7 +16,7 @@
 \item{...}{Other arguments}
 }
 \value{
-If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}}. Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is \code{item1}, the second column is \code{item2}, the third column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fourth column, \code{fit2}, is the expected number of times that item 2 beats item 1 and the fifth column is the component that the two items are in. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. Otherwise these colnames will be \code{item1} and \code{item2}. See Details.
+If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}}. Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fifth column, \code{fit2}, is the expected number of times that item 2 beats item 1. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. Otherwise these colnames will be \code{item1} and \code{item2}. See Details.
 }
 \description{
 \code{fitted.btfit} returns the fitted values from a fitted brfit model object.

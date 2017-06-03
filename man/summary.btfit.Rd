@@ -17,7 +17,7 @@
 }
 \value{
 An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
-\item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in.}
+\item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order.}
 \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
 }
 \description{
