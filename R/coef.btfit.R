@@ -52,6 +52,10 @@ coef.btfit <- function(object, subset = NULL, ref = NULL,  as_df = TRUE, ...) {
       comps_for_df <- unlist(comps_for_df)
         
       result <- dplyr::mutate(result, component = comps_for_df)
+      
+      # hack to avoid CRAN note
+      component <- NULL
+      
       result <- dplyr::select(result, component, 1:2)
         
     }

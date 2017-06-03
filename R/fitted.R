@@ -112,6 +112,10 @@ fitted.btfit <- function(object, subset = NULL, as_df = TRUE, ...){
     comps_for_df <- unlist(comps_for_df)
     
     out <- dplyr::mutate(out, component = comps_for_df)
+    
+    # hack to avoid CRAN note
+    component <- NULL
+    
     out <- dplyr::select(out, component, 1:4)
   }
     

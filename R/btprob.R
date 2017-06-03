@@ -18,8 +18,8 @@ as_df_btprob <- function(m) {
   # make the data frame  
   out <- dplyr::as_data_frame(reshape2::melt(m, na.rm = TRUE)) 
   out <- dplyr::mutate_if(out, is.factor, as.character)
-  out <- dplyr::rename(out, "prob1wins" = value)
-  out <- dplyr::mutate(out, "prob2wins" = 1 - prob1wins)
+  out <- dplyr::rename(out, prob1wins = value)
+  out <- dplyr::mutate(out, prob2wins = 1 - as.numeric(prob1wins))
   
   out
 }
@@ -97,6 +97,10 @@ btprob <- function(object, subset = NULL, as_df = TRUE) {
     comps_for_df <- unlist(comps_for_df)
     
     p <- dplyr::mutate(p, component = comps_for_df)
+    
+    # hack to avoid CRAN note
+    component <- NULL
+    
     p <- dplyr::select(p, component, 1:4)
   }
   
