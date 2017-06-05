@@ -8,5 +8,3 @@ An R package for fitting the Bradley-Terry model to pair-comparison data, to ena
 
 **Update on June 2nd: Very almost there! A few final tweaks and tidying to do, plus some improvements to the documentation, but we're getting close.**
 
-**Update on June 4th: Suddenly, there are Travis build errors, though R CMD check absolutely fine. Seems to be related to a new Tex Live release. Issue raised [here](https://github.com/travis-ci/travis-ci/issues/7852).**
-
