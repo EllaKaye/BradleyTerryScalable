@@ -36,6 +36,15 @@ btdata <- function(x, return_graph = FALSE) {
   # if x is a graph
   else if (igraph::is.igraph(x)) {
     if(!igraph::is.directed(x))  stop("If x is a graph, it must be a directed igraph object")
+    
+    # check for names
+    if(!is.null(V(x)$name)) {
+      
+      arg <- deparse(substitute(x))
+      
+      if(!identical(length(V(x)$name), length(unique(V(x)$name)))) stop(paste0("If x is a graph, vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
+    }
+    
     wins <- graph_to_matrix(x)
     g <- x
   }
@@ -48,6 +57,11 @@ btdata <- function(x, return_graph = FALSE) {
     if(methods::is(x, "Matrix")) {if (!is.numeric(as.vector(x))) stop("If x is a matrix, all elements must be numeric")}
     if (any(x < 0)) stop("If x is a matrix, all elements must be non-negative")
     if(!identical(rownames(x), colnames(x))) stop("If x is a matrix, rownames and colnames of x should be the same")
+    if (!identical(length(rownames(x)), length(unique(rownames(x))))) {
+     
+      arg <- deparse(substitute(x))
+      stop("If x is a matrix with row- and column names, these must be unique. Consider fixing with rownames(", arg, ") <- colnames(", arg, ") <- make.names(rownames(", arg, "), unique = TRUE)")
+    }
     
     # ensure wins is a dgCMatrix
     if (is.matrix(x)) wins <- Matrix::Matrix(x, sparse = TRUE)
