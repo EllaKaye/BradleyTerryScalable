@@ -21,11 +21,11 @@ graph_to_matrix <- function(g) {
   if(!igraph::is.directed(g))  stop("g must be a directed igraph object")
   
   # check names
-  if(!is.null(V(g)$name)) {
+  if(!is.null(igraph::V(g)$name)) {
     
     arg <- deparse(substitute(g))
     
-    if(!identical(length(V(g)$name), length(unique(V(g)$name)))) stop(paste0("Vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
+    if(!identical(length(igraph::V(g)$name), length(unique(igraph::V(g)$name)))) stop(paste0("Vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
   }
 
   if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight", names = TRUE)

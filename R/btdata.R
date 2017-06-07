@@ -38,11 +38,11 @@ btdata <- function(x, return_graph = FALSE) {
     if(!igraph::is.directed(x))  stop("If x is a graph, it must be a directed igraph object")
     
     # check for names
-    if(!is.null(V(x)$name)) {
+    if(!is.null(igraph::V(x)$name)) {
       
       arg <- deparse(substitute(x))
       
-      if(!identical(length(V(x)$name), length(unique(V(x)$name)))) stop(paste0("If x is a graph, vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
+      if(!identical(length(igraph::V(x)$name), length(unique(igraph::V(x)$name)))) stop(paste0("If x is a graph, vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
     }
     
     wins <- graph_to_matrix(x)
