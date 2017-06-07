@@ -49,6 +49,8 @@ select_components <- function(btdata, subset, return_graph = FALSE) {
   if (is.character(subset)) sub_comps <- components[subset]
   else sub_comps <- purrr::keep(components, subset)
   
+  if (length(sub_comps) == 0) stop("The subset condition has removed all components")
+  
   # subset wins
   sub_wins <- wins[unlist(sub_comps), unlist(sub_comps)] 
     

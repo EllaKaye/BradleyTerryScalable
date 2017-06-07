@@ -77,11 +77,12 @@ fitted.btfit <- function(object, subset = NULL, as_df = TRUE, ...){
   
   # check and get subset
   if (!is.null(subset)) {
-    if (!is.character(subset)) stop("subset should be a character vector")
-    if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
-    pi <- pi[subset]
-    N <- N[subset]
-    diagonal <- diagonal[subset]
+
+    pi <- subset_by_pi(pi, subset)
+    new_pi_names <- names(pi)
+    
+    N <- N[new_pi_names]
+    diagonal <- diagonal[new_pi_names]
   }
   
   components <- purrr::map(pi, names)

@@ -43,20 +43,20 @@ summary.btfit <- function(object, subset = NULL, ref = NULL,  ...){
     iters <- object$iters
     converged <- object$converged
 
-        
-    ## check ref
-    ref <- ref_check(ref, pi)
-    
+      
     ## subset
     if (!is.null(subset)) {
-      if (!is.character(subset)) stop("subset should be a character vector")
-      if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
       
-      pi <- pi[subset]
-      N <- N[subset]
-      iters <- iters[subset]
-      converged <- converged[subset]
+      pi <- subset_by_pi(pi, subset)
+      new_pi_names <- names(pi)
+      
+      N <- N[new_pi_names]
+      iters <- iters[new_pi_names]
+      converged <- converged[new_pi_names]
     }
+    
+    ## check ref
+    ref <- ref_check(ref, pi)
     
     # hack to avoid CRAN notes 
     component <- NULL

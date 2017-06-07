@@ -26,9 +26,7 @@ coef.btfit <- function(object, subset = NULL, ref = NULL,  as_df = TRUE, ...) {
     
     # check and get subset
     if (!is.null(subset)) {
-      if (!is.character(subset)) stop("subset should be a character vector")
-      if(!all(subset %in% names(pi))) stop("not all elements of subset are names of components")
-      pi <- pi[subset]
+      pi <- subset_by_pi(pi, subset)
     }
     
     # check the value of ref

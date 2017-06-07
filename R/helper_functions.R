@@ -61,7 +61,7 @@ ref_check <- function(ref, pi) {
   ref
 }
 
-subset_in_btfit_methods_check <- function(subset, pi) {
+subset_by_pi <- function(pi, subset) {
   
   # check that subset is of the correct form
   if (!is.function(subset) & !is.character(subset) & !(is.logical(subset))) stop(
@@ -78,12 +78,22 @@ subset_in_btfit_methods_check <- function(subset, pi) {
     if (length(subset) != length(pi)) stop("length(subset) is not equal to the number of components")
   }
   
-  #if(is.function(subset)) {
-  #  test_of_function <- subset(components[[1]])
-  #  if (!is.logical(test_of_function)) stop("if subset is a function, it must return either TRUE or FALSE")
-  #  if (length(test_of_function) > 1) stop("if subset is a function, it must return either TRUE or FALSE")
-  #}
   
+  if(is.function(subset)) {
+    test_of_function <- subset(pi[[1]])
+    if (!is.logical(test_of_function)) stop("if subset is a function, it must return either TRUE or FALSE")
+    if (length(test_of_function) > 1) stop("if subset is a function, it must return either TRUE or FALSE")
+  }
+  
+  
+  # return subsetted pi
+  if (is.character(subset)) pi <- pi[subset]
+  else pi <- purrr::keep(pi, subset)
+  
+  # check length of pi and stop if there is nothing left
+  if (length(pi) == 0) stop("The subset condition has removed all components")
+  
+  pi
 }
 
 
