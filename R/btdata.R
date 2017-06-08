@@ -42,7 +42,7 @@ btdata <- function(x, return_graph = FALSE) {
       
       arg <- deparse(substitute(x))
       
-      if(!identical(length(igraph::V(x)$name), length(unique(igraph::V(x)$name)))) stop(paste0("If x is a graph, vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
+      if(anyDuplicated(igraph::V(x)$name) > 0) stop(paste0("If x is a graph, vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
     }
     
     wins <- graph_to_matrix(x)
@@ -57,7 +57,7 @@ btdata <- function(x, return_graph = FALSE) {
     if(methods::is(x, "Matrix")) {if (!is.numeric(as.vector(x))) stop("If x is a matrix, all elements must be numeric")}
     if (any(x < 0)) stop("If x is a matrix, all elements must be non-negative")
     if(!identical(rownames(x), colnames(x))) stop("If x is a matrix, rownames and colnames of x should be the same")
-    if (!identical(length(rownames(x)), length(unique(rownames(x))))) {
+    if (anyDuplicated(rownames(x)) > 0) {
      
       arg <- deparse(substitute(x))
       stop("If x is a matrix with row- and column names, these must be unique. Consider fixing with rownames(", arg, ") <- colnames(", arg, ") <- make.names(rownames(", arg, "), unique = TRUE)")

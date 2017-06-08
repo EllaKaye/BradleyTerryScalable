@@ -25,7 +25,7 @@ graph_to_matrix <- function(g) {
     
     arg <- deparse(substitute(g))
     
-    if(!identical(length(igraph::V(g)$name), length(unique(igraph::V(g)$name)))) stop(paste0("Vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
+    if(anyDuplicated(igraph::V(g)$name) > 0) stop(paste0("Vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
   }
 
   if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight", names = TRUE)
