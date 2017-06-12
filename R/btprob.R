@@ -4,10 +4,10 @@ as_df_btprob <- function(m) {
   if (!is.matrix(m)) m <- as.matrix(m)
   
   # Check for reshape2
-  if (!requireNamespace("reshape2", quietly = TRUE)) {
-    stop("The package reshape2 is needed for as_df = TRUE in btprob. Please install it.",
-         call. = FALSE)
-  }
+  #if (!requireNamespace("reshape2", quietly = TRUE)) {
+  #  stop("The package reshape2 is needed for as_df = TRUE in btprob. Please install it.",
+  #       call. = FALSE)
+  #}
   
   m[lower.tri(m, diag = TRUE)] <- NA
   
@@ -16,9 +16,12 @@ as_df_btprob <- function(m) {
   #prob1wins <- NULL
   
   # make the data frame  
-  out <- dplyr::as_data_frame(reshape2::melt(m, na.rm = TRUE)) 
-  out <- dplyr::mutate_if(out, is.factor, as.character)
-  out <- dplyr::rename(out, prob1wins = value)
+  out <- dplyr::as_data_frame(as.data.frame.table(m, useNA = "no", stringsAsFactors = FALSE))
+  out <- dplyr::filter(out, !is.na(Freq))
+  #out <- dplyr::as_data_frame(reshape2::melt(m, na.rm = TRUE)) 
+  #out <- dplyr::mutate_if(out, is.factor, as.character)
+  #out <- dplyr::rename(out, prob1wins = value)
+  out <- dplyr::rename(out, prob1wins = Freq)
   out <- dplyr::mutate(out, prob2wins = 1 - as.numeric(prob1wins))
   
   out
