@@ -66,7 +66,7 @@ as_df_fitted <- function(sM, N) {
 #' fitted(fit2, as_df = TRUE)
 #' fitted(fit3)
 #' @export
-fitted.btfit <- function(object, subset = NULL, as_df = TRUE, ...){
+fitted.btfit <- function(object, subset = NULL, as_df = FALSE, ...){
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
   
   pi <- object$pi

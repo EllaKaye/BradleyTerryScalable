@@ -4,7 +4,7 @@
 \alias{btprob}
 \title{Calculates Bradley-Terry probabiities}
 \usage{
-btprob(object, subset = NULL, as_df = TRUE)
+btprob(object, subset = NULL, as_df = FALSE)
 }
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}

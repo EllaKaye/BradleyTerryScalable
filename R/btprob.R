@@ -57,7 +57,7 @@ as_df_btprob <- function(m) {
 #' btprob(fit2, as_df = TRUE)
 #' btprob(fit3)
 #' @export
-btprob <- function(object, subset = NULL, as_df = TRUE) {
+btprob <- function(object, subset = NULL, as_df = FALSE) {
   
   if (!inherits(object, "btfit")) stop("Object should be a 'btfit' object")
   
