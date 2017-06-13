@@ -8,7 +8,6 @@
 src/*.o
 src/*.so
 src/*.dll
-
 .DS_Store
 .DS_Store?
 ._*
@@ -16,5 +15,5 @@ src/*.dll
 .Trashes
 ehthumbs.db
 Thumbs.db
-
 BradleyTerryScalable.Rproj
+inst/doc
