@@ -57,3 +57,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"BradleyTerryScalable_BT_EM", (DL_FUNC) &BradleyTerryScalable_BT_EM, 5},
+    {"BradleyTerryScalable_btprob_vec", (DL_FUNC) &BradleyTerryScalable_btprob_vec, 1},
+    {"BradleyTerryScalable_fitted_vec", (DL_FUNC) &BradleyTerryScalable_fitted_vec, 2},
+    {"BradleyTerryScalable_ILSR", (DL_FUNC) &BradleyTerryScalable_ILSR, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_BradleyTerryScalable(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}
