@@ -4,7 +4,8 @@
 \alias{summary.btfit}
 \title{Summarizing Bradley-Terry Fits}
 \usage{
-\method{summary}{btfit}(object, subset = NULL, ref = NULL, ...)
+\method{summary}{btfit}(object, subset = NULL, ref = NULL, SE = FALSE,
+  ...)
 }
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
@@ -12,6 +13,8 @@
 \item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
 
 \item{ref}{the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
+
+\item{SE}{logical - whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large.}
 
 \item{...}{other arguments}
 }

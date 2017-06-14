@@ -1,12 +1,21 @@
-item_summary_vec <- function(pi, N, ref = NULL){
+item_summary_vec <- function(pi, N, ref = NULL, SE = FALSE){
     lambda <- coef_vec(pi, ref)
-    vc <- vcov_vec(pi, N, ref)
-    se <- sqrt(diag(vc))
-    if (!is.null(names(lambda))) item <- names(lambda)
-    else item <- 1:length(lambda)
-    result <- dplyr::data_frame(item = item, estimate = lambda, SE = se)
+    item <- names(lambda)
+    
+    result <- dplyr::data_frame(item = item, estimate = lambda)
+    
+    if (SE) {
+      vc <- vcov_vec(pi, N, ref)
+      se <- sqrt(diag(vc))
+      result <- dplyr::mutate(result, SE = se)
+    }
+    
+
+    #if (!is.null(names(lambda))) item <- names(lambda)
+    #else item <- 1:length(lambda)
+    #result <- dplyr::data_frame(item = item, estimate = lambda, SE = se)
     # result <- dplyr::arrange(result, dplyr::desc(estimate))
-    class(result) <- c("tbl_df", "tbl", "data.frame")
+    #class(result) <- c("tbl_df", "tbl", "data.frame")
     result
 }
 
@@ -26,6 +35,7 @@ component_summary_vec <- function(pi, iters, converged) {
 #' 
 #' @inheritParams btprob 
 #' @param ref the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.
+#' @param SE logical - whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large.
 #' @param ... other arguments
 #' 
 #' @return An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
@@ -33,7 +43,7 @@ component_summary_vec <- function(pi, iters, converged) {
 #' \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
 #' 
 #' @export
-summary.btfit <- function(object, subset = NULL, ref = NULL,  ...){
+summary.btfit <- function(object, subset = NULL, ref = NULL, SE = FALSE, ...){
     
     if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
     
@@ -62,7 +72,7 @@ summary.btfit <- function(object, subset = NULL, ref = NULL,  ...){
     component <- NULL
     
     # item summary
-    summary_by_comp <- purrr::map2(pi, N, item_summary_vec, ref = ref)
+    summary_by_comp <- purrr::map2(pi, N, item_summary_vec, ref = ref, SE = SE)
     
     comp_names <- names(pi)
     
@@ -74,7 +84,8 @@ summary.btfit <- function(object, subset = NULL, ref = NULL,  ...){
     comps_for_df <- unlist(comps_for_df)
     
     item_summary_result <- dplyr::mutate(item_summary_result, component = comps_for_df)
-    item_summary_result <- dplyr::select(item_summary_result, component, item:SE)
+    if (SE) item_summary_result <- dplyr::select(item_summary_result, component, item:SE)
+    else item_summary_result <- dplyr::select(item_summary_result, component, item:estimate)
     
     
     # component summary
