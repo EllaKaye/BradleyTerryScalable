@@ -105,8 +105,13 @@ summary.btdata <- function(object, ...){
   
   colnames(my_df) <- c("Component size", "Freq")
   
+  density <- Matrix::mean(object$wins != 0)
+  
   cat("Number of players:", K, "\n")
+  cat("Density of wins matrix:", density, "\n")
   cat("Fully-connected:", connected, "\n")
+
+  
   if (num_comps > 1) {
     cat("Number of fully-connected components:", num_comps, "\n")
     cat("Summary of fully-connected components: \n")
