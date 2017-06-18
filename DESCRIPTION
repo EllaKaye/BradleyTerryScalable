@@ -34,6 +34,7 @@ Description: The Bradley-Terry model is a popular method for finding the
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 2.10)
 Imports:
     igraph,
     Matrix,
