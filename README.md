@@ -10,3 +10,9 @@ An R package for fitting the Bradley-Terry model to pair-comparison data, to ena
 **Note: this package is currently in the final stages of development. Some changes are likely in the user interface and documentation, especially, prior to the package's scheduled initial submission to CRAN in late June 2017.**
 
 **Documentation website can be found [here](https://ellakaye.github.io/BradleyTerryScalable/) (thanks to [`pkgdown`](https://github.com/hadley/pkgdown))**
+
+The Bradley-Terry model
+=======================
+
+Let there be *K* items. The Bradley-Terry probability that item *i* beats item *j* is
+$$p_{ij} = \frac{\pi_i}{\pi_i + \pi_j},$$
