@@ -15,10 +15,10 @@ pairs_to_matrix(df)
 In both cases, if there is a repeated pairing in \code{df}, \code{pairs_to_matrix} aggregates the number of wins, as one would expect.}
 }
 \value{
-A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}. This output is in the correct format to pass as the \code{W} argument to \code{\link{connected_components}} and \code{\link{btfit}}.
+A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}.
 }
 \description{
-\code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix. The output is of the correct form to be passed as the \code{W} argument into the \code{\link{connected_components}} and \code{\link{btfit}} functions in this package.
+\code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix.
 }
 \examples{
 winner <- c("A", "A", "A", "A", "A", "B", "B", "B", "C", "C", "E", "F", "F")
@@ -32,6 +32,6 @@ df2 <- data.frame(team1 = c("A", "A", "B", "C"),
 pairs_to_matrix(df2)
 }
 \seealso{
-\code{\link{connected_components}}, \code{\link{btfit}}.
+\code{\link{btfit}}.
 }
 

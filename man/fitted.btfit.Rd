@@ -58,6 +58,6 @@ Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block design
 Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
 }
 \seealso{
-\code{\link{connected_components}}, \code{\link{btfit}}, \code{\link{btprob}}
+\code{\link{btfit}}, \code{\link{btprob}}
 }
 

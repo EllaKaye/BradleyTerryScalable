@@ -31,7 +31,6 @@
 #' set.seed(1)
 #' W2 <- Matrix::rsparsematrix(20, 20 , 0.1, rand.x = function(n) rbinom(n, 10, 0.5))
 #' connected_components(W2)$components
-#' @export
 connected_components <- function(W = NULL, g = NULL, return_components = TRUE, return_graph = FALSE) {
 
   # check that at least one of W and g is entered
