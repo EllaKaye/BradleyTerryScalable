@@ -8,6 +8,8 @@ Authors@R: c(
   person("David", "Firth", role = c("aut")))
 Author: Ella Kaye [aut, cre], David Firth [aut]
 Maintainer: Ella Kaye <E.Kaye.1@warwick.ac.uk>
+URL: https://github.com/EllaKaye/BradleyTerryScalable
+BugReports: https://github.com/EllaKaye/BradleyTerryScalable/issues
 Description: The Bradley-Terry model is a popular method for finding the
     probabilities for each item in a set being preferred over each of the others,
     based on repeated pairwise comparisons between the elements of the set. The
