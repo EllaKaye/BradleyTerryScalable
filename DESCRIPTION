@@ -27,7 +27,7 @@ Description: The Bradley-Terry model is a popular method for finding the
     fully connected component of the graph. The other is to take a Bayesian approach
     on the whole dataset, which may also be thought of as penalising the strength
     parameters to ensure that none are zero or infinite. In this package there are
-    implementions of both these approaches to estimating the strength parameters, as
+    implementations of both these approaches to estimating the strength parameters, as
     well as a function to help the user determine which approaches are suitable for
     their data, and helper functions to ensure that the data is in the appropriate
     format for the main btfit functions.

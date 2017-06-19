@@ -19,7 +19,7 @@
 If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}}. Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fifth column, \code{fit2}, is the expected number of times that item 2 beats item 1. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. Otherwise these colnames will be \code{item1} and \code{item2}. See Details.
 }
 \description{
-\code{fitted.btfit} returns the fitted values from a fitted brfit model object.
+\code{fitted.btfit} returns the fitted values from a fitted btfit model object.
 }
 \details{
 Consider a set of \eqn{K} items. Let the items be nodes in a graph and let there be a directed edge \eqn{(i, j)} when \eqn{i} has won against \eqn{j} at least once. We call this the comparison graph of the data, and denote it by \eqn{G_W}. Assuming that \eqn{G_W} is fully connected, the Bradley-Terry model states that the probability that item \eqn{i} beats item \eqn{j} is
@@ -32,7 +32,7 @@ The expected, or fitted, values under the Bradley-Terry model are therefore:
 
 where \eqn{n_ij} is the number of times item \eqn{i} plays against item \eqn{j}.
 
-The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilties \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
+The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilities \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 
 If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the K items beating any of the others. Alternatively, the MLE can be found for each fully connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each item in each component beating any other item in that component can be found.
 }

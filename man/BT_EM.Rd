@@ -9,11 +9,11 @@ BT_EM(W, a, b, maxit = 5000L, epsilon = 0.001)
 \arguments{
 \item{W}{a K*K square matrix of class "dgCMatrix"}
 
-\item{a}{the shape paramater of the gamma prior}
+\item{a}{the shape parameter of the gamma prior}
 
 \item{b}{the rate parameter of the gamma prior}
 
-\item{maxit}{the maximum number of interations}
+\item{maxit}{the maximum number of iterations}
 
 \item{epsilon}{controls the convergence criteria}
 }

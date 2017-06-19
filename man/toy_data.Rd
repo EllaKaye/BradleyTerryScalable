@@ -3,7 +3,7 @@
 \docType{data}
 \name{toy_data}
 \alias{toy_data}
-\title{A toy data set for the \code{BradleyTerryScalable} pacakge}
+\title{A toy data set for the \code{BradleyTerryScalable} package}
 \format{A data frame with 13 rows and 3 variables:
 \describe{
   \item{player1}{The name of player1}

@@ -28,7 +28,7 @@ as_df_fitted <- function(sM, N) {
 
 #' Fitted Method for "btfit"
 #'
-#' \code{fitted.btfit} returns the fitted values from a fitted brfit model object.
+#' \code{fitted.btfit} returns the fitted values from a fitted btfit model object.
 #'
 #' Consider a set of \eqn{K} items. Let the items be nodes in a graph and let there be a directed edge \eqn{(i, j)} when \eqn{i} has won against \eqn{j} at least once. We call this the comparison graph of the data, and denote it by \eqn{G_W}. Assuming that \eqn{G_W} is fully connected, the Bradley-Terry model states that the probability that item \eqn{i} beats item \eqn{j} is
 #' \deqn{p_{ij} = \frac{\pi_i}{\pi_i + \pi_j},}
@@ -40,7 +40,7 @@ as_df_fitted <- function(sM, N) {
 #'
 #' where \eqn{n_ij} is the number of times item \eqn{i} plays against item \eqn{j}.
 #'
-#' The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilties \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
+#' The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilities \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 #'
 #' If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the K items beating any of the others. Alternatively, the MLE can be found for each fully connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each item in each component beating any other item in that component can be found.
 #' @param ... Other arguments

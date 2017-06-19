@@ -7,9 +7,9 @@ using namespace arma;
 
 //' Fit the Bradley-Terry model using the EM or MM algorithm
 //' @param W a K*K square matrix of class "dgCMatrix"
-//' @param a the shape paramater of the gamma prior 
+//' @param a the shape parameter of the gamma prior 
 //' @param b the rate parameter of the gamma prior
-//' @param maxit the maximum number of interations
+//' @param maxit the maximum number of iterations
 //' @param epsilon controls the convergence criteria
 //' @return A list containing a K*1 matrix with the pi estimate, the N matrix, the number of iterations, and whether the algorithm converged.
 //' @export

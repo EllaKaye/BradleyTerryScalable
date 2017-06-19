@@ -27,7 +27,7 @@ as_df_btprob <- function(m) {
   out
 }
 
-#' Calculates Bradley-Terry probabiities
+#' Calculates Bradley-Terry probabilities
 #'
 #' Calculates the Bradley-Terry probabilities of each item in a fully-connected component of \eqn{G_W} winning against every other item in that component (see Details).
 #'
@@ -40,7 +40,7 @@ as_df_btprob <- function(m) {
 #' @param object An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.
 #' @param as_df Logical scalar, determining class of output. If \code{TRUE}, the function returns a data frame. If \code{FALSE} (the default), the function returns a matrix (or list of matrices).
 #'@param subset A condition for selecting a subset of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).
-#' @return If \code{as_df = FALSE}, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry probability \eqn{p_{ij}}, or, if \eqn{G_W} is not fully-connected and \code{\link{btfit}} has been run with \code{a = 1}, a list of such matrices for each fully-connected component of \eqn{G_W}. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column is the Bradley-Terry probability that item 1 beats item 2 and the fithe column is the Bradley-Terry probability that item 2 beats item 1. If the original \code{btdata$wins} matrix has named dimnames, these will be the \code{colnames} for columns one and two. See Details.
+#' @return If \code{as_df = FALSE}, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry probability \eqn{p_{ij}}, or, if \eqn{G_W} is not fully-connected and \code{\link{btfit}} has been run with \code{a = 1}, a list of such matrices for each fully-connected component of \eqn{G_W}. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column is the Bradley-Terry probability that item 1 beats item 2 and the fifth column is the Bradley-Terry probability that item 2 beats item 1. If the original \code{btdata$wins} matrix has named dimnames, these will be the \code{colnames} for columns one and two. See Details.
 #' @references Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block designs: 1. The method of paired comparisons. \emph{Biometrika}, \strong{39}(3/4), 324-345.
 #' @references Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
 #' @seealso \code{\link{btfit}}, \code{\link{btdata}}

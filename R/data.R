@@ -8,7 +8,7 @@
 #' @format A four by four matrix, where the \eqn{i,j}-th element is the number of times journal \eqn{i} has been cited by journal \eqn{j}.
 "citations"
 
-#' A toy data set for the \code{BradleyTerryScalable} pacakge
+#' A toy data set for the \code{BradleyTerryScalable} package
 #' 
 #' A toy data set, where the underlying comparison graph of the players is not fully connected.
 #' 
