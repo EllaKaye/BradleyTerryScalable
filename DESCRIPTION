@@ -50,7 +50,6 @@ LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 6.0.1
 Suggests:
     Matrix.utils,
-    reshape2,
     stringr,
     knitr,
     rmarkdown
