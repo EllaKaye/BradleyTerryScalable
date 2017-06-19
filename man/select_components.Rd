@@ -25,4 +25,3 @@ Subset a btdata object by selecting components from it.
 \seealso{
 \code{\link{btdata}}, \code{\link{btfit}}
 }
-

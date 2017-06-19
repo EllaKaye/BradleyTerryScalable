@@ -21,4 +21,3 @@ In the context of paired comparisons, the 'winner' is the cited journal and the 
 Stigler, S. (1994) Citation patterns in the journals of statistics and probability. \emph{Statistical Science}, \strong{9}, 384-406.
 }
 \keyword{datasets}
-

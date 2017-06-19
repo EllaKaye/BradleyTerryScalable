@@ -26,4 +26,3 @@ graph_to_matrix(g2)
 \seealso{
 \code{\link{btfit}}.
 }
-

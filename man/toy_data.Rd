@@ -17,4 +17,3 @@ toy_data
 A toy data set, where the underlying comparison graph of the players is not fully connected.
 }
 \keyword{datasets}
-

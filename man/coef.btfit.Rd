@@ -24,4 +24,3 @@ If as_df = TRUE, a data frame a numeric vector of estimated coefficients, where 
 \description{
 Extract coefficients of a 'btfit' object
 }
-

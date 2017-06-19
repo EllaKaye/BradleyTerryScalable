@@ -34,4 +34,3 @@ Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the 
 \seealso{
 \code{\link{select_components}}
 }
-

@@ -20,7 +20,6 @@
 #'                   team2 = c("B", "C", "C", "D"),
 #'                   wins1 = 1:4, wins2 = 5:8)
 #' pairs_to_matrix(df2)
-
 #' @export
 pairs_to_matrix <- function(df) {
 

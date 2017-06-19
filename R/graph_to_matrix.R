@@ -12,7 +12,6 @@
 #' g2 <- igraph::make_graph(c(1,2, 2,3, 3,4, 5,6), directed = TRUE)
 #' igraph::E(g2)$weight <- 1:4
 #' graph_to_matrix(g2)
-
 #' @export
 graph_to_matrix <- function(g) {
 

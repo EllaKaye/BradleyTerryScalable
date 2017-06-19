@@ -50,4 +50,3 @@ Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Br
 \seealso{
 \code{\link{btfit}}, \code{\link{btdata}}
 }
-

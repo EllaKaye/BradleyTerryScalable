@@ -26,4 +26,3 @@ An S3 object of class \code{"summary.btfit"}. It is a list containing the follow
 \description{
 \code{summary} method for class "btfit"
 }
-

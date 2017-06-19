@@ -21,4 +21,3 @@ A square numeric matrix, which is a non-full-rank variance-covariance matrix for
 \description{
 Calculate variance-covariance matrix for a btfit object
 }
-

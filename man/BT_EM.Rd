@@ -23,4 +23,3 @@ A list containing a K*1 matrix with the pi estimate, the N matrix, the number of
 \description{
 Fit the Bradley-Terry model using the EM or MM algorithm
 }
-

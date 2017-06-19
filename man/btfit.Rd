@@ -62,4 +62,3 @@ Hunter, D. R. (2004) MM Algorithms for Generalized Bradley-Terry Models. \emph{T
 \seealso{
 \code{\link{btdata}}, \code{\link{summary.btfit}}, \code{\link{coef.btfit}}, \code{\link{vcov.btfit}}, \code{\link{simulate.btfit}}
 }
-

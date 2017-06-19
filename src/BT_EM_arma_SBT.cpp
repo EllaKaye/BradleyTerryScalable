@@ -12,7 +12,6 @@ using namespace arma;
 //' @param maxit the maximum number of iterations
 //' @param epsilon controls the convergence criteria
 //' @return A list containing a K*1 matrix with the pi estimate, the N matrix, the number of iterations, and whether the algorithm converged.
-//' @export
 // [[Rcpp::export]]
 List BT_EM(S4 W, double a, double b, int maxit = 5000, double epsilon = 1e-3) {
 

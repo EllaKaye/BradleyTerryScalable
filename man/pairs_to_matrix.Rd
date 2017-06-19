@@ -34,4 +34,3 @@ pairs_to_matrix(df2)
 \seealso{
 \code{\link{btfit}}.
 }
-
