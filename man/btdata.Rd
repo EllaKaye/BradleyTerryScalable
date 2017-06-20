@@ -2,14 +2,21 @@
 % Please edit documentation in R/btdata.R
 \name{btdata}
 \alias{btdata}
+\alias{summary.btdata}
 \title{Create a btdata object}
 \usage{
 btdata(x, return_graph = FALSE)
+
+\method{summary}{btdata}(object, ...)
 }
 \arguments{
-\item{x}{The data, which is either a three- or four-column data frame, a directed igraph object, or a square matrix. See Details.}
+\item{x}{The data, which is either a three- or four-column data frame, a directed igraph object, a square matrix or a square contingency table. See Details.}
 
 \item{return_graph}{Logical. If TRUE, an igraph object representing the comparison graph will be returned.}
+
+\item{object}{A \code{btdata} object}
+
+\item{...}{Other arguments}
 }
 \value{
 A btdata object, which is a list containing:
@@ -29,7 +36,9 @@ If \code{x} is a 4-column data-frame, the first column contains the name of item
 
 Alternatively, \code{x} can be an igraph object representing the comparison graph of the data, i.e. the graph where the nodes are the items, and there is a directed edge from node \eqn{i} to node \eqn{j} whenever item \eqn{i} has beaten item \eqn{j} at least once. Then, if \code{x} is a weighted graph, the weight on each edge \eqn{i-j} represents the number of times item \eqn{i} has beaten item \eqn{j}. If \code{x} is not weighted, there is a separate edge from node \eqn{i} to node \eqn{j} for each time item \eqn{i} has beaten item \eqn{j}.
 
-Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns.
+Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns. Similarly, \code{x} can be a square contingency table (of the type used as an argument to \code{countsToBinomial} in the \code{BradleyTerry2 pacakge}).
+
+\code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully-connected. If it is not fully-connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes.
 }
 \seealso{
 \code{\link{select_components}}

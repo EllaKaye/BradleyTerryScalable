@@ -16,6 +16,8 @@ Extracted from a larger table in Stigler (1994). Inter-journal citation counts f
 }
 \details{
 In the context of paired comparisons, the 'winner' is the cited journal and the 'loser' is the one doing the citing.
+
+This dataset also appears in the \code{BradleyTerry2} package.
 }
 \references{
 Stigler, S. (1994) Citation patterns in the journals of statistics and probability. \emph{Statistical Science}, \strong{9}, 384-406.

@@ -18,7 +18,7 @@ In both cases, if there is a repeated pairing in \code{df}, \code{pairs_to_matri
 A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}.
 }
 \description{
-\code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix.
+\code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix. This is a helper function for \code{\link{btdata}}.
 }
 \examples{
 winner <- c("A", "A", "A", "A", "A", "B", "B", "B", "C", "C", "E", "F", "F")
@@ -32,5 +32,5 @@ df2 <- data.frame(team1 = c("A", "A", "B", "C"),
 pairs_to_matrix(df2)
 }
 \seealso{
-\code{\link{btfit}}.
+\code{\link{btdata}}.
 }

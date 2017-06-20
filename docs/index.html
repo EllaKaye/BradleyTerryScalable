@@ -68,17 +68,16 @@
 <p>Given a number of items for whom we have pair-comparison data, the Bradley-Terry model assigns a ‘strength’ parameter to each item. These can be used to rank the items. Moreover, they can be used to determine the probability that any given item will ‘beat’ any other given item when they are compared. Further details of the mathematical model, and the algorithms used to fit them, will soon be available in a vignette (see the end of this <code>README</code> for vignette details).</p>
 <p><strong>Note: this package is currently in the final stages of development. Some changes are likely in the user interface and documentation, especially, prior to the package’s scheduled initial submission to CRAN in late June 2017.</strong></p>
 <p><strong>Documentation website can be found <a href="https://ellakaye.github.io/BradleyTerryScalable/">here</a> (thanks to <a href="https://github.com/hadley/pkgdown"><code>pkgdown</code></a>)</strong></p>
-</div>
-<div id="installing-the-package" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installing-the-package" class="anchor"></a>Installing the package</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
+<div id="installing-the-package" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installing-the-package" class="anchor"></a>Installing the package</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/BradleyTerryScalable"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(BradleyTerryScalable)</code></pre></div>
 </div>
-<div id="preparing-the-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#preparing-the-data" class="anchor"></a>Preparing the data</h1>
+<div id="preparing-the-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preparing-the-data" class="anchor"></a>Preparing the data</h2>
 <p>The main fitting function in this package is <code>btfit</code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="reference/btdata.html">btdata(x)</a></code>.</p>
 <p>The <code>x</code> argument to <code>btdata</code> can be one of three classes of object:</p>
 <ul>
@@ -158,9 +157,9 @@ toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="refere
 <span class="co">#&gt; Fully-connected: TRUE</span></code></pre></div>
 <p>Alternatively, set the <code>subset</code> argument in <code>btfit</code>.</p>
 </div>
-<div id="fitting-the-model" class="section level1">
-<h1 class="hasAnchor">
-<a href="#fitting-the-model" class="anchor"></a>Fitting the model</h1>
+<div id="fitting-the-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#fitting-the-model" class="anchor"></a>Fitting the model</h2>
 <p>The summary of the <code>btdata</code> object reveals whether the comparison graph is fully-connected or not. This affects the type of estimate available for the strength parameter.</p>
 <ul>
 <li>If <code>Fully-connected: TRUE</code>, then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.</li>
@@ -182,17 +181,17 @@ toy_fit_MLE &lt;-<span class="st"> </span><span class="kw"><a href="reference/bt
 toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="reference/btfit.html">btfit</a></span>(toy_btdata, <span class="fl">1.1</span>)</code></pre></div>
 <p><code>btfit</code> objects are a list, and they are not designed to be examined directly, but to be passed to other methods.</p>
 </div>
-<div id="methods-for-a-btfit-object" class="section level1">
-<h1 class="hasAnchor">
-<a href="#methods-for-a-btfit-object" class="anchor"></a>Methods for a <code>btfit</code> object</h1>
-<div id="summary-btift-coef-btfit-and-vcov-btfit" class="section level2">
+<div id="methods-for-a-btfit-object" class="section level2">
 <h2 class="hasAnchor">
+<a href="#methods-for-a-btfit-object" class="anchor"></a>Methods for a <code>btfit</code> object</h2>
+<div id="summary-btift-coef-btfit-and-vcov-btfit" class="section level3">
+<h3 class="hasAnchor">
 <a href="#summary-btift-coef-btfit-and-vcov-btfit" class="anchor"></a><code>summary.btift</code>, <code>coef.btfit</code> and <code>vcov.btfit</code>
-</h2>
+</h3>
 <p>The <code>summary.btfit</code> method returns a list with</p>
 <ul>
 <li>
-<code>call</code>: the call to to <code>btfit</code>
+<code>call</code>: the call to <code>btfit</code>
 </li>
 <li>
 <code>item_summary</code>: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranking in descending order <em>within each component</em>
@@ -201,7 +200,7 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="reference/bt
 <code>component_summary</code>: a data frame with one row per component in the fit.</li>
 </ul>
 <p>The standard errors are <em>not</em> returned by default (since the underlying <code>vcov.btfit</code> function can be slow for large matrices), but can be included by setting <code>SE = TRUE</code>. It is also possible to set a reference item, and to return the summary for only a subset of components (see <code><a href="reference/summary.btfit.html">?summary.btfit</a></code>).</p>
-<p>The <code>coef.btfit</code> method extracts the parameter estimates. This is the strength parameter, on the log scale, contrainted such that the mean of the estimates is zero. By default a vector if <code>btfit</code> was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>.</p>
+<p>The <code>coef.btfit</code> method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained such that the mean of the estimates is zero. By default a vector if <code>btfit</code> was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>.</p>
 <p>The <code>vcov.btfit</code> method returns the variance-covariance matrix (or a list of these matrices by component), and also has <code>ref</code> and <code>subset</code> arguments (see <code><a href="reference/vcov.btfit.html">?vcov.btfit</a></code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_fit)
 <span class="co">#&gt; $call</span>
@@ -256,10 +255,10 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="reference/bt
 <span class="co">#&gt;   JASA         0.000000000 0.000000000    0  0.000000000</span>
 <span class="co">#&gt;   Comm Statist 0.001172936 0.001396292    0  0.009638953</span></code></pre></div>
 </div>
-<div id="btprob-and-fitted-btfit" class="section level2">
-<h2 class="hasAnchor">
+<div id="btprob-and-fitted-btfit" class="section level3">
+<h3 class="hasAnchor">
 <a href="#btprob-and-fitted-btfit" class="anchor"></a><code>btprob</code> and <code>fitted.btfit</code>
-</h2>
+</h3>
 <p>This calculates the Bradley-Terry probabilities that item <em>i</em> beats item <em>j</em>. By default a matrix if <code>btfit</code> was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>. The <code>fitted.btfit</code> method functions similarly, except it returns the expected number of wins (see <code><a href="reference/fitted.btfit.html">?fitted.btfit</a></code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/btprob.html">btprob</a></span>(citations_fit)
 <span class="co">#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"</span>
@@ -281,10 +280,10 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="reference/bt
 <span class="co">#&gt; 6         3       d       c 2.2910316 0.7089684</span>
 <span class="co">#&gt; 7         3       a       c 0.7092268 0.2907732</span></code></pre></div>
 </div>
-<div id="simulate-btfit-and-simuate_bt" class="section level2">
-<h2 class="hasAnchor">
+<div id="simulate-btfit-and-simuate_bt" class="section level3">
+<h3 class="hasAnchor">
 <a href="#simulate-btfit-and-simuate_bt" class="anchor"></a><code>simulate.btfit</code> and <code>simuate_BT</code>
-</h2>
+</h3>
 <p>There are two functions to simuate data from a Bradley-Terry model. <code>simulate.btfit</code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code>simulate_BT</code> takes an <code>N</code> matrix (i.e. where the <em>i,j</em>-th elemenent is the number of times items <em>i</em> and <em>j</em> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code>coef</code> and <code>summary</code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit)
 <span class="kw">set.seed</span>(<span class="dv">1982</span>)
@@ -295,12 +294,13 @@ pi_vec &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw
 tournament_sim &lt;-<span class="st"> </span><span class="kw"><a href="reference/simulate_BT.html">simulate_BT</a></span>(pi_vec, Nmatrix, <span class="dt">nsim =</span> <span class="dv">2</span>)</code></pre></div>
 </div>
 </div>
-<div id="the-bradley-terry-model" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-bradley-terry-model" class="anchor"></a>The Bradley-Terry model</h1>
+<div id="the-bradley-terry-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-bradley-terry-model" class="anchor"></a>The Bradley-Terry model</h2>
 <p>Details of the Bradley-Terry model are not presented here (due to GitHub’s inability to display equations). Instead, please refer to the (soon-to-be-written) vignette.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">"BradleyTerryScalable"</span>, <span class="dt">package =</span> <span class="st">"BradleyTerryScalable"</span>)</code></pre></div>
 <p><strong>NOTE: this vignette isn’t actually written yet! This vignette exists but is missing content</strong></p>
+</div>
 </div>
 </div>
   </div>

@@ -94,59 +94,11 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
+            <h2 id="section-preparing-the-data" class="hasAnchor"><a href="#section-preparing-the-data" class="anchor"></a>Preparing the data</h2>
+            <p class="section-desc"><p>Functions for preparing a <code>btdata</code> object</p></p>
           </th>
         </tr>
         <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="BradleyTerryScalable.html">BradleyTerryScalable</a></code> </p>
-          </td>
-          <td><p>A package for fitting the Bradley-Terry model to (potentially) large and sparse data sets.</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="BT_EM.html">BT_EM</a></code> </p>
-          </td>
-          <td><p>Fit the Bradley-Terry model using the EM or MM algorithm</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="btdata.html">btdata</a></code> </p>
-          </td>
-          <td><p>Create a btdata object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="btfit.html">btfit</a></code> </p>
-          </td>
-          <td><p>Fits the Bradley-Terry model</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="btprob.html">btprob</a></code> </p>
-          </td>
-          <td><p>Calculates Bradley-Terry probabilities</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="citations.html">citations</a></code> </p>
-          </td>
-          <td><p>Statistics Journal Citation Data from Stigler (1994)</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="coef.btfit.html">coef</a></code> </p>
-          </td>
-          <td><p>Extract coefficients of a 'btfit' object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="fitted.btfit.html">fitted</a></code> </p>
-          </td>
-          <td><p>Fitted Method for "btfit"</p></td>
-        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="graph_to_matrix.html">graph_to_matrix</a></code> </p>
@@ -161,16 +113,38 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="select_components.html">select_components</a></code> </p>
+            <p><code><a href="btdata.html">btdata</a></code> <code><a href="btdata.html">summary</a></code> </p>
           </td>
-          <td><p>Subset a btdata object</p></td>
+          <td><p>Create a btdata object</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="simulate_BT.html">simulate_BT</a></code> </p>
+            <p><code><a href="select_components.html">select_components</a></code> </p>
           </td>
-          <td><p>Simulate data from a specified Bradley-Terry model</p></td>
-        </tr><tr>
+          <td><p>Subset a btdata object</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-fitting-the-bradley-terry-model" class="hasAnchor"><a href="#section-fitting-the-bradley-terry-model" class="anchor"></a>Fitting the Bradley-Terry model</h2>
+            <p class="section-desc"><p>Function to create a <code>btfit</code> object</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="btfit.html">btfit</a></code> </p>
+          </td>
+          <td><p>Fits the Bradley-Terry model</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-functions-taking-a-btfit-object" class="hasAnchor"><a href="#section-functions-taking-a-btfit-object" class="anchor"></a>Functions taking a `btfit` object</h2>
+            <p class="section-desc"><p>Functions and methods for a <code>btfit</code> object</p></p>
+          </th>
+        </tr>
+        <tr>
           <!--  -->
           <td>
             <p><code><a href="summary.btfit.html">summary</a></code> </p>
@@ -179,15 +153,47 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="toy_data.html">toy_data</a></code> </p>
+            <p><code><a href="coef.btfit.html">coef</a></code> </p>
           </td>
-          <td><p>A toy data set for the <code>BradleyTerryScalable</code> package</p></td>
+          <td><p>Extract coefficients of a 'btfit' object</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="vcov.btfit.html">vcov</a></code> </p>
           </td>
           <td><p>Calculate variance-covariance matrix for a btfit object</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="fitted.btfit.html">fitted</a></code> </p>
+          </td>
+          <td><p>Fitted Method for "btfit"</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="btprob.html">btprob</a></code> </p>
+          </td>
+          <td><p>Calculates Bradley-Terry probabilities</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="simulate_BT.html">simulate_BT</a></code> </p>
+          </td>
+          <td><p>Simulate data from a specified Bradley-Terry model</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-simulating-from-the-bradley-terry-model" class="hasAnchor"><a href="#section-simulating-from-the-bradley-terry-model" class="anchor"></a>Simulating from the Bradley-Terry model</h2>
+            <p class="section-desc"><p>Functions to simulate from the Bradley-Terry model</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="simulate_BT.html">simulate_BT</a></code> </p>
+          </td>
+          <td><p>Simulate data from a specified Bradley-Terry model</p></td>
         </tr>
       </tbody>
       </table>
@@ -197,7 +203,10 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-preparing-the-data">Preparing the data</a></li>
+      <li><a href="#section-fitting-the-bradley-terry-model">Fitting the Bradley-Terry model</a></li>
+      <li><a href="#section-functions-taking-a-btfit-object">Functions taking a `btfit` object</a></li>
+      <li><a href="#section-simulating-from-the-bradley-terry-model">Simulating from the Bradley-Terry model</a></li>
     </ul>
   </div>
 </div>

@@ -14,10 +14,10 @@ Given a number of items for whom we have pair-comparison data, the Bradley-Terry
 **Documentation website can be found [here](https://ellakaye.github.io/BradleyTerryScalable/) (thanks to [`pkgdown`](https://github.com/hadley/pkgdown))**
 
 Installing the package
-======================
+----------------------
 
 ``` r
-library(devtools)
+# install.packages("devtools")
 devtools::install_github("EllaKaye/BradleyTerryScalable", build_vignettes = TRUE)
 ```
 
@@ -26,7 +26,7 @@ library(BradleyTerryScalable)
 ```
 
 Preparing the data
-==================
+------------------
 
 The main fitting function in this package is `btfit`. This function takes as its main argument an object of class `btdata`. To create a `btdata` object, use the function `btdata(x)`.
 
@@ -118,7 +118,7 @@ summary(toy_btdata_subset)
 Alternatively, set the `subset` argument in `btfit`.
 
 Fitting the model
-=================
+-----------------
 
 The summary of the `btdata` object reveals whether the comparison graph is fully-connected or not. This affects the type of estimate available for the strength parameter.
 
@@ -143,20 +143,19 @@ toy_fit_MAP <- btfit(toy_btdata, 1.1)
 `btfit` objects are a list, and they are not designed to be examined directly, but to be passed to other methods.
 
 Methods for a `btfit` object
-============================
+----------------------------
 
-`summary.btift`, `coef.btfit` and `vcov.btfit`
-----------------------------------------------
+### `summary.btift`, `coef.btfit` and `vcov.btfit`
 
 The `summary.btfit` method returns a list with
 
--   `call`: the call to to `btfit`
+-   `call`: the call to `btfit`
 -   `item_summary`: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranking in descending order *within each component*
 -   `component_summary`: a data frame with one row per component in the fit.
 
 The standard errors are *not* returned by default (since the underlying `vcov.btfit` function can be slow for large matrices), but can be included by setting `SE = TRUE`. It is also possible to set a reference item, and to return the summary for only a subset of components (see `?summary.btfit`).
 
-The `coef.btfit` method extracts the parameter estimates. This is the strength parameter, on the log scale, contrainted such that the mean of the estimates is zero. By default a vector if `btfit` was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`.
+The `coef.btfit` method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained such that the mean of the estimates is zero. By default a vector if `btfit` was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`.
 
 The `vcov.btfit` method returns the variance-covariance matrix (or a list of these matrices by component), and also has `ref` and `subset` arguments (see `?vcov.btfit`).
 
@@ -215,8 +214,7 @@ vcov(citations_fit, ref = "JASA")
 #>   Comm Statist 0.001172936 0.001396292    0  0.009638953
 ```
 
-`btprob` and `fitted.btfit`
----------------------------
+### `btprob` and `fitted.btfit`
 
 This calculates the Bradley-Terry probabilities that item *i* beats item *j*. By default a matrix if `btfit` was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`. The `fitted.btfit` method functions similarly, except it returns the expected number of wins (see `?fitted.btfit`).
 
@@ -242,8 +240,7 @@ fitted(toy_fit_MLE, as_df = TRUE)
 #> 7         3       a       c 0.7092268 0.2907732
 ```
 
-`simulate.btfit` and `simuate_BT`
----------------------------------
+### `simulate.btfit` and `simuate_BT`
 
 There are two functions to simuate data from a Bradley-Terry model. `simulate.btfit` takes a `btfit` object *which has been fitted on one component* (either the full dataset, or a one-component subset). `simulate_BT` takes an `N` matrix (i.e. where the *i,j*-th elemenent is the number of times items *i* and *j* have been compared) a vector `pi`, the strength parameters of a Bradley-Terry model (note that `pi` *not* the same as the estimates in `coef` and `summary`, which are on the log-scale). Both functions return a `wins` matrix by default, but can also be set to return a `btdata` object.
 
@@ -258,7 +255,7 @@ tournament_sim <- simulate_BT(pi_vec, Nmatrix, nsim = 2)
 ```
 
 The Bradley-Terry model
-=======================
+-----------------------
 
 Details of the Bradley-Terry model are not presented here (due to GitHub's inability to display equations). Instead, please refer to the (soon-to-be-written) vignette.
 

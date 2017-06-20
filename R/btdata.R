@@ -10,9 +10,11 @@
 #' 
 #' Alternatively, \code{x} can be an igraph object representing the comparison graph of the data, i.e. the graph where the nodes are the items, and there is a directed edge from node \eqn{i} to node \eqn{j} whenever item \eqn{i} has beaten item \eqn{j} at least once. Then, if \code{x} is a weighted graph, the weight on each edge \eqn{i-j} represents the number of times item \eqn{i} has beaten item \eqn{j}. If \code{x} is not weighted, there is a separate edge from node \eqn{i} to node \eqn{j} for each time item \eqn{i} has beaten item \eqn{j}.
 #' 
-#' Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns.
+#' Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns. Similarly, \code{x} can be a square contingency table (of the type used as an argument to \code{countsToBinomial} in the \code{BradleyTerry2 pacakge}).
 #' 
-#' @param x The data, which is either a three- or four-column data frame, a directed igraph object, or a square matrix. See Details.
+#' \code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully-connected. If it is not fully-connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. 
+#' 
+#' @param x The data, which is either a three- or four-column data frame, a directed igraph object, a square matrix or a square contingency table. See Details.
 #' @param return_graph Logical. If TRUE, an igraph object representing the comparison graph will be returned.
 #' @return A btdata object, which is a list containing:
 #' \item{wins}{A K*K square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
@@ -25,6 +27,12 @@ btdata <- function(x, return_graph = FALSE) {
   # check x is of an appropriate type
   
   ## Get wins matrix
+  
+  # if x is a table, convert it to a matrix
+  if (is.table(x)) {
+    attr(x, "class") <- NULL
+    attr(x, "call") <- NULL
+  }
 
   # if x is a df
   if (is.data.frame(x)) {
@@ -52,15 +60,15 @@ btdata <- function(x, return_graph = FALSE) {
   else if ((methods::is(x, "Matrix") | is.matrix(x) )) {
     
     # check dimensions/content
-    if (dim(x)[1] != dim(x)[2]) stop("If x is a matrix, it must be a square")
-    if(is.matrix(x)) {if (!is.numeric(x)) stop("If x is a matrix, all elements must be numeric")}
-    if(methods::is(x, "Matrix")) {if (!is.numeric(as.vector(x))) stop("If x is a matrix, all elements must be numeric")}
-    if (any(x < 0)) stop("If x is a matrix, all elements must be non-negative")
-    if(!identical(rownames(x), colnames(x))) stop("If x is a matrix, rownames and colnames of x should be the same")
+    if (dim(x)[1] != dim(x)[2]) stop("If x is a matrix or table, it must be a square")
+    if(is.matrix(x)) {if (!is.numeric(x)) stop("If x is a matrix or table, all elements must be numeric")}
+    if(methods::is(x, "Matrix")) {if (!is.numeric(as.vector(x))) stop("If x is a matrix or table, all elements must be numeric")}
+    if (any(x < 0)) stop("If x is a matrix or table, all elements must be non-negative")
+    if(!identical(rownames(x), colnames(x))) stop("If x is a matrix or table, rownames and colnames of x should be the same")
     if (anyDuplicated(rownames(x)) > 0) {
      
       arg <- deparse(substitute(x))
-      stop("If x is a matrix with row- and column names, these must be unique. Consider fixing with rownames(", arg, ") <- colnames(", arg, ") <- make.names(rownames(", arg, "), unique = TRUE)")
+      stop("If x is a matrix or table with row- and column names, these must be unique. Consider fixing with rownames(", arg, ") <- colnames(", arg, ") <- make.names(rownames(", arg, "), unique = TRUE)")
     }
     
     # ensure wins is a dgCMatrix
@@ -70,7 +78,7 @@ btdata <- function(x, return_graph = FALSE) {
     g <- igraph::graph.adjacency(wins, weighted = TRUE, diag = FALSE)
   }
   
-  else stop("x must be a square matrix, a directed igraph object, or a 3 or 4 column dataframe.") 
+  else stop("x must be a 3 or 4 column dataframe, a directed igraph object, or square matrix or contingency table.") 
   
   
   ## get components
@@ -90,6 +98,9 @@ btdata <- function(x, return_graph = FALSE) {
   result
 }
 
+#' @rdname btdata
+#' @param object A \code{btdata} object
+#' @param ... Other arguments
 #' @export
 summary.btdata <- function(object, ...){
   if (!inherits(object, "btdata")) stop("object should be a 'btdata' object")
@@ -107,7 +118,7 @@ summary.btdata <- function(object, ...){
   
   density <- Matrix::mean(object$wins != 0)
   
-  cat("Number of players:", K, "\n")
+  cat("Number of items:", K, "\n")
   cat("Density of wins matrix:", density, "\n")
   cat("Fully-connected:", connected, "\n")
 

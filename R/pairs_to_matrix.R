@@ -1,6 +1,6 @@
 #' Converts a data frame of paired results into a square matrix.
 #'
-#' \code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix.
+#' \code{pairs_to_matrix} is a data manipulation function that converts a data frame of paired results (either ordered or unordered) into a square matrix. This is a helper function for \code{\link{btdata}}.
 #'
 #' @param df A data frame (either a \code{\link[base]{data.frame}} or an object that inherits that class, such as a \code{\link[dplyr]{tbl_df}} or a \code{\link[data.table]{data.table}}). It must have 3 or 4 columns:
 #' \describe{
@@ -9,7 +9,7 @@
 #' }
 #' In both cases, if there is a repeated pairing in \code{df}, \code{pairs_to_matrix} aggregates the number of wins, as one would expect.
 #' @return A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}.
-#' @seealso \code{\link{btfit}}.
+#' @seealso \code{\link{btdata}}.
 #' @examples
 #' winner <- c("A", "A", "A", "A", "A", "B", "B", "B", "C", "C", "E", "F", "F")
 #' loser <- c("B", "B", "C", "D", "F", "D", "A", "F", "F", "G", "G", "A", "C")

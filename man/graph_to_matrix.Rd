@@ -13,7 +13,7 @@ graph_to_matrix(g)
 A \eqn{K} by \eqn{K} sparse Matrix, where \eqn{K} is the number of players. The \eqn{i,j}-th element of this matrix is the number of times player \eqn{i} beats player \eqn{j}.
 }
 \description{
-\code{graph_to_matrix} is a data manipulation function that converts a graph representation of wins data into a square matrix.
+\code{graph_to_matrix} is a data manipulation function that converts a graph representation of wins data into a square matrix. This is a helper function for \code{\link{btdata}}.
 }
 \examples{
 g <- igraph::make_graph(c(1,2, 1,2, 2,3, 3,4, 5,6), directed = TRUE)
@@ -24,5 +24,5 @@ igraph::E(g2)$weight <- 1:4
 graph_to_matrix(g2)
 }
 \seealso{
-\code{\link{btfit}}.
+\code{\link{btdata}}.
 }

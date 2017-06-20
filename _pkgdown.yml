@@ -1,0 +1,33 @@
+reference:
+  - title: "Preparing the data"
+    desc: "Functions for preparing a `btdata` object"
+    contents:
+      - graph_to_matrix
+      - pairs_to_matrix
+      - btdata
+      - summary.btdata
+      - select_components
+  - title: "Fitting the Bradley-Terry model"
+    desc: "Function to create a `btfit` object"
+    contents:
+      - btfit
+  - title: "Functions taking a `btfit` object"
+    desc: "Functions and methods for a `btfit` object"
+    contents:
+      - summary.btfit
+      - coef.btfit
+      - vcov.btfit
+      - fitted.btfit
+      - btprob
+      - simulate.btfit
+  - title: "Simulating from the Bradley-Terry model"
+    desc: "Functions to simulate from the Bradley-Terry model"
+    contents:
+      - simulate_BT
+
+
+
+      
+  
+  
+  
