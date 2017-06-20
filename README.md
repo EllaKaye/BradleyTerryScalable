@@ -30,12 +30,14 @@ Preparing the data
 
 The main fitting function in this package is `btfit`. This function takes as its main argument an object of class `btdata`. To create a `btdata` object, use the function `btdata(x)`.
 
-The `x` argument to `btdata` can be one of three classes of object:
+The `x` argument to `btdata` can be one of four classes of object:
 
 -   A data frame (`data.frame` or `tibble`), with three or four columns
     -   If the data frame has three columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2.
     -   If the data frame has four columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2 and the fourth column must be the number of times item 2 has beaten item 1.
 -   A matrix (either a base `matrix` or a class from the `Matrix` package), dimension K by K, where K is the number of items. The *i,j*-th element is the number of times item *i* has beaten item *j*.
+
+-   A contingency table of class `table`, similar to the matrix described in the above point.
 
 -   An igraph, representing the *comparison graph*, with the K items as nodes. For the edges:
     -   If the graph is unweighted, a directed edge from node *i* to node *j* for every time item *i* has beaten item *j*
@@ -86,11 +88,11 @@ Information about the `btdata` objects can be seen through the `summary` method:
 
 ``` r
 summary(citations_btdata)
-#> Number of players: 4 
+#> Number of items: 4 
 #> Density of wins matrix: 1 
 #> Fully-connected: TRUE
 summary(toy_btdata)
-#> Number of players: 8 
+#> Number of items: 8 
 #> Density of wins matrix: 0.203125 
 #> Fully-connected: FALSE 
 #> Number of fully-connected components: 3 
@@ -110,7 +112,7 @@ toy_btdata_subset <- select_components(toy_btdata, "3")
 toy_btdata_subset <- select_components(toy_btdata, function(x) length(x) == 4)
 toy_btdata_subset <- select_components(toy_btdata, function(x) "c" %in% x)
 summary(toy_btdata_subset)
-#> Number of players: 4 
+#> Number of items: 4 
 #> Density of wins matrix: 0.25 
 #> Fully-connected: TRUE
 ```
@@ -262,5 +264,3 @@ Details of the Bradley-Terry model are not presented here (due to GitHub's inabi
 ``` r
 vignette("BradleyTerryScalable", package = "BradleyTerryScalable")
 ```
-
-**NOTE: this vignette isn't actually written yet! This vignette exists but is missing content**

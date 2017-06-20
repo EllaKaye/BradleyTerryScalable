@@ -79,7 +79,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 <h2 class="hasAnchor">
 <a href="#preparing-the-data" class="anchor"></a>Preparing the data</h2>
 <p>The main fitting function in this package is <code>btfit</code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="reference/btdata.html">btdata(x)</a></code>.</p>
-<p>The <code>x</code> argument to <code>btdata</code> can be one of three classes of object:</p>
+<p>The <code>x</code> argument to <code>btdata</code> can be one of four classes of object:</p>
 <ul>
 <li>A data frame (<code>data.frame</code> or <code>tibble</code>), with three or four columns
 <ul>
@@ -88,6 +88,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 </ul>
 </li>
 <li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension K by K, where K is the number of items. The <em>i,j</em>-th element is the number of times item <em>i</em> has beaten item <em>j</em>.</p></li>
+<li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
 <li>An igraph, representing the <em>comparison graph</em>, with the K items as nodes. For the edges:
 <ul>
 <li>If the graph is unweighted, a directed edge from node <em>i</em> to node <em>j</em> for every time item <em>i</em> has beaten item <em>j</em>
@@ -133,11 +134,11 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btd
 </ul>
 <p>Information about the <code>btdata</code> objects can be seen through the <code>summary</code> method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_btdata)
-<span class="co">#&gt; Number of players: 4 </span>
+<span class="co">#&gt; Number of items: 4 </span>
 <span class="co">#&gt; Density of wins matrix: 1 </span>
 <span class="co">#&gt; Fully-connected: TRUE</span>
 <span class="kw">summary</span>(toy_btdata)
-<span class="co">#&gt; Number of players: 8 </span>
+<span class="co">#&gt; Number of items: 8 </span>
 <span class="co">#&gt; Density of wins matrix: 0.203125 </span>
 <span class="co">#&gt; Fully-connected: FALSE </span>
 <span class="co">#&gt; Number of fully-connected components: 3 </span>
@@ -152,7 +153,7 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btd
 toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="kw">length</span>(x) ==<span class="st"> </span><span class="dv">4</span>)
 toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"c"</span> %in%<span class="st"> </span>x)
 <span class="kw">summary</span>(toy_btdata_subset)
-<span class="co">#&gt; Number of players: 4 </span>
+<span class="co">#&gt; Number of items: 4 </span>
 <span class="co">#&gt; Density of wins matrix: 0.25 </span>
 <span class="co">#&gt; Fully-connected: TRUE</span></code></pre></div>
 <p>Alternatively, set the <code>subset</code> argument in <code>btfit</code>.</p>
@@ -299,7 +300,6 @@ tournament_sim &lt;-<span class="st"> </span><span class="kw"><a href="reference
 <a href="#the-bradley-terry-model" class="anchor"></a>The Bradley-Terry model</h2>
 <p>Details of the Bradley-Terry model are not presented here (due to GitHub’s inability to display equations). Instead, please refer to the (soon-to-be-written) vignette.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">"BradleyTerryScalable"</span>, <span class="dt">package =</span> <span class="st">"BradleyTerryScalable"</span>)</code></pre></div>
-<p><strong>NOTE: this vignette isn’t actually written yet! This vignette exists but is missing content</strong></p>
 </div>
 </div>
 </div>

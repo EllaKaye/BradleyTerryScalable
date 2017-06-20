@@ -63,10 +63,326 @@
     
     
 <div class="contents">
-<div id="the-bradley-terry-model" class="section level1">
+<div id="introduction" class="section level1">
 <h1 class="hasAnchor">
-<a href="#the-bradley-terry-model" class="anchor"></a>The Bradley-Terry model</h1>
-<p><em>Vignette needs writing!</em></p>
+<a href="#introduction" class="anchor"></a>Introduction</h1>
+<p>The Bradley-Terry model <span class="citation">(Bradley and Terry 1952)</span> is a popular method for finding the probabilities for each item in a set being preferred over each of the others, based on repeated pairwise comparisons between the items of the set. It is used to assign a strength parameter to each item in a group, on the basis of a number of pairwise comparisons between those items. An overall ranking may then be formed on the basis of these strengths.</p>
+<p>The model is popular in a sporting context, where the group may be a league and the items are players or teams within that league. The comparisons are matches between the players or teams and the strength parameter represents the overall skill of that player or team. Extensions of the Bradley-Terry model have also been used to rank chess players <span class="citation">(Elo 1978)</span> and NASCAR drivers <span class="citation">(Hunter 2004)</span>. For a non-sporting example, the Bradley-Terry model has been used to derive influence rankings for journals, where the comparison between two journals are the number of citations from each to the other <span class="citation">(Varin, Cattelan, and Firth 2016)</span>.</p>
+<p>In recent years, the de facto method for fitting Bradley-Terry models has been to find the maximum likelihood estimate using the MM-algorithm of <span class="citation">(Hunter 2004)</span>. However, the existence and uniqueness of the MLE is only guaranteed under certain assumptions on the data set, as first described by <span class="citation">Ford (1957)</span>. As an alternative to finding the MLE, <span class="citation">Caron and Doucet (2012)</span> have proposed a Bayesian approach.</p>
+<p>The CRAN package <strong>BradleyTerry2</strong> is a well-established package for fitting the Bradley-Terry model. The <strong>BradleyTerryScalable</strong> package is not as fully-featured, for example it does not allow for home-advantage, nor can it incorporate covariant information. However, <strong>BradleyTerryScalable</strong> is designed to do one thing well, namely to fit the Bradley-Terry model to large and potentially sparse datasets. It can easily handle much bigger datasets, with many more items. Moreover, unlike <strong>BradleyTerry2</strong>, <strong>BradleyTerryScalable</strong> can be used to find both the MLE and a Bayesian MAP estimate of the strength parameter, thus enabling the model a fit even when the underlying comparison graph is not fully-connected. Also, a great deal of care has been taken to provide a simple and intuitive user interface.</p>
+<p>In the Background section, we first present the Bradley-Terry model, and the conditions under which the its maximum likelhood estimate exists. We then present algorithms that can be used to find the MLE and MAP estimates.</p>
+<p>In the BradleyTerryScalable section, we present our package, and demonstate its use on a couple of toy datasets.</p>
+</div>
+<div id="background" class="section level1">
+<h1 class="hasAnchor">
+<a href="#background" class="anchor"></a>Background</h1>
+<div id="the-bradley-terry-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-bradley-terry-model" class="anchor"></a>The Bradley-Terry model</h2>
+<p>Consider a set of <span class="math inline">\(K\)</span> items. Without loss of generality, we will refer to the outcome of the comparison as a win for one item and a loss for the other. For items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, the Bradley-Terry model gives:</p>
+<p><span class="math display">\[
+p_{ij} = \mathbb{P}(i \text{ beats } j) = \frac{\pi_i}{\pi_i + \pi_j},
+\]</span> where <span class="math inline">\(\pi_k\)</span> is a positive-valued parameter which represents the skill of item <span class="math inline">\(k\)</span>, for <span class="math inline">\(k = 1,\ldots, K\)</span>. We denote <span class="math inline">\({\pi} = \{\pi_k\}_{k = 1}^K\)</span>. Let <span class="math inline">\(w_{ij}\)</span> be the number of times that <span class="math inline">\(i\)</span> wins against <span class="math inline">\(j\)</span> and <span class="math inline">\(n_{ij} = w_{ij} + w_{ji}\)</span> be the number of comparisons between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, and assume, by convention, that <span class="math inline">\(w_{ii} = 0\)</span>. Then, assuming that the outcome of each match is independent, the log-likelihood based on model is</p>
+<p><span class="math display">\[
+\ell({\pi}) = \sum_{i = 1}^{K}\sum_{j = 1}^{K} [w_{ij}(\log \pi_i - \log(\pi_i + \pi_j))].
+\]</span> Since <span class="math inline">\(\ell({\pi}) = \ell({\alpha\pi})\)</span> for <span class="math inline">\(\alpha &gt; 0\)</span>, for identifiability we need a constraint on the parameter space: we take this to be <span class="math inline">\(\sum_{i = 1}^K \pi_i = K\)</span>.</p>
+<p>An alternative parameterisation of the Bradley-Terry model is to set <span class="math inline">\(\beta_k = \log \pi_k\)</span>, which leads to the logit-linear form <span class="math display">\[
+\text{logit}[p_{ij}] = \beta_i - \beta_j.
+\]</span></p>
+<div id="the-comparison-graph-and-the-existence-of-the-mle" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-comparison-graph-and-the-existence-of-the-mle" class="anchor"></a>The comparison graph and the existence of the MLE</h3>
+<p>There is a graph-theoretic interpretation of the comparison data that will prove useful. We define the <strong>comparison graph</strong> to have as its nodes the <span class="math inline">\(K\)</span> items and we let there be a directed edge <span class="math inline">\((i, j)\)</span> whenever <span class="math inline">\(i\)</span> has beaten <span class="math inline">\(j\)</span> at least once. The weight on that edge is <span class="math inline">\(w_{ij}\)</span>.</p>
+<p><span class="citation">Ford (1957)</span> noted that if it is possible to partition the items into two groups, A and B, such that no item in A has ever been compared to an item in B, then there is no ground for rating any item in A with respect to any item in B. Any items who win all their comparisons (or groups of items who win all their comparisons relative to another group) also cause problems, for then there is no finite maximiser of the log-likelihood. Therefore, for a unique, finite MLE to exist, it is necessary assume the following: In every possible partition of the items into two non-empty subsets, some item in the second set beats some item in the first set at least once. Equivalently:</p>
+<blockquote>
+<p>For a unique finite MLE to exist, the comparison graph must be fully connected (i.e. there is a directed path from <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span>, <span class="math inline">\(\forall i, j\)</span>).</p>
+</blockquote>
+</div>
+</div>
+<div id="fitting-the-bradley-terry-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#fitting-the-bradley-terry-model" class="anchor"></a>Fitting the Bradley-Terry model</h2>
+<div id="using-the-mm-algorithm-to-find-the-mle" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-the-mm-algorithm-to-find-the-mle" class="anchor"></a>Using the MM-algorithm to find the MLE</h3>
+<p>To find the MLE of the Bradley-Terry model, <span class="citation">Hunter (2004)</span> proposed using an MM-algorith <span class="citation">(Lange, Hunter, and Yang 2000)</span>. This leads to a fixed-point iteration:</p>
+<p><span class="math display">\[
+\pi_i^{(n+1)} = \frac{W_i}{\sum_{j=1}^K \frac{n_{ij}}{\pi_i^{(n)} + \pi_j^{(n)}}},
+\]</span> where <span class="math inline">\(W_i = \sum_{j = 1}^K w_{ij}\)</span> is the total number of comparisons won by item <span class="math inline">\(i\)</span> and <span class="math inline">\(n_ij = w_{ij} + w_{ji}\)</span> is the number of comparisons between items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
+</div>
+<div id="using-the-em-algorithm-to-find-the-map-estimate" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-the-em-algorithm-to-find-the-map-estimate" class="anchor"></a>Using the EM-algorithm to find the MAP estimate</h3>
+<p><span class="citation">Caron and Doucet (2012)</span> take a Bayesian approach to estimating <span class="math inline">\(\pi\)</span>. First they introduce latent variables, then the following prior on <span class="math inline">\(\pi\)</span>: <span class="math display">\[
+p(\pi) = \prod_{i=1}^K \mathcal{G}(\pi_i; a, b).
+\]</span> This is a conjugate prior, and the resulting log-posterior distribution can be maximised by the EM-algorithm to find the MAP estimate of <span class="math inline">\(\pi\)</span>. This leads to the fixed point iteration <span class="math display">\[
+\pi_i^{(n+1)} = \frac{a - 1 + W_i}{b + \sum_{j=1}^K\frac{n_{ij}}{\pi_i^{(n)} + \pi_j^{(n)}}}.
+\]</span> Note that when <span class="math inline">\(a = 1\)</span> and <span class="math inline">\(b = 0\)</span>, the EM and MM-algorithms are equivalent and the MAP estimate and MLE are identical. Moreover, <span class="math inline">\(b\)</span> is not likelihood-identifiable, so the estimate of <span class="math inline">\(\pi\)</span> depends only on the data and the value of <span class="math inline">\(a\)</span>.</p>
+</div>
+</div>
+</div>
+<div id="bradleyterryscalable" class="section level1">
+<h1 class="hasAnchor">
+<a href="#bradleyterryscalable" class="anchor"></a>BradleyTerryScalable</h1>
+<div id="installing-the-package" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installing-the-package" class="anchor"></a>Installing the package</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
+devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/BradleyTerryScalable"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(BradleyTerryScalable)</code></pre></div>
+</div>
+<div id="preparing-the-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#preparing-the-data" class="anchor"></a>Preparing the data</h2>
+<p>The main fitting function in this package is <code>btfit</code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="../reference/btdata.html">btdata(x)</a></code>.</p>
+<p>The <code>x</code> argument to <code>btdata</code> can be one of four classes of object:</p>
+<ul>
+<li>A data frame (<code>data.frame</code> or <code>tibble</code>), with three or four columns
+<ul>
+<li>If the data frame has three columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2.</li>
+<li>If the data frame has four columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2 and the fourth column must be the number of times item 2 has beaten item 1.</li>
+</ul>
+</li>
+<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension K by K, where K is the number of items. The <em>i,j</em>-th element is the number of times item <em>i</em> has beaten item <em>j</em>.</p></li>
+<li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
+<li>An <code>igraph</code>, representing the <em>comparison graph</em>, with the K items as nodes. For the edges:
+<ul>
+<li>If the graph is unweighted, a directed edge from node <em>i</em> to node <em>j</em> for every time item <em>i</em> has beaten item <em>j</em>
+</li>
+<li>If the graph is weighted, then one edge node <em>i</em> to node <em>j</em> if item <em>i</em> has beaten item <em>j</em> at least once, with the weight attribute of that edge set to the number of times <em>i</em> has beaten <em>j</em>.</li>
+</ul>
+</li>
+</ul>
+<p>The <code>BradleyTerryScalable</code> package provides two toy data sets with which we’ll use in this demonstration:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(citations)
+citations</code></pre></div>
+<pre><code>##               citing
+## cited          Biometrika Comm Statist JASA JRSS-B
+##   Biometrika          714          730  498    221
+##   Comm Statist         33          425   68     17
+##   JASA                320          813 1072    142
+##   JRSS-B              284          276  325    188</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(toy_data)
+toy_data</code></pre></div>
+<pre><code>##    player1 player2 wins
+## 1        c       a    1
+## 2        a       b    2
+## 3        e       b    3
+## 4        d       c    3
+## 5        b       d    1
+## 6        e       d    4
+## 7        e       f    1
+## 8        g       f    5
+## 9        h       f    5
+## 10       e       g    3
+## 11       f       g    3
+## 12       h       g    2
+## 13       g       h    1</code></pre>
+<p>Run <code><a href="../reference/btdata.html">btdata()</a></code> to produce objects of class <code>btdata</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(citations)
+toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(toy_data)</code></pre></div>
+<p><code>btdata</code> objects are a list containing two elements:</p>
+<ul>
+<li>
+<code>wins</code> which is a matrix of the form described in the second bullet point above</li>
+<li>
+<code>components</code> which is itself a list of the fully-connected components of the comparison graph (see the third bullet point above)</li>
+</ul>
+<p>Information about the <code>btdata</code> objects can be seen through the <code>summary</code> method:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_btdata)</code></pre></div>
+<pre><code>## Number of items: 4 
+## Density of wins matrix: 1 
+## Fully-connected: TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(toy_btdata)</code></pre></div>
+<pre><code>## Number of items: 8 
+## Density of wins matrix: 0.203125 
+## Fully-connected: FALSE 
+## Number of fully-connected components: 3 
+## Summary of fully-connected components: 
+##   Component size Freq
+## 1              1    1
+## 2              3    1
+## 3              4    1</code></pre>
+<p>Note that components of size 1 will be filtered out in the MLE fit (see next section); the model doesn’t make sense for them.</p>
+<p><code>select_components</code> can be used to create a subset of a <code>btdata</code> object. In our toy case, the following all give the same subset:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, <span class="st">"3"</span>)
+toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="kw">length</span>(x) ==<span class="st"> </span><span class="dv">4</span>)
+toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"c"</span> %in%<span class="st"> </span>x)
+<span class="kw">summary</span>(toy_btdata_subset)</code></pre></div>
+<pre><code>## Number of items: 4 
+## Density of wins matrix: 0.25 
+## Fully-connected: TRUE</code></pre>
+<p>Alternatively, set the <code>subset</code> argument in <code>btfit</code>.</p>
+</div>
+<div id="fitting-the-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#fitting-the-model" class="anchor"></a>Fitting the model</h2>
+<p>The summary of the <code>btdata</code> object reveals whether the comparison graph is fully-connected or not. This affects the type of estimate available for the strength parameter.</p>
+<ul>
+<li>If <code>Fully-connected: TRUE</code>, then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.</li>
+<li>If <code>Fully-connected: FALSE</code>, then we cannot find the MLE for the full dataset. There are two alternatives:
+<ul>
+<li>Find the MLE on each fully connected component of the comparison graph (and note then that it is only meaningful to rank and compare items within the same component).</li>
+<li>Place a Bayesian prior on the model, then find the maximum a posteriori (MAP) estimate. This always exists and is finite. It gives a principled way of ranking and comparing all <em>K</em> items.</li>
+</ul>
+</li>
+</ul>
+<p>The function <code>btfit</code> requires two arguments: the data (in the form of a <code>btdata</code> oject), and <code>a</code>, which controls whether the MLE or MAP estimate is returned.</p>
+<ul>
+<li>If <code>a = 1</code>, the MLE is returned, either on the full dataset if the comparison graph is fully-connected, or else the MLE is found separately for each fully-connected component.</li>
+<li>If <code>a &gt; 1</code>, the MAP estimate is returned, with <code>a</code> as the value of the shape parameter in the prior.</li>
+</ul>
+<p>See <code><a href="../reference/btfit.html">?btfit</a></code> or the <em>Fitting the Bradley-Terry model</em> section above for more details.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_fit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(citations_btdata, <span class="dv">1</span>)
+toy_fit_MLE &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(toy_btdata, <span class="dv">1</span>)
+toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(toy_btdata, <span class="fl">1.1</span>)</code></pre></div>
+<p><code>btfit</code> objects are a list, and they are not designed to be examined directly, but to be passed to other methods.</p>
+</div>
+<div id="methods-for-a-btfit-object" class="section level2">
+<h2 class="hasAnchor">
+<a href="#methods-for-a-btfit-object" class="anchor"></a>Methods for a <code>btfit</code> object</h2>
+<div id="summary-btift-coef-btfit-and-vcov-btfit" class="section level3">
+<h3 class="hasAnchor">
+<a href="#summary-btift-coef-btfit-and-vcov-btfit" class="anchor"></a><code>summary.btift</code>, <code>coef.btfit</code> and <code>vcov.btfit</code>
+</h3>
+<p>The <code>summary.btfit</code> method returns a list with</p>
+<ul>
+<li>
+<code>call</code>: the call to <code>btfit</code>
+</li>
+<li>
+<code>item_summary</code>: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranking in descending order <em>within each component</em>
+</li>
+<li>
+<code>component_summary</code>: a data frame with one row per component in the fit.</li>
+</ul>
+<p>The standard errors are <em>not</em> returned by default (since the underlying <code>vcov.btfit</code> function can be slow for large matrices), but can be included by setting <code>SE = TRUE</code>. It is also possible to set a reference item, and to return the summary for only a subset of components (see <code><a href="../reference/summary.btfit.html">?summary.btfit</a></code>).</p>
+<p>The <code>coef.btfit</code> method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained such that the mean of the estimates is zero. By default a vector if <code>btfit</code> was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>.</p>
+<p>The <code>vcov.btfit</code> method returns the variance-covariance matrix (or a list of these matrices by component), and also has <code>ref</code> and <code>subset</code> arguments (see <code><a href="../reference/vcov.btfit.html">?vcov.btfit</a></code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_fit)</code></pre></div>
+<pre><code>## $call
+## btfit(btdata = citations_btdata, a = 1)
+## 
+## $item_summary
+## # A tibble: 4 x 3
+##      component         item   estimate
+##          &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;
+## 1 full_dataset       JRSS-B  1.0604065
+## 2 full_dataset   Biometrika  0.7897537
+## 3 full_dataset         JASA  0.3095638
+## 4 full_dataset Comm Statist -2.1597241
+## 
+## $component_summary
+## # A tibble: 1 x 4
+##      component num_items iters converged
+##          &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
+## 1 full_dataset         4     2      TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(toy_fit_MLE, <span class="dt">SE =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## $call
+## btfit(btdata = toy_btdata, a = 1)
+## 
+## $item_summary
+## # A tibble: 7 x 4
+##   component  item   estimate        SE
+##       &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+## 1         2     h  1.2643415 0.7169719
+## 2         2     g -0.2488214 0.5045346
+## 3         2     f -1.0155201 0.5089739
+## 4         3     d  0.5843254 1.0020127
+## 5         3     a  0.3030107 1.0320999
+## 6         3     b -0.2987148 1.0314304
+## 7         3     c -0.5886212 1.0025948
+## 
+## $component_summary
+## # A tibble: 2 x 4
+##   component num_items iters converged
+##       &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
+## 1         2         3    13      TRUE
+## 2         3         4    16      TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(toy_fit_MAP)</code></pre></div>
+<pre><code>##          e          h          a          d          g          b 
+##  2.6768420  1.1322378 -0.1472393 -0.1621301 -0.3867808 -0.8484833 
+##          f          c 
+## -1.1214999 -1.1429465</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vcov</span>(citations_fit, <span class="dt">ref =</span> <span class="st">"JASA"</span>)</code></pre></div>
+<pre><code>##               citing
+## cited               JRSS-B  Biometrika JASA Comm Statist
+##   JRSS-B       0.005323938 0.001988435    0  0.001172936
+##   Biometrika   0.001988435 0.003671841    0  0.001396292
+##   JASA         0.000000000 0.000000000    0  0.000000000
+##   Comm Statist 0.001172936 0.001396292    0  0.009638953</code></pre>
+</div>
+<div id="btprob-and-fitted-btfit" class="section level3">
+<h3 class="hasAnchor">
+<a href="#btprob-and-fitted-btfit" class="anchor"></a><code>btprob</code> and <code>fitted.btfit</code>
+</h3>
+<p>This calculates the Bradley-Terry probabilities that item <em>i</em> beats item <em>j</em>. By default a matrix if <code>btfit</code> was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>. The <code>fitted.btfit</code> method functions similarly, except it returns the expected number of wins (see <code><a href="../reference/fitted.btfit.html">?fitted.btfit</a></code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/btprob.html">btprob</a></span>(citations_fit)</code></pre></div>
+<pre><code>## 4 x 4 sparse Matrix of class "dgCMatrix"
+##               citing
+## cited              JRSS-B Biometrika       JASA Comm Statist
+##   JRSS-B       .           0.5672532 0.67936229    0.9615848
+##   Biometrika   0.43274683  .         0.61779270    0.9502388
+##   JASA         0.32063771  0.3822073 .             0.9219605
+##   Comm Statist 0.03841516  0.0497612 0.07803945    .</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fitted</span>(toy_fit_MLE, <span class="dt">as_df =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## # A tibble: 7 x 5
+##   component player1 player2      fit1      fit2
+##       &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1         2       h       g 2.4585885 0.5414115
+## 2         2       h       f 4.5359770 0.4640230
+## 3         2       g       f 5.4624506 2.5375494
+## 4         3       d       b 0.7074518 0.2925482
+## 5         3       a       b 1.2921019 0.7078981
+## 6         3       d       c 2.2910316 0.7089684
+## 7         3       a       c 0.7092268 0.2907732</code></pre>
+</div>
+<div id="simulate-btfit-and-simuate_bt" class="section level3">
+<h3 class="hasAnchor">
+<a href="#simulate-btfit-and-simuate_bt" class="anchor"></a><code>simulate.btfit</code> and <code>simuate_BT</code>
+</h3>
+<p>There are two functions to simuate data from a Bradley-Terry model. <code>simulate.btfit</code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code>simulate_BT</code> takes an <code>N</code> matrix (i.e. where the <em>i,j</em>-th elemenent is the number of times items <em>i</em> and <em>j</em> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code>coef</code> and <code>summary</code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit)
+<span class="kw">set.seed</span>(<span class="dv">1982</span>)
+num_items &lt;-<span class="st"> </span><span class="dv">6</span>
+Nmatrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">2</span>, num_items ^<span class="st"> </span><span class="dv">2</span>), num_items, num_items) <span class="co"># 2 contests between every pair, systematic</span>
+<span class="kw">diag</span>(Nmatrix) &lt;-<span class="st"> </span><span class="dv">0</span>
+pi_vec &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(num_items)/<span class="dv">4</span>)
+tournament_sim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulate_BT.html">simulate_BT</a></span>(pi_vec, Nmatrix, <span class="dt">nsim =</span> <span class="dv">2</span>)</code></pre></div>
+</div>
+</div>
+<div id="further-information" class="section level2">
+<h2 class="hasAnchor">
+<a href="#further-information" class="anchor"></a>Further information</h2>
+<p>All code for the package is available at <a href="https://github.com/EllaKaye/BradleyTerryScalable" class="uri">https://github.com/EllaKaye/BradleyTerryScalable</a> and a documentation website is available at <a href="https://ellakaye.github.io/BradleyTerryScalable" class="uri">https://ellakaye.github.io/BradleyTerryScalable</a></p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
+<div id="refs" class="references">
+<div id="ref-BradleyTerry:1952">
+<p>Bradley, Ralph Allan, and Milton E Terry. 1952. “Rank Analysis of Incomplete Block Designs: 1. the Method of Paired Comparisons.” <em>Biometrika</em> 39 (3/4): 324–45.</p>
+</div>
+<div id="ref-Caron:2012">
+<p>Caron, Francois, and Arnaud Doucet. 2012. “Efficient Bayesian Inference for Generalized Bradley-Terry Models.” <em>Journal of Computational and Graphical Statistics</em> 21 (1): 174–96.</p>
+</div>
+<div id="ref-Elo:1978">
+<p>Elo, A. 1978. <em>The Rating of Chess Players, Past &amp; Present</em>. London: Batsford.</p>
+</div>
+<div id="ref-Ford:1957">
+<p>Ford, Lester R, Jr. 1957. “Solution of a Ranking Problem from Binary Comparisons.” <em>The American Mathematical Monthly</em> 64 (8, Part 2): 28–33.</p>
+</div>
+<div id="ref-Hunter:2004">
+<p>Hunter, David R. 2004. “MM Algorithms for Generalized Bradley-Terry Models.” <em>The Annals of Statistics</em> 32 (1): 384–406.</p>
+</div>
+<div id="ref-Lange:2000">
+<p>Lange, Kenneth, David R Hunter, and Ilsoon Yang. 2000. “Optimization Transfer Using Surrogate Objective Functions.” <em>Journal of Computational and Graphical Statistics</em> 9 (1): 1–20.</p>
+</div>
+<div id="ref-Varin:2016">
+<p>Varin, Cristiano, Manuela Cattelan, and David Firth. 2016. “Statistical Modelling of Citation Exchange Between Statistics Journals.” <em>Journal of the Royal Statistical Society: Series A</em> 179 (1): 1–63.</p>
+</div>
+</div>
 </div>
 </div>
   </div>
@@ -76,7 +392,23 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+<li><a href="#introduction">Introduction</a></li>
+      <li>
+<a href="#background">Background</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#the-bradley-terry-model">The Bradley-Terry model</a></li>
+      <li><a href="#fitting-the-bradley-terry-model">Fitting the Bradley-Terry model</a></li>
+      </ul>
+</li>
+      <li>
+<a href="#bradleyterryscalable">BradleyTerryScalable</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#installing-the-package">Installing the package</a></li>
+      <li><a href="#preparing-the-data">Preparing the data</a></li>
+      <li><a href="#fitting-the-model">Fitting the model</a></li>
+      <li><a href="#methods-for-a-btfit-object">Methods for a <code>btfit</code> object</a></li>
+      <li><a href="#further-information">Further information</a></li>
+      </ul>
+</li>
+      <li><a href="#references">References</a></li>
       </ul>
 </div>
       </div>
