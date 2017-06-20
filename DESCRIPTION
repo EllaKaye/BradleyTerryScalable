@@ -4,7 +4,7 @@ Title: Fits the Bradley-Terry Model to Potentially Large and Sparse Networks of
     Comparison Data
 Version: 0.0.0.9000
 Authors@R: c(
-  person("Ella", "Kaye", email = "E.Kaye.1@warwick.ox.ac.uk", role = c("aut", "cre")),
+  person("Ella", "Kaye", email = "E.Kaye.1@warwick.ac.uk", role = c("aut", "cre")),
   person("David", "Firth", role = c("aut")))
 Author: Ella Kaye [aut, cre], David Firth [aut]
 Maintainer: Ella Kaye <E.Kaye.1@warwick.ac.uk>
