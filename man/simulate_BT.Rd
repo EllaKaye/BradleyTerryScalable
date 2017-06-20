@@ -7,6 +7,9 @@
 \usage{
 simulate_BT(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix",
   "btdata"))
+
+\method{simulate}{btfit}(object, nsim = 1, seed = NULL,
+  result_class = c("sparseMatrix", "btdata"), ...)
 }
 \arguments{
 \item{pi}{a numeric vector, with all values finite and positive.}
@@ -21,6 +24,10 @@ For details see \code{\link{simulate}}.}
 
 \item{result_class}{a character vector specifying whether the generated datasets should be of class 
 "sparseMatrix" or of class "btdata".  The first match among those alternatives is used.}
+
+\item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
+
+\item{...}{Other arguments}
 }
 \value{
 a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
@@ -28,6 +35,9 @@ same dimensions as \code{N}.
 }
 \description{
 Simulate data from a specified Bradley-Terry model
+}
+\seealso{
+\code{\link{btfit}}
 }
 \author{
 David Firth

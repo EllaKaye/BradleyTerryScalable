@@ -1,6 +1,5 @@
 #' Simulate data from a specified Bradley-Terry model
 #'
-#' @aliases simulate.btfit
 #' @param pi a numeric vector, with all values finite and positive.
 #' @param N  a symmetric, numeric matrix with dimensions the same as \code{length(pi)}.  The elements should
 #' be numeric representations of non-negative integers.
@@ -11,6 +10,7 @@
 #' "sparseMatrix" or of class "btdata".  The first match among those alternatives is used. 
 #' @return a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
 #' same dimensions as \code{N}.
+#' @seealso \code{\link{btfit}}
 #' @author David Firth
 #' @export
 simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata")){
@@ -74,6 +74,10 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
   return(result)
 }
 
+#' @rdname simulate_BT
+#' 
+#' @inheritParams fitted.btfit 
+#' 
 #' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
     

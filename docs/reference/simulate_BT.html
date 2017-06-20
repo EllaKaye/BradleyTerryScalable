@@ -85,7 +85,11 @@
     
 
     <pre class="usage"><span class='fu'>simulate_BT</span>(<span class='no'>pi</span>, <span class='no'>N</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>result_class</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sparseMatrix"</span>,
-  <span class='st'>"btdata"</span>))</pre>
+  <span class='st'>"btdata"</span>))
+
+<span class='co'># S3 method for btfit</span>
+<span class='fu'>simulate</span>(<span class='no'>object</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>result_class</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sparseMatrix"</span>, <span class='st'>"btdata"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -113,12 +117,24 @@ For details see <code>simulate</code>.</p></td>
       <td><p>a character vector specifying whether the generated datasets should be of class 
 "sparseMatrix" or of class "btdata".  The first match among those alternatives is used.</p></td>
     </tr>
+    <tr>
+      <th>object</th>
+      <td><p>An object of class "btfit", typically the result <code>ob</code> of <code>ob &lt;- btfit(..)</code>. See <code><a href='btfit.html'>btfit</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a list of length <code>nsim</code> of simulated datasets, each dataset being a sparse matrix with the 
 same dimensions as <code>N</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='btfit.html'>btfit</a></code></p>
     
 
   </div>
@@ -128,6 +144,8 @@ same dimensions as <code>N</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
     <h2>Author</h2>
