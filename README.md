@@ -259,7 +259,7 @@ tournament_sim <- simulate_BT(pi_vec, Nmatrix, nsim = 2)
 The Bradley-Terry model
 -----------------------
 
-Details of the Bradley-Terry model are not presented here (due to GitHub's inability to display equations). Instead, please refer to the (soon-to-be-written) vignette.
+Details of the Bradley-Terry model are not presented here (due to GitHub's inability to display equations). Instead, please refer to the vignette.
 
 ``` r
 vignette("BradleyTerryScalable", package = "BradleyTerryScalable")
