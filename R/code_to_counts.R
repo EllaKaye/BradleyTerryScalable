@@ -24,6 +24,8 @@ code_to_counts <- function(df, code) {
   if (!(is.numeric(code) | is.character(code))) stop("code must be a numeric or character vector")
   if (!(length(code) %in% 2:3)) stop("code must be a vector of length 2 or 3")
   
+  df <- dplyr::as_data_frame(df)
+  
   # extract code elements
   W1 <- code[1]
   W2 <- code[2]
@@ -48,5 +50,5 @@ code_to_counts <- function(df, code) {
   }
   
   df <- dplyr::select(df, c(1:2, 4:5))
-  df
+  df 
 }
