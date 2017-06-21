@@ -2,6 +2,7 @@ reference:
   - title: "Preparing the data"
     desc: "Functions for preparing a `btdata` object"
     contents:
+      - code_to_counts
       - graph_to_matrix
       - pairs_to_matrix
       - btdata
