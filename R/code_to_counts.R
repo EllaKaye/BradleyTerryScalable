@@ -1,9 +1,12 @@
-#' Convert wins code to counts
+#' Converts data frame with a code for wins to counts of wins
 #'
 #' Convert a three-column data frame in which the third column is a code representing whether the item in column 1 won, lost or (if applicable) drew over/with the item in column 2, to a dataframe with counts (suitable for use in \code{\link{btdata}})
 #' 
-#' @param df A three-column data frame. Each row represents a comparison between two items. The first and second columns are the names of the first and second players respectively. The third column gives a code for who won. See examples.
-#' @param code A numeric vector or character vector, of length two or three (depending on whether there are ties.) The first and second element gives the codes used if the first or second item won respectively. If there are ties, the third element gives the code used in that case. See examples.
+#' This function is needed in the \code{BradleyTerryScalable} workflow when the user data is stored in a three-column data frame where each row is a comparison between two items, and where the third column is NOT a count of the number of times the item in the first column beat the item in the second column. Rather, it could be that the third column is a code for which of the two items won (including the possibility of a tie), for example \code{"W1", "W2", "D"}. Or else, it could be that the third column gives the score only in relation to the first item, e.g. 1 for a win, 0 for a loss or 0.5 for a draw without there anywhere in the table being the corresponding record for the second item (i.e. respectively 0 for a loss, 1 for a win and 0.5 for a draw.)
+#' 
+#' 
+#' @param df A three-column data frame. Each row represents a comparison between two items. The first and second columns are the names of the first and second players respectively. The third column gives a code for who won. See Details and Examples.
+#' @param code A numeric vector or character vector, of length two or three (depending on whether there are ties.) The first and second element gives the codes used if the first or second item won respectively. If there are ties, the third element gives the code used in that case. See Details and Examples.
 #' @return A four-column data frame where the first two columns are the name of the first and second item. The third and fourth column gives the wins count for the first and second item respectively: 1 for a win, 0 for a loss, and 0.5 each for a draw. This data frame is in the correct format to be passed to \code{\link{btdata}}
 #' @examples 
 #' first <- c("A", "A", "B", "A")
