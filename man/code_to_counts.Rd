@@ -20,9 +20,9 @@ Convert a three-column data frame in which the third column is a code representi
 \examples{
 first <- c("A", "A", "B", "A")
 second <- c("B", "B", "C", "C")
-df1 <- data.frame(player1 = first, player2 = second, result = c("W1", "W2", "D", "D"))
+df1 <- data.frame(player1 = first, player2 = second, code = c("W1", "W2", "D", "D"))
 code_to_counts(df1, c("W1", "W2", "D"))
-df2 <- data.frame(item1 = first, item2 = second, code = c(1, 0, 1, .5))
+df2 <- data.frame(item1 = first, item2 = second, result = c(1, 0, 1, .5))
 code_to_counts(df2, c(1, 0, .5))
 df3 <- data.frame(player1 = first, player2 = second, which_won = c(1,2,2,1))
 code_to_counts(df3, c(1,2))
