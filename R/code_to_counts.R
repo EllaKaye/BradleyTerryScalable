@@ -6,7 +6,7 @@
 #' 
 #' 
 #' @param df A three-column data frame. Each row represents a comparison between two items. The first and second columns are the names of the first and second players respectively. The third column gives a code for who won. See Details and Examples.
-#' @param code A numeric vector or character vector, of length two or three (depending on whether there are ties.) The first and second element gives the codes used if the first or second item won respectively. If there are ties, the third element gives the code used in that case. See Details and Examples.
+#' @param codes A numeric vector or character vector, of length two or three (depending on whether there are ties.) The first and second element gives the codes used if the first or second item won respectively. If there are ties, the third element gives the code used in that case. See Details and Examples.
 #' @return A four-column data frame where the first two columns are the name of the first and second item. The third and fourth column gives the wins count for the first and second item respectively: 1 for a win, 0 for a loss, and 0.5 each for a draw. This data frame is in the correct format to be passed to \code{\link{btdata}}
 #' @examples 
 #' first <- c("A", "A", "B", "A")
@@ -50,7 +50,7 @@ codes_to_counts <- function(df, codes) {
   df <- dplyr::mutate(df, item1wins = dplyr::if_else(wins_code == W1, 1, 0))
   df <- dplyr::mutate(df, item2wins = dplyr::if_else(wins_code == W2, 1, 0))  
   
-  if (length(code) == 3) {
+  if (length(codes) == 3) {
     df <- dplyr::mutate(df, item1wins = dplyr::if_else(wins_code == D, 0.5, item1wins))
     df <- dplyr::mutate(df, item2wins = dplyr::if_else(wins_code == D, 0.5, item2wins))
   }

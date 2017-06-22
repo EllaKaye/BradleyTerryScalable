@@ -9,7 +9,7 @@ codes_to_counts(df, codes)
 \arguments{
 \item{df}{A three-column data frame. Each row represents a comparison between two items. The first and second columns are the names of the first and second players respectively. The third column gives a code for who won. See Details and Examples.}
 
-\item{code}{A numeric vector or character vector, of length two or three (depending on whether there are ties.) The first and second element gives the codes used if the first or second item won respectively. If there are ties, the third element gives the code used in that case. See Details and Examples.}
+\item{codes}{A numeric vector or character vector, of length two or three (depending on whether there are ties.) The first and second element gives the codes used if the first or second item won respectively. If there are ties, the third element gives the code used in that case. See Details and Examples.}
 }
 \value{
 A four-column data frame where the first two columns are the name of the first and second item. The third and fourth column gives the wins count for the first and second item respectively: 1 for a win, 0 for a loss, and 0.5 each for a draw. This data frame is in the correct format to be passed to \code{\link{btdata}}
