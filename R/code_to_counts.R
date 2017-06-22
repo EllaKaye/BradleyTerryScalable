@@ -12,14 +12,14 @@
 #' first <- c("A", "A", "B", "A")
 #' second <- c("B", "B", "C", "C")
 #' df1 <- data.frame(player1 = first, player2 = second, code = c("W1", "W2", "D", "D"))
-#' code_to_counts(df1, c("W1", "W2", "D"))
+#' codes_to_counts(df1, c("W1", "W2", "D"))
 #' df2 <- data.frame(item1 = first, item2 = second, result = c(0, 1, 1, .5))
-#' code_to_counts(df2, c(1, 0, .5))
+#' codes_to_counts(df2, c(1, 0, .5))
 #' df3 <- data.frame(player1 = first, player2 = second, which_won = c(1,2,2,1))
-#' code_to_counts(df3, c(1,2))
+#' codes_to_counts(df3, c(1,2))
 #'
 #' @export
-code_to_counts <- function(df, code) {
+codes_to_counts <- function(df, code) {
   
   # check arguments
   if (!is.data.frame(df)) stop("df must be a data frame")
@@ -36,8 +36,11 @@ code_to_counts <- function(df, code) {
   
   # check that codes match content in column three
   code_elements <- sort(unique(df[[3]]))
-  if (is.character(code)) code <- as.factor(code)
-  if (!(identical(sort(code), code_elements))) stop("The elements in code don't match the elements in the third column of df")
+  if (is.character(code)) {
+    code <- factor(code)
+    code_elements <- factor(code_elements)
+  }
+  if (!(identical(sort(code), sort(code_elements)))) stop("The elements in code don't match the elements in the third column of df")
   
   
   # make col3 name consistent, so can use in mutate statements

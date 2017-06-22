@@ -26,7 +26,6 @@ graph_to_matrix <- function(g) {
 
 # Converts a data frame of paired results into a square matrix.
 pairs_to_matrix <- function(df) {
-  
   # Check for Matrix.utils
   if (!requireNamespace("Matrix.utils", quietly = TRUE)) {
     stop("The package Matrix.utils is needed for this function to work. Please install it.",
@@ -48,6 +47,10 @@ pairs_to_matrix <- function(df) {
   # check number of columns
   if (!(ncol(df) %in% 3:4 )) stop("Argument must be a data frame with three or four columns")
   
+  # get base data
+  items <- sort(base::union(df[[1]], df[[2]]))
+  n <- length(items)
+  
   # get formula for dMcast
   f <- stats::as.formula(paste(names(df)[1:2], collapse= " ~ "))
   
@@ -65,50 +68,89 @@ pairs_to_matrix <- function(df) {
   # fix colnames
   colnames(mat) <- stringr::str_replace(colnames(mat), names(df)[2], "")
   
-  # get ready to make square
-  players <- sort(base::union(rownames(mat), colnames(mat)))
-  n <- length(players)
+  # remove zeros, if any, taking care with dimnames
+  summary_mat <- Matrix::summary(mat)
+  x <- NULL # hack to avoid CRAN note
+  if (any(summary_mat[,3] == 0)) {
+    summary_mat <- dplyr::filter(summary_mat, x != 0)
+    
+    mat_rownames <- rownames(mat)
+    mat_colnames <- colnames(mat)
+    
+    new_mat_rownames <- mat_rownames[sort(unique(summary_mat[,1]))]
+    new_mat_colnames <- mat_colnames[sort(unique(summary_mat[,2]))]
+    
+    mat <- Matrix::sparseMatrix(i = summary_mat[,1], j = summary_mat[,2], x = summary_mat[,3])
+    
+    nonzero_rows <- which(Matrix::rowSums(mat) != 0)
+    nonzero_cols <- which(Matrix::colSums(mat) != 0)
+    
+    mat <- mat[nonzero_rows, nonzero_cols]
+    dimnames(mat) <- list(new_mat_rownames, new_mat_colnames)
+  }
+  
   
   # add in zeros for missing rows
   if (nrow(mat) < n) {
     new_rows <- Matrix::Matrix(0, n - nrow(mat), ncol(mat),
-                               dimnames = list(base::setdiff(players, rownames(mat)), colnames(mat)))
+                               dimnames = list(base::setdiff(items, rownames(mat)), colnames(mat)))
     mat <- rbind(mat, new_rows)
   }
   
   # add in zeros for missing columns
   if (ncol(mat) < n) {
     new_cols <- Matrix::Matrix(0, n, n - ncol(mat),
-                               dimnames = list(rownames(mat), base::setdiff(players, colnames(mat))))
+                               dimnames = list(rownames(mat), base::setdiff(items, colnames(mat))))
     mat <- cbind(mat, new_cols)
   }
   
   # get rows and columns in same, sorted order and return
-  mat <- mat[players,]
+  mat <- mat[items,]
   mat <- mat[, rownames(mat)]
   
-  # repeat above steps if in 4-column format (for player2 beating player1)
+  # repeat above steps if in 4-column format (for item2 beating item1)
   if (ncol(df) == 4) {
     f2 <- stats::as.formula(paste(names(df)[2:1], collapse= " ~ "))
     mat2 <- Matrix.utils::dMcast(df, f2, value.var = names(df)[4], as.factors = TRUE)
     colnames(mat2) <- stringr::str_replace(colnames(mat2), names(df)[1], "")
     
+    
+    # remove zeros, if any, taking care with dimnames
+    summary_mat2 <- Matrix::summary(mat2)
+    if (any(summary_mat2[,3] == 0)) {
+      summary_mat2 <- dplyr::filter(summary_mat2, x != 0)
+      
+      mat2_rownames <- rownames(mat2)
+      mat2_colnames <- colnames(mat2)
+      
+      new_mat2_rownames <- mat2_rownames[sort(unique(summary_mat2[,1]))]
+      new_mat2_colnames <- mat2_colnames[sort(unique(summary_mat2[,2]))]
+      
+      mat2 <- Matrix::sparseMatrix(i = summary_mat2[,1], j = summary_mat2[,2], x = summary_mat2[,3])
+      
+      nonzero_rows2 <- which(Matrix::rowSums(mat2) != 0)
+      nonzero_cols2 <- which(Matrix::colSums(mat2) != 0)
+      
+      mat2 <- mat2[nonzero_rows2, nonzero_cols2]
+      dimnames(mat2) <- list(new_mat2_rownames, new_mat2_colnames)
+    }
+    
     # add in zeros for missing rows
     if (nrow(mat2) < n) {
       new_rows2 <- Matrix::Matrix(0, n - nrow(mat2), ncol(mat2),
-                                  dimnames = list(base::setdiff(players, rownames(mat2)), colnames(mat2)))
+                                  dimnames = list(base::setdiff(items, rownames(mat2)), colnames(mat2)))
       mat2 <- rbind(mat2, new_rows2)
     }
     
     # add in zeros for missing columns
     if (ncol(mat2) < n) {
       new_cols2 <- Matrix::Matrix(0, n, n - ncol(mat2),
-                                  dimnames = list(rownames(mat2), base::setdiff(players, colnames(mat2))))
+                                  dimnames = list(rownames(mat2), base::setdiff(items, colnames(mat2))))
       mat2 <- cbind(mat2, new_cols2)
     }
     
     # get rows and columns in same, sorted order and return
-    mat2 <- mat2[players,]
+    mat2 <- mat2[items,]
     mat2 <- mat2[, rownames(mat2)]
     
     # add the result to mat
