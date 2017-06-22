@@ -6,4 +6,4 @@
 ^README-.*\.png$
 ^_pkgdown\.yml$
 ^cran-comments.md$
-^revdep$
+
