@@ -13,13 +13,13 @@
 
 #' A toy data set for the \code{BradleyTerryScalable} package
 #' 
-#' A toy data set, where the underlying comparison graph of the players is not fully connected.
+#' A toy data set, where the underlying comparison graph of the players is not fully connected. Each row represents one game.
 #' 
 #' @format A data frame with 13 rows and 3 variables:
 #' \describe{
 #'   \item{player1}{The name of player1}
 #'   \item{player2}{The name of player2}
-#'   \item{wins}{The number of times player1 has beaten player2}
+#'   \item{outcome}{Outcome of the game: \code{"W1"} if player1 beats player2, \code{"W2"} if player2 beats player2 and \code{"D"}if it was a draw.}
 #' }
 #' 
 "toy_data"
