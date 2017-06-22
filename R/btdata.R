@@ -1,3 +1,127 @@
+# Converts a graph representation of wins into a square matrix.
+graph_to_matrix <- function(g) {
+  
+  # check that graph is a directed igraph object
+  if(!igraph::is.igraph(g))  stop("g must be a directed igraph object")
+  if(!igraph::is.directed(g))  stop("g must be a directed igraph object")
+  
+  # check names
+  if(!is.null(igraph::V(g)$name)) {
+    
+    arg <- deparse(substitute(g))
+    
+    if(anyDuplicated(igraph::V(g)$name) > 0) stop(paste0("Vertex names must be unique. Consider fixing with V(", arg, ")$name <- make.names(V(", arg, ")$name, unique = TRUE)"))
+  }
+  
+  if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight", names = TRUE)
+  else W <- igraph::as_adjacency_matrix(g, sparse = TRUE, names = TRUE)
+  
+  #if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight")
+  #else W <- igraph::as_adjacency_matrix(g, sparse = TRUE)
+  
+  
+  return(W)
+  
+}
+
+# Converts a data frame of paired results into a square matrix.
+pairs_to_matrix <- function(df) {
+  
+  # Check for Matrix.utils
+  if (!requireNamespace("Matrix.utils", quietly = TRUE)) {
+    stop("The package Matrix.utils is needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  
+  # Check for stringr
+  if (!requireNamespace("stringr", quietly = TRUE)) {
+    stop("The package stringr is needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  
+  # check if data frame
+  if(!(is.data.frame(df))) stop ("Argument must be a data frame")
+  
+  # ensure df is a data.frame (rather than tbl_df or tbl)
+  class(df) <- "data.frame"
+  
+  # check number of columns
+  if (!(ncol(df) %in% 3:4 )) stop("Argument must be a data frame with three or four columns")
+  
+  # get formula for dMcast
+  f <- stats::as.formula(paste(names(df)[1:2], collapse= " ~ "))
+  
+  # create cross-tabs matrix (not square)
+  if(!is.factor(df[,1])) {
+    df[,1] <- factor(df[,1])
+  }
+  
+  if(!is.factor(df[,2])) {
+    df[,2] <- factor(df[,2])
+  }
+  
+  mat <- Matrix.utils::dMcast(df, f, value.var = names(df)[3], as.factors = TRUE)
+  
+  # fix colnames
+  colnames(mat) <- stringr::str_replace(colnames(mat), names(df)[2], "")
+  
+  # get ready to make square
+  players <- sort(base::union(rownames(mat), colnames(mat)))
+  n <- length(players)
+  
+  # add in zeros for missing rows
+  if (nrow(mat) < n) {
+    new_rows <- Matrix::Matrix(0, n - nrow(mat), ncol(mat),
+                               dimnames = list(base::setdiff(players, rownames(mat)), colnames(mat)))
+    mat <- rbind(mat, new_rows)
+  }
+  
+  # add in zeros for missing columns
+  if (ncol(mat) < n) {
+    new_cols <- Matrix::Matrix(0, n, n - ncol(mat),
+                               dimnames = list(rownames(mat), base::setdiff(players, colnames(mat))))
+    mat <- cbind(mat, new_cols)
+  }
+  
+  # get rows and columns in same, sorted order and return
+  mat <- mat[players,]
+  mat <- mat[, rownames(mat)]
+  
+  # repeat above steps if in 4-column format (for player2 beating player1)
+  if (ncol(df) == 4) {
+    f2 <- stats::as.formula(paste(names(df)[2:1], collapse= " ~ "))
+    mat2 <- Matrix.utils::dMcast(df, f2, value.var = names(df)[4], as.factors = TRUE)
+    colnames(mat2) <- stringr::str_replace(colnames(mat2), names(df)[1], "")
+    
+    # add in zeros for missing rows
+    if (nrow(mat2) < n) {
+      new_rows2 <- Matrix::Matrix(0, n - nrow(mat2), ncol(mat2),
+                                  dimnames = list(base::setdiff(players, rownames(mat2)), colnames(mat2)))
+      mat2 <- rbind(mat2, new_rows2)
+    }
+    
+    # add in zeros for missing columns
+    if (ncol(mat2) < n) {
+      new_cols2 <- Matrix::Matrix(0, n, n - ncol(mat2),
+                                  dimnames = list(rownames(mat2), base::setdiff(players, colnames(mat2))))
+      mat2 <- cbind(mat2, new_cols2)
+    }
+    
+    # get rows and columns in same, sorted order and return
+    mat2 <- mat2[players,]
+    mat2 <- mat2[, rownames(mat2)]
+    
+    # add the result to mat
+    mat <- mat + mat2
+  }
+  
+  if(!is.null(colnames(df)[1]) & !is.null(colnames(df)[2])) names(dimnames(mat)) <- colnames(df)[1:2]
+  
+  return(mat)
+}
+
+
+
 #' Create a btdata object
 #' 
 #' Creates a btdata object, primarily for use in the \link{btfit} function.
