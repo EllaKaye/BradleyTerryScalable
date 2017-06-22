@@ -56,27 +56,32 @@ citations
 #>   JRSS-B              284          276  325    188
 data(toy_data)
 toy_data
-#>    player1 player2 wins
-#> 1        c       a    1
-#> 2        a       b    2
-#> 3        e       b    3
-#> 4        d       c    3
-#> 5        b       d    1
-#> 6        e       d    4
-#> 7        e       f    1
-#> 8        g       f    5
-#> 9        h       f    5
-#> 10       e       g    3
-#> 11       f       g    3
-#> 12       h       g    2
-#> 13       g       h    1
+#>    player1 player2 outcome
+#> 1      Cyd     Amy      W1
+#> 2      Amy     Ben       D
+#> 3      Ben     Eve      W2
+#> 4      Cyd     Dan      W2
+#> 5      Ben     Dan       D
+#> 6      Dan     Eve      W2
+#> 7      Fin     Eve      W2
+#> 8      Fin     Gal      W2
+#> 9      Fin     Han      W2
+#> 10     Eve     Gal      W1
+#> 11     Fin     Gal       D
+#> 12     Han     Gal      W1
+#> 13     Han     Gal      W2
+#> 14     Amy     Dan      W1
+#> 15     Cyd     Amy      W1
+#> 16     Ben     Dan       D
+#> 17     Dan     Amy      W2
 ```
 
 Run `btdata()` to produce objects of class `btdata`:
 
 ``` r
 citations_btdata <- btdata(citations)
-toy_btdata <- btdata(toy_data)
+toy_data_4col <- codes_to_counts(toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_data_4col, return_graph = TRUE) 
 ```
 
 `btdata` objects are a list containing two elements:
@@ -93,7 +98,7 @@ summary(citations_btdata)
 #> Fully-connected: TRUE
 summary(toy_btdata)
 #> Number of items: 8 
-#> Density of wins matrix: 0.203125 
+#> Density of wins matrix: 0.25 
 #> Fully-connected: FALSE 
 #> Number of fully-connected components: 3 
 #> Summary of fully-connected components: 
@@ -110,10 +115,10 @@ Note that components of size 1 will be filtered out in the MLE fit (see next sec
 ``` r
 toy_btdata_subset <- select_components(toy_btdata, "3")
 toy_btdata_subset <- select_components(toy_btdata, function(x) length(x) == 4)
-toy_btdata_subset <- select_components(toy_btdata, function(x) "c" %in% x)
+toy_btdata_subset <- select_components(toy_btdata, function(x) "Cyd" %in% x)
 summary(toy_btdata_subset)
 #> Number of items: 4 
-#> Density of wins matrix: 0.25 
+#> Density of wins matrix: 0.4375 
 #> Fully-connected: TRUE
 ```
 
@@ -186,27 +191,27 @@ summary(toy_fit_MLE, SE = TRUE)
 #> 
 #> $item_summary
 #> # A tibble: 7 x 4
-#>   component  item   estimate        SE
-#>       <chr> <chr>      <dbl>     <dbl>
-#> 1         2     h  1.2643415 0.7169719
-#> 2         2     g -0.2488214 0.5045346
-#> 3         2     f -1.0155201 0.5089739
-#> 4         3     d  0.5843254 1.0020127
-#> 5         3     a  0.3030107 1.0320999
-#> 6         3     b -0.2987148 1.0314304
-#> 7         3     c -0.5886212 1.0025948
+#>   component  item    estimate        SE
+#>       <chr> <chr>       <dbl>     <dbl>
+#> 1         2   Han  0.69564153 0.9110076
+#> 2         2   Gal  0.41253614 0.7675914
+#> 3         2   Fin -1.10817768 1.0499275
+#> 4         3   Cyd  0.59239992 0.9905958
+#> 5         3   Amy  0.03250119 0.6990438
+#> 6         3   Ben -0.24307179 0.9443103
+#> 7         3   Dan -0.38182932 0.7124240
 #> 
 #> $component_summary
 #> # A tibble: 2 x 4
 #>   component num_items iters converged
 #>       <chr>     <int> <int>     <lgl>
-#> 1         2         3    13      TRUE
-#> 2         3         4    16      TRUE
+#> 1         2         3     6      TRUE
+#> 2         3         4    10      TRUE
 coef(toy_fit_MAP)
-#>          e          h          a          d          g          b 
-#>  2.6768420  1.1322378 -0.1472393 -0.1621301 -0.3867808 -0.8484833 
-#>          f          c 
-#> -1.1214999 -1.1429465
+#>         Eve         Cyd         Han         Amy         Gal         Ben 
+#>  1.90113420  0.47237293  0.24535391 -0.07655328 -0.10175687 -0.42296697 
+#>         Dan         Fin 
+#> -0.53638389 -1.48120003
 vcov(citations_fit, ref = "JASA")
 #>               citing
 #> cited               JRSS-B  Biometrika JASA Comm Statist
@@ -230,16 +235,17 @@ btprob(citations_fit)
 #>   JASA         0.32063771  0.3822073 .             0.9219605
 #>   Comm Statist 0.03841516  0.0497612 0.07803945    .
 fitted(toy_fit_MLE, as_df = TRUE)
-#> # A tibble: 7 x 5
+#> # A tibble: 8 x 5
 #>   component player1 player2      fit1      fit2
 #>       <chr>   <chr>   <chr>     <dbl>     <dbl>
-#> 1         2       h       g 2.4585885 0.5414115
-#> 2         2       h       f 4.5359770 0.4640230
-#> 3         2       g       f 5.4624506 2.5375494
-#> 4         3       d       b 0.7074518 0.2925482
-#> 5         3       a       b 1.2921019 0.7078981
-#> 6         3       d       c 2.2910316 0.7089684
-#> 7         3       a       c 0.7092268 0.2907732
+#> 1         2     Han     Gal 1.1406148 0.8593852
+#> 2         2     Han     Fin 0.8586132 0.1413868
+#> 3         2     Gal     Fin 1.6412871 0.3587129
+#> 4         3     Cyd     Amy 1.2728582 0.7271418
+#> 5         3     Amy     Ben 0.5684605 0.4315395
+#> 6         3     Cyd     Dan 0.7259617 0.2740383
+#> 7         3     Amy     Dan 1.2042516 0.7957484
+#> 8         3     Ben     Dan 1.0692677 0.9307323
 ```
 
 ### `simulate.btfit` and `simuate_BT`

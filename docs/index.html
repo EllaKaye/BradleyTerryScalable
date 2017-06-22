@@ -108,23 +108,28 @@ citations
 <span class="co">#&gt;   JRSS-B              284          276  325    188</span>
 <span class="kw">data</span>(toy_data)
 toy_data
-<span class="co">#&gt;    player1 player2 wins</span>
-<span class="co">#&gt; 1        c       a    1</span>
-<span class="co">#&gt; 2        a       b    2</span>
-<span class="co">#&gt; 3        e       b    3</span>
-<span class="co">#&gt; 4        d       c    3</span>
-<span class="co">#&gt; 5        b       d    1</span>
-<span class="co">#&gt; 6        e       d    4</span>
-<span class="co">#&gt; 7        e       f    1</span>
-<span class="co">#&gt; 8        g       f    5</span>
-<span class="co">#&gt; 9        h       f    5</span>
-<span class="co">#&gt; 10       e       g    3</span>
-<span class="co">#&gt; 11       f       g    3</span>
-<span class="co">#&gt; 12       h       g    2</span>
-<span class="co">#&gt; 13       g       h    1</span></code></pre></div>
+<span class="co">#&gt;    player1 player2 outcome</span>
+<span class="co">#&gt; 1      Cyd     Amy      W1</span>
+<span class="co">#&gt; 2      Amy     Ben       D</span>
+<span class="co">#&gt; 3      Ben     Eve      W2</span>
+<span class="co">#&gt; 4      Cyd     Dan      W2</span>
+<span class="co">#&gt; 5      Ben     Dan       D</span>
+<span class="co">#&gt; 6      Dan     Eve      W2</span>
+<span class="co">#&gt; 7      Fin     Eve      W2</span>
+<span class="co">#&gt; 8      Fin     Gal      W2</span>
+<span class="co">#&gt; 9      Fin     Han      W2</span>
+<span class="co">#&gt; 10     Eve     Gal      W1</span>
+<span class="co">#&gt; 11     Fin     Gal       D</span>
+<span class="co">#&gt; 12     Han     Gal      W1</span>
+<span class="co">#&gt; 13     Han     Gal      W2</span>
+<span class="co">#&gt; 14     Amy     Dan      W1</span>
+<span class="co">#&gt; 15     Cyd     Amy      W1</span>
+<span class="co">#&gt; 16     Ben     Dan       D</span>
+<span class="co">#&gt; 17     Dan     Amy      W2</span></code></pre></div>
 <p>Run <code><a href="reference/btdata.html">btdata()</a></code> to produce objects of class <code>btdata</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btdata.html">btdata</a></span>(citations)
-toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btdata.html">btdata</a></span>(toy_data)</code></pre></div>
+toy_data_4col &lt;-<span class="st"> </span><span class="kw"><a href="reference/codes_to_counts.html">codes_to_counts</a></span>(toy_data, <span class="kw">c</span>(<span class="st">"W1"</span>, <span class="st">"W2"</span>, <span class="st">"D"</span>))
+toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btdata.html">btdata</a></span>(toy_data_4col, <span class="dt">return_graph =</span> <span class="ot">TRUE</span>) </code></pre></div>
 <p><code>btdata</code> objects are a list containing two elements:</p>
 <ul>
 <li>
@@ -139,7 +144,7 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btd
 <span class="co">#&gt; Fully-connected: TRUE</span>
 <span class="kw">summary</span>(toy_btdata)
 <span class="co">#&gt; Number of items: 8 </span>
-<span class="co">#&gt; Density of wins matrix: 0.203125 </span>
+<span class="co">#&gt; Density of wins matrix: 0.25 </span>
 <span class="co">#&gt; Fully-connected: FALSE </span>
 <span class="co">#&gt; Number of fully-connected components: 3 </span>
 <span class="co">#&gt; Summary of fully-connected components: </span>
@@ -151,10 +156,10 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="reference/btd
 <p><code>select_components</code> can be used to create a subset of a <code>btdata</code> object. In our toy case, the following all give the same subset:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="reference/select_components.html">select_components</a></span>(toy_btdata, <span class="st">"3"</span>)
 toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="kw">length</span>(x) ==<span class="st"> </span><span class="dv">4</span>)
-toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"c"</span> %in%<span class="st"> </span>x)
+toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"Cyd"</span> %in%<span class="st"> </span>x)
 <span class="kw">summary</span>(toy_btdata_subset)
 <span class="co">#&gt; Number of items: 4 </span>
-<span class="co">#&gt; Density of wins matrix: 0.25 </span>
+<span class="co">#&gt; Density of wins matrix: 0.4375 </span>
 <span class="co">#&gt; Fully-connected: TRUE</span></code></pre></div>
 <p>Alternatively, set the <code>subset</code> argument in <code>btfit</code>.</p>
 </div>
@@ -227,27 +232,27 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="reference/bt
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $item_summary</span>
 <span class="co">#&gt; # A tibble: 7 x 4</span>
-<span class="co">#&gt;   component  item   estimate        SE</span>
-<span class="co">#&gt;       &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1         2     h  1.2643415 0.7169719</span>
-<span class="co">#&gt; 2         2     g -0.2488214 0.5045346</span>
-<span class="co">#&gt; 3         2     f -1.0155201 0.5089739</span>
-<span class="co">#&gt; 4         3     d  0.5843254 1.0020127</span>
-<span class="co">#&gt; 5         3     a  0.3030107 1.0320999</span>
-<span class="co">#&gt; 6         3     b -0.2987148 1.0314304</span>
-<span class="co">#&gt; 7         3     c -0.5886212 1.0025948</span>
+<span class="co">#&gt;   component  item    estimate        SE</span>
+<span class="co">#&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1         2   Han  0.69564153 0.9110076</span>
+<span class="co">#&gt; 2         2   Gal  0.41253614 0.7675914</span>
+<span class="co">#&gt; 3         2   Fin -1.10817768 1.0499275</span>
+<span class="co">#&gt; 4         3   Cyd  0.59239992 0.9905958</span>
+<span class="co">#&gt; 5         3   Amy  0.03250119 0.6990438</span>
+<span class="co">#&gt; 6         3   Ben -0.24307179 0.9443103</span>
+<span class="co">#&gt; 7         3   Dan -0.38182932 0.7124240</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $component_summary</span>
 <span class="co">#&gt; # A tibble: 2 x 4</span>
 <span class="co">#&gt;   component num_items iters converged</span>
 <span class="co">#&gt;       &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;</span>
-<span class="co">#&gt; 1         2         3    13      TRUE</span>
-<span class="co">#&gt; 2         3         4    16      TRUE</span>
+<span class="co">#&gt; 1         2         3     6      TRUE</span>
+<span class="co">#&gt; 2         3         4    10      TRUE</span>
 <span class="kw">coef</span>(toy_fit_MAP)
-<span class="co">#&gt;          e          h          a          d          g          b </span>
-<span class="co">#&gt;  2.6768420  1.1322378 -0.1472393 -0.1621301 -0.3867808 -0.8484833 </span>
-<span class="co">#&gt;          f          c </span>
-<span class="co">#&gt; -1.1214999 -1.1429465</span>
+<span class="co">#&gt;         Eve         Cyd         Han         Amy         Gal         Ben </span>
+<span class="co">#&gt;  1.90113420  0.47237293  0.24535391 -0.07655328 -0.10175687 -0.42296697 </span>
+<span class="co">#&gt;         Dan         Fin </span>
+<span class="co">#&gt; -0.53638389 -1.48120003</span>
 <span class="kw">vcov</span>(citations_fit, <span class="dt">ref =</span> <span class="st">"JASA"</span>)
 <span class="co">#&gt;               citing</span>
 <span class="co">#&gt; cited               JRSS-B  Biometrika JASA Comm Statist</span>
@@ -270,16 +275,17 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="reference/bt
 <span class="co">#&gt;   JASA         0.32063771  0.3822073 .             0.9219605</span>
 <span class="co">#&gt;   Comm Statist 0.03841516  0.0497612 0.07803945    .</span>
 <span class="kw">fitted</span>(toy_fit_MLE, <span class="dt">as_df =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; # A tibble: 7 x 5</span>
+<span class="co">#&gt; # A tibble: 8 x 5</span>
 <span class="co">#&gt;   component player1 player2      fit1      fit2</span>
 <span class="co">#&gt;       &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1         2       h       g 2.4585885 0.5414115</span>
-<span class="co">#&gt; 2         2       h       f 4.5359770 0.4640230</span>
-<span class="co">#&gt; 3         2       g       f 5.4624506 2.5375494</span>
-<span class="co">#&gt; 4         3       d       b 0.7074518 0.2925482</span>
-<span class="co">#&gt; 5         3       a       b 1.2921019 0.7078981</span>
-<span class="co">#&gt; 6         3       d       c 2.2910316 0.7089684</span>
-<span class="co">#&gt; 7         3       a       c 0.7092268 0.2907732</span></code></pre></div>
+<span class="co">#&gt; 1         2     Han     Gal 1.1406148 0.8593852</span>
+<span class="co">#&gt; 2         2     Han     Fin 0.8586132 0.1413868</span>
+<span class="co">#&gt; 3         2     Gal     Fin 1.6412871 0.3587129</span>
+<span class="co">#&gt; 4         3     Cyd     Amy 1.2728582 0.7271418</span>
+<span class="co">#&gt; 5         3     Amy     Ben 0.5684605 0.4315395</span>
+<span class="co">#&gt; 6         3     Cyd     Dan 0.7259617 0.2740383</span>
+<span class="co">#&gt; 7         3     Amy     Dan 1.2042516 0.7957484</span>
+<span class="co">#&gt; 8         3     Ben     Dan 1.0692677 0.9307323</span></code></pre></div>
 </div>
 <div id="simulate-btfit-and-simuate_bt" class="section level3">
 <h3 class="hasAnchor">

@@ -64,7 +64,8 @@ toy_data
 Run `btdata()` to produce objects of class `btdata`:
 ```{r}
 citations_btdata <- btdata(citations)
-toy_btdata <- btdata(toy_data)
+toy_data_4col <- codes_to_counts(toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_data_4col, return_graph = TRUE) 
 ```
 
 `btdata` objects are a list containing two elements: 
@@ -84,7 +85,7 @@ Note that components of size 1 will be filtered out in the MLE fit (see next sec
 ```{r}
 toy_btdata_subset <- select_components(toy_btdata, "3")
 toy_btdata_subset <- select_components(toy_btdata, function(x) length(x) == 4)
-toy_btdata_subset <- select_components(toy_btdata, function(x) "c" %in% x)
+toy_btdata_subset <- select_components(toy_btdata, function(x) "Cyd" %in% x)
 summary(toy_btdata_subset)
 ```
 

@@ -46,7 +46,7 @@ $$
 ### The comparison graph and the existence of the MLE
 There is a graph-theoretic interpretation of the comparison data that will prove useful. We define the **comparison graph** to have as its nodes the $K$ items and we let there be a directed edge $(i, j)$ whenever $i$ has beaten $j$ at least once. The weight on that edge is $w_{ij}$.
 
-@Ford:1957 noted that if it is possible to partition the items into two groups, A and B, such that no item in A has ever been compared to an item in B, then there is no ground for rating any item in A with respect to any item in B. Any items who win **OR LOSE??** all their comparisons (or groups of items who win all their comparisons relative to another group) also cause problems, for then there is no finite maximiser of the log-likelihood. Therefore, for a unique, finite MLE to exist, it is necessary assume the following: In every possible partition of the items into two non-empty subsets, some item in the second set beats some item in the first set at least once. Equivalently:
+@Ford:1957 noted that if it is possible to partition the items into two groups, A and B, such that no item in A has ever been compared to an item in B, then there is no ground for rating any item in A with respect to any item in B. Any items who win all their comparisons (or groups of items who win all their comparisons relative to another group) also cause problems, for then there is no finite maximiser of the log-likelihood. Therefore, for a unique, finite MLE to exist, it is necessary assume the following: In every possible partition of the items into two non-empty subsets, some item in the second set beats some item in the first set at least once. Equivalently:
 
 > For a unique finite MLE to exist, the comparison graph must be fully connected (i.e.\ there is a directed path from $i$ to $j$, $\forall i, j$).
 
@@ -86,39 +86,55 @@ The main fitting function in this package is `btfit`. This function takes as its
 
 The `x` argument to `btdata` can be one of four classes of object:
 
-- **PUT THIS BULLET LAST??** A data frame (`data.frame` or `tibble`), with three or four columns
-    - If the data frame has three columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2.
-    - If the data frame has four columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2 and the fourth column must be the number of times item 2 has beaten item 1.
-    
-- A matrix (either a base `matrix` or a class from the `Matrix` package), dimension K by K, where K is the number of items. The *i,j*-th element is the number of times item *i* has beaten item *j*.  **MENTION Wij HERE??**
+- A matrix (either a base `matrix` or a class from the `Matrix` package), dimension *K* by *K*, where *K* is the number of items. The *i,j*-th element is $w_{ij}$, the number of times item *i* has beaten item *j*.
 
 - A contingency table of class `table`, similar to the matrix described in the above point.
 
 - An `igraph`, representing the *comparison graph*, with the K items as nodes. For the edges: 
     - If the graph is unweighted, a directed edge from node *i* to node *j* for every time item *i* has beaten item *j*
     - If the graph is weighted, then one edge node *i* to node *j* if item *i* has beaten item *j* at least once, with the weight attribute of that edge set to the number of times *i* has beaten *j*.
+
+
+- A data frame (`data.frame` or `tibble`), with three or four columns
+    - If the data frame has three columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item.
+    - If the data frame has four columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item and the fourth column must be the number of times the second item has beaten the first item.
+    - In either of these cases, the data can be aggregated, or there can be a row per comparison.
+    - Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.
+    
+We anticipate that the user may have data in a three-column data frame that does not match the description of the three-column data frame above. For example, the data frame could have one row per comparison, where the third column contains a code to indicate which of the two items won, say `W1` if the item in column 1 won, `W2` if the item in column 2 won and `D` if it was a tie/draw. Alternatively, the third column could contain the win-count, but only relative to the first item, i.e. 1 if the first item wins, 0 if it loses and 0.5 if there was a draw. In this case, the `btdata` function won't know that a loss for the first item item should be counted as a win for the second item.
+
+For the cases described in the previous paragraph, the `BradleyTerryScalable` package provides the `codes_to_counts` function, which takes such three-column data-frames and returns a four-column data frame of the required format for passing to the `btdata` function.
+    
     
 The `BradleyTerryScalable` package provides two toy data sets with which we'll use in this demonstration:
 
 ```{r}
-data(citations)
+data(citations) 
 citations
 data(toy_data)
 toy_data
 ```
 
-**MAYBE SHOW THE GRAPH FOR THAT SECOND ONE??**
 
-Run `btdata()` to produce objects of class `btdata`:
+`citations` is in an appropriate format to pass to `btdata`, whereas `toy_data` needs to be passed through `codes_to_counts` first:
 ```{r}
 citations_btdata <- btdata(citations)
-toy_btdata <- btdata(toy_data)
+toy_data_4col <- codes_to_counts(toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_data_4col, return_graph = TRUE) 
 ```
 
-A `btdata` objects is a list containing two elements: 
+A `btdata` objects is a list containing two or three elements: 
 
-- `wins` which is a matrix of the form described in the second bullet point above
-- `components` which is itself a list of the fully-connected components of the comparison graph (see the third bullet point above)
+- `wins`: a matrix of the form described in the second bullet point above
+- `components`: a list of the fully-connected components of the comparison graph (see the third bullet point above)
+- `graph`: if `return_graph = TRUE`, then the `igraph` object of the comparison graph is returned, which can be useful for visualising the data.
+
+```{r message = FALSE, fig.align = "center", cache = TRUE}
+library(igraph)
+par(mar=c(0,0,0,0)+.1)  
+plot.igraph(toy_btdata$graph, vertex.size = 28, edge.arrow.size = 0.5) 
+```
+
 
 Information about the `btdata` objects can be seen through the `summary` method:
 ```{r}
@@ -132,7 +148,7 @@ Note that components of size 1 will be filtered out in the MLE fit (see next sec
 ```{r}
 toy_btdata_subset <- select_components(toy_btdata, "3")
 toy_btdata_subset <- select_components(toy_btdata, function(x) length(x) == 4)
-toy_btdata_subset <- select_components(toy_btdata, function(x) "c" %in% x)
+toy_btdata_subset <- select_components(toy_btdata, function(x) "Cyd" %in% x)
 summary(toy_btdata_subset)
 ```
 

@@ -2,7 +2,7 @@ reference:
   - title: "Preparing the data"
     desc: "Functions for preparing a `btdata` object"
     contents:
-      - code_to_counts
+      - codes_to_counts
       - btdata
       - summary.btdata
       - select_components

@@ -57,7 +57,7 @@
       <h1>Fitting the Bradley-Terry model to large and potentially sparse datasets</h1>
                         <h4 class="author">Ella Kaye and David Firth</h4>
             
-            <h4 class="date">2017-06-20</h4>
+            <h4 class="date">2017-06-22</h4>
           </div>
 
     
@@ -67,9 +67,9 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>The Bradley-Terry model <span class="citation">(Bradley and Terry 1952)</span> is a popular method for finding the probabilities for each item in a set being preferred over each of the others, based on repeated pairwise comparisons between the items of the set. It is used to assign a strength parameter to each item in a group, on the basis of a number of pairwise comparisons between those items. An overall ranking may then be formed on the basis of these strengths.</p>
-<p>The model is popular in a sporting context, where the group may be a league and the items are players or teams within that league. The comparisons are matches between the players or teams and the strength parameter represents the overall skill of that player or team. Extensions of the Bradley-Terry model have also been used to rank chess players <span class="citation">(Elo 1978)</span> and NASCAR drivers <span class="citation">(Hunter 2004)</span>. For a non-sporting example, the Bradley-Terry model has been used to derive influence rankings for journals, where the comparison between two journals are the number of citations from each to the other <span class="citation">(Varin, Cattelan, and Firth 2016)</span>.</p>
+<p>The model is popular in a sporting context, where the group may be a league and the items are players or teams within that league. The comparisons are matches between the players or teams and the strength parameter represents the overall skill of that player or team. Extensions of the Bradley-Terry model have also been used to rank chess players <span class="citation">(Elo 1978)</span> and NASCAR drivers <span class="citation">(Hunter 2004)</span>. For a non-sporting example, the Bradley-Terry model has been used to derive influence rankings for journals, where the comparison between two journals are the number of citations from each to the other <span class="citation">(Stigler 1994; Varin, Cattelan, and Firth 2016)</span>.</p>
 <p>In recent years, the de facto method for fitting Bradley-Terry models has been to find the maximum likelihood estimate using the MM-algorithm of <span class="citation">(Hunter 2004)</span>. However, the existence and uniqueness of the MLE is only guaranteed under certain assumptions on the data set, as first described by <span class="citation">Ford (1957)</span>. As an alternative to finding the MLE, <span class="citation">Caron and Doucet (2012)</span> have proposed a Bayesian approach.</p>
-<p>The CRAN package <strong>BradleyTerry2</strong> is a well-established package for fitting the Bradley-Terry model. The <strong>BradleyTerryScalable</strong> package is not as fully-featured, for example it does not allow for home-advantage, nor can it incorporate covariant information. However, <strong>BradleyTerryScalable</strong> is designed to do one thing well, namely to fit the Bradley-Terry model to large and potentially sparse datasets. It can easily handle much bigger datasets, with many more items. Moreover, unlike <strong>BradleyTerry2</strong>, <strong>BradleyTerryScalable</strong> can be used to find both the MLE and a Bayesian MAP estimate of the strength parameter, thus enabling the model a fit even when the underlying comparison graph is not fully-connected. Also, a great deal of care has been taken to provide a simple and intuitive user interface.</p>
+<p>The CRAN package <strong>BradleyTerry2</strong> is a well-established package for fitting the Bradley-Terry model. The <strong>BradleyTerryScalable</strong> package is not as fully-featured, for example it does not allow for home-advantage, nor can it incorporate covariate information. However, <strong>BradleyTerryScalable</strong> is designed to do one thing well, namely to fit the Bradley-Terry model to large and potentially sparse datasets. It can easily handle much bigger datasets, with many more items. Moreover, unlike <strong>BradleyTerry2</strong>, <strong>BradleyTerryScalable</strong> can be used to find both the MLE and a Bayesian MAP estimate of the strength parameter, thus enabling the model to be fitted even when the underlying comparison graph is not fully connected. As with <strong>BradleyTerry2</strong>, a great deal of care has been taken to provide a simple and intuitive user interface.</p>
 <p>In the Background section, we first present the Bradley-Terry model, and the conditions under which the its maximum likelhood estimate exists. We then present algorithms that can be used to find the MLE and MAP estimates.</p>
 <p>In the BradleyTerryScalable section, we present our package, and demonstate its use on a couple of toy datasets.</p>
 </div>
@@ -79,10 +79,10 @@
 <div id="the-bradley-terry-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-bradley-terry-model" class="anchor"></a>The Bradley-Terry model</h2>
-<p>Consider a set of <span class="math inline">\(K\)</span> items. Without loss of generality, we will refer to the outcome of the comparison as a win for one item and a loss for the other. For items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, the Bradley-Terry model gives:</p>
+<p>Consider a set of <span class="math inline">\(K\)</span> items. Without loss of generality, we will refer to the outcome of the comparison as a win for one item and a loss for the other. For items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, the Bradley-Terry model assumes:</p>
 <p><span class="math display">\[
 p_{ij} = \mathbb{P}(i \text{ beats } j) = \frac{\pi_i}{\pi_i + \pi_j},
-\]</span> where <span class="math inline">\(\pi_k\)</span> is a positive-valued parameter which represents the skill of item <span class="math inline">\(k\)</span>, for <span class="math inline">\(k = 1,\ldots, K\)</span>. We denote <span class="math inline">\({\pi} = \{\pi_k\}_{k = 1}^K\)</span>. Let <span class="math inline">\(w_{ij}\)</span> be the number of times that <span class="math inline">\(i\)</span> wins against <span class="math inline">\(j\)</span> and <span class="math inline">\(n_{ij} = w_{ij} + w_{ji}\)</span> be the number of comparisons between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, and assume, by convention, that <span class="math inline">\(w_{ii} = 0\)</span>. Then, assuming that the outcome of each match is independent, the log-likelihood based on model is</p>
+\]</span> where <span class="math inline">\(\pi_k\)</span> is a positive-valued parameter which represents the strength of item <span class="math inline">\(k\)</span>, for <span class="math inline">\(k = 1,\ldots, K\)</span>. We denote <span class="math inline">\({\pi} = \{\pi_k\}_{k = 1}^K\)</span>. Let <span class="math inline">\(w_{ij}\)</span> be the number of times that <span class="math inline">\(i\)</span> wins against <span class="math inline">\(j\)</span> and <span class="math inline">\(n_{ij} = w_{ij} + w_{ji}\)</span> be the number of comparisons between <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, and assume, by convention, that <span class="math inline">\(w_{ii} = 0\)</span>. Then, assuming that the outcome of each match is independent, the log-likelihood based on model is</p>
 <p><span class="math display">\[
 \ell({\pi}) = \sum_{i = 1}^{K}\sum_{j = 1}^{K} [w_{ij}(\log \pi_i - \log(\pi_i + \pi_j))].
 \]</span> Since <span class="math inline">\(\ell({\pi}) = \ell({\alpha\pi})\)</span> for <span class="math inline">\(\alpha &gt; 0\)</span>, for identifiability we need a constraint on the parameter space: we take this to be <span class="math inline">\(\sum_{i = 1}^K \pi_i = K\)</span>.</p>
@@ -105,7 +105,7 @@ p_{ij} = \mathbb{P}(i \text{ beats } j) = \frac{\pi_i}{\pi_i + \pi_j},
 <div id="using-the-mm-algorithm-to-find-the-mle" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-the-mm-algorithm-to-find-the-mle" class="anchor"></a>Using the MM-algorithm to find the MLE</h3>
-<p>To find the MLE of the Bradley-Terry model, <span class="citation">Hunter (2004)</span> proposed using an MM-algorith <span class="citation">(Lange, Hunter, and Yang 2000)</span>. This leads to a fixed-point iteration:</p>
+<p>To find the MLE of the Bradley-Terry model, <span class="citation">Hunter (2004)</span> proposed using an MM-algorithm <span class="citation">(Lange, Hunter, and Yang 2000)</span>. This leads to a fixed-point iteration:</p>
 <p><span class="math display">\[
 \pi_i^{(n+1)} = \frac{W_i}{\sum_{j=1}^K \frac{n_{ij}}{\pi_i^{(n)} + \pi_j^{(n)}}},
 \]</span> where <span class="math inline">\(W_i = \sum_{j = 1}^K w_{ij}\)</span> is the total number of comparisons won by item <span class="math inline">\(i\)</span> and <span class="math inline">\(n_ij = w_{ij} + w_{ji}\)</span> is the number of comparisons between items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
@@ -137,13 +137,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 <p>The main fitting function in this package is <code>btfit</code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="../reference/btdata.html">btdata(x)</a></code>.</p>
 <p>The <code>x</code> argument to <code>btdata</code> can be one of four classes of object:</p>
 <ul>
-<li>A data frame (<code>data.frame</code> or <code>tibble</code>), with three or four columns
-<ul>
-<li>If the data frame has three columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2.</li>
-<li>If the data frame has four columns, then the first column must be the name of item 1, the second column must be the name of item 2, and the third column must be the number of times item 1 has beaten item 2 and the fourth column must be the number of times item 2 has beaten item 1.</li>
-</ul>
-</li>
-<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension K by K, where K is the number of items. The <em>i,j</em>-th element is the number of times item <em>i</em> has beaten item <em>j</em>.</p></li>
+<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension <em>K</em> by <em>K</em>, where <em>K</em> is the number of items. The <em>i,j</em>-th element is <span class="math inline">\(w_{ij}\)</span>, the number of times item <em>i</em> has beaten item <em>j</em>.</p></li>
 <li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
 <li>An <code>igraph</code>, representing the <em>comparison graph</em>, with the K items as nodes. For the edges:
 <ul>
@@ -152,9 +146,19 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 <li>If the graph is weighted, then one edge node <em>i</em> to node <em>j</em> if item <em>i</em> has beaten item <em>j</em> at least once, with the weight attribute of that edge set to the number of times <em>i</em> has beaten <em>j</em>.</li>
 </ul>
 </li>
+<li>A data frame (<code>data.frame</code> or <code>tibble</code>), with three or four columns
+<ul>
+<li>If the data frame has three columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item.</li>
+<li>If the data frame has four columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item and the fourth column must be the number of times the second item has beaten the first item.</li>
+<li>In either of these cases, the data can be aggregated, or there can be a row per comparison.</li>
+<li>Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</li>
 </ul>
+</li>
+</ul>
+<p>We anticipate that the user may have data in a three-column data frame that does not match the description of the three-column data frame above. For example, the data frame could have one row per comparison, where the third column contains a code to indicate which of the two items won, say <code>W1</code> if the item in column 1 won, <code>W2</code> if the item in column 2 won and <code>D</code> if it was a tie/draw. Alternatively, the third column could contain the win-count, but only relative to the first item, i.e. 1 if the first item wins, 0 if it loses and 0.5 if there was a draw. In this case, the <code>btdata</code> function won’t know that a loss for the first item item should be counted as a win for the second item.</p>
+<p>For the cases described in the previous paragraph, the <code>BradleyTerryScalable</code> package provides the <code>codes_to_counts</code> function, which takes such three-column data-frames and returns a four-column data frame of the required format for passing to the <code>btdata</code> function.</p>
 <p>The <code>BradleyTerryScalable</code> package provides two toy data sets with which we’ll use in this demonstration:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(citations)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(citations) 
 citations</code></pre></div>
 <pre><code>##               citing
 ## cited          Biometrika Comm Statist JASA JRSS-B
@@ -164,30 +168,41 @@ citations</code></pre></div>
 ##   JRSS-B              284          276  325    188</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(toy_data)
 toy_data</code></pre></div>
-<pre><code>##    player1 player2 wins
-## 1        c       a    1
-## 2        a       b    2
-## 3        e       b    3
-## 4        d       c    3
-## 5        b       d    1
-## 6        e       d    4
-## 7        e       f    1
-## 8        g       f    5
-## 9        h       f    5
-## 10       e       g    3
-## 11       f       g    3
-## 12       h       g    2
-## 13       g       h    1</code></pre>
-<p>Run <code><a href="../reference/btdata.html">btdata()</a></code> to produce objects of class <code>btdata</code>:</p>
+<pre><code>##    player1 player2 outcome
+## 1      Cyd     Amy      W1
+## 2      Amy     Ben       D
+## 3      Ben     Eve      W2
+## 4      Cyd     Dan      W2
+## 5      Ben     Dan       D
+## 6      Dan     Eve      W2
+## 7      Fin     Eve      W2
+## 8      Fin     Gal      W2
+## 9      Fin     Han      W2
+## 10     Eve     Gal      W1
+## 11     Fin     Gal       D
+## 12     Han     Gal      W1
+## 13     Han     Gal      W2
+## 14     Amy     Dan      W1
+## 15     Cyd     Amy      W1
+## 16     Ben     Dan       D
+## 17     Dan     Amy      W2</code></pre>
+<p><code>citations</code> is in an appropriate format to pass to <code>btdata</code>, whereas <code>toy_data</code> needs to be passed through <code>codes_to_counts</code> first:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(citations)
-toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(toy_data)</code></pre></div>
-<p><code>btdata</code> objects are a list containing two elements:</p>
+toy_data_4col &lt;-<span class="st"> </span><span class="kw"><a href="../reference/codes_to_counts.html">codes_to_counts</a></span>(toy_data, <span class="kw">c</span>(<span class="st">"W1"</span>, <span class="st">"W2"</span>, <span class="st">"D"</span>))
+toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(toy_data_4col, <span class="dt">return_graph =</span> <span class="ot">TRUE</span>) </code></pre></div>
+<p>A <code>btdata</code> objects is a list containing two or three elements:</p>
 <ul>
 <li>
-<code>wins</code> which is a matrix of the form described in the second bullet point above</li>
+<code>wins</code>: a matrix of the form described in the second bullet point above</li>
 <li>
-<code>components</code> which is itself a list of the fully-connected components of the comparison graph (see the third bullet point above)</li>
+<code>components</code>: a list of the fully-connected components of the comparison graph (see the third bullet point above)</li>
+<li>
+<code>graph</code>: if <code>return_graph = TRUE</code>, then the <code>igraph</code> object of the comparison graph is returned, which can be useful for visualising the data.</li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(igraph)
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)+.<span class="dv">1</span>)  
+<span class="kw">plot.igraph</span>(toy_btdata$graph, <span class="dt">vertex.size =</span> <span class="dv">28</span>, <span class="dt">edge.arrow.size =</span> <span class="fl">0.5</span>) </code></pre></div>
+<p><img src="BradleyTerryScalable_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Information about the <code>btdata</code> objects can be seen through the <code>summary</code> method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_btdata)</code></pre></div>
 <pre><code>## Number of items: 4 
@@ -195,7 +210,7 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 ## Fully-connected: TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(toy_btdata)</code></pre></div>
 <pre><code>## Number of items: 8 
-## Density of wins matrix: 0.203125 
+## Density of wins matrix: 0.25 
 ## Fully-connected: FALSE 
 ## Number of fully-connected components: 3 
 ## Summary of fully-connected components: 
@@ -207,17 +222,17 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p><code>select_components</code> can be used to create a subset of a <code>btdata</code> object. In our toy case, the following all give the same subset:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, <span class="st">"3"</span>)
 toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="kw">length</span>(x) ==<span class="st"> </span><span class="dv">4</span>)
-toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"c"</span> %in%<span class="st"> </span>x)
+toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"Cyd"</span> %in%<span class="st"> </span>x)
 <span class="kw">summary</span>(toy_btdata_subset)</code></pre></div>
 <pre><code>## Number of items: 4 
-## Density of wins matrix: 0.25 
+## Density of wins matrix: 0.4375 
 ## Fully-connected: TRUE</code></pre>
 <p>Alternatively, set the <code>subset</code> argument in <code>btfit</code>.</p>
 </div>
 <div id="fitting-the-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fitting-the-model" class="anchor"></a>Fitting the model</h2>
-<p>The summary of the <code>btdata</code> object reveals whether the comparison graph is fully-connected or not. This affects the type of estimate available for the strength parameter.</p>
+<p>The summary of the <code>btdata</code> object reveals whether the comparison graph is fully connected or not. This affects the type of estimate available for the strength parameter.</p>
 <ul>
 <li>If <code>Fully-connected: TRUE</code>, then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.</li>
 <li>If <code>Fully-connected: FALSE</code>, then we cannot find the MLE for the full dataset. There are two alternatives:
@@ -283,27 +298,27 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 ## 
 ## $item_summary
 ## # A tibble: 7 x 4
-##   component  item   estimate        SE
-##       &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-## 1         2     h  1.2643415 0.7169719
-## 2         2     g -0.2488214 0.5045346
-## 3         2     f -1.0155201 0.5089739
-## 4         3     d  0.5843254 1.0020127
-## 5         3     a  0.3030107 1.0320999
-## 6         3     b -0.2987148 1.0314304
-## 7         3     c -0.5886212 1.0025948
+##   component  item    estimate        SE
+##       &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+## 1         2   Han  0.69564153 0.9110076
+## 2         2   Gal  0.41253614 0.7675914
+## 3         2   Fin -1.10817768 1.0499275
+## 4         3   Cyd  0.59239992 0.9905958
+## 5         3   Amy  0.03250119 0.6990438
+## 6         3   Ben -0.24307179 0.9443103
+## 7         3   Dan -0.38182932 0.7124240
 ## 
 ## $component_summary
 ## # A tibble: 2 x 4
 ##   component num_items iters converged
 ##       &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
-## 1         2         3    13      TRUE
-## 2         3         4    16      TRUE</code></pre>
+## 1         2         3     6      TRUE
+## 2         3         4    10      TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(toy_fit_MAP)</code></pre></div>
-<pre><code>##          e          h          a          d          g          b 
-##  2.6768420  1.1322378 -0.1472393 -0.1621301 -0.3867808 -0.8484833 
-##          f          c 
-## -1.1214999 -1.1429465</code></pre>
+<pre><code>##         Eve         Cyd         Han         Amy         Gal         Ben 
+##  1.90113420  0.47237293  0.24535391 -0.07655328 -0.10175687 -0.42296697 
+##         Dan         Fin 
+## -0.53638389 -1.48120003</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vcov</span>(citations_fit, <span class="dt">ref =</span> <span class="st">"JASA"</span>)</code></pre></div>
 <pre><code>##               citing
 ## cited               JRSS-B  Biometrika JASA Comm Statist
@@ -326,16 +341,17 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 ##   JASA         0.32063771  0.3822073 .             0.9219605
 ##   Comm Statist 0.03841516  0.0497612 0.07803945    .</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fitted</span>(toy_fit_MLE, <span class="dt">as_df =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 7 x 5
+<pre><code>## # A tibble: 8 x 5
 ##   component player1 player2      fit1      fit2
 ##       &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1         2       h       g 2.4585885 0.5414115
-## 2         2       h       f 4.5359770 0.4640230
-## 3         2       g       f 5.4624506 2.5375494
-## 4         3       d       b 0.7074518 0.2925482
-## 5         3       a       b 1.2921019 0.7078981
-## 6         3       d       c 2.2910316 0.7089684
-## 7         3       a       c 0.7092268 0.2907732</code></pre>
+## 1         2     Han     Gal 1.1406148 0.8593852
+## 2         2     Han     Fin 0.8586132 0.1413868
+## 3         2     Gal     Fin 1.6412871 0.3587129
+## 4         3     Cyd     Amy 1.2728582 0.7271418
+## 5         3     Amy     Ben 0.5684605 0.4315395
+## 6         3     Cyd     Dan 0.7259617 0.2740383
+## 7         3     Amy     Dan 1.2042516 0.7957484
+## 8         3     Ben     Dan 1.0692677 0.9307323</code></pre>
 </div>
 <div id="simulate-btfit-and-simuate_bt" class="section level3">
 <h3 class="hasAnchor">
@@ -378,6 +394,9 @@ tournament_sim &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 </div>
 <div id="ref-Lange:2000">
 <p>Lange, Kenneth, David R Hunter, and Ilsoon Yang. 2000. “Optimization Transfer Using Surrogate Objective Functions.” <em>Journal of Computational and Graphical Statistics</em> 9 (1): 1–20.</p>
+</div>
+<div id="ref-Stigler:1994">
+<p>Stigler, Stephen M. 1994. “Citation Patterns in the Journals of Statistics and Probability.” <em>Statistical Science</em> 9 (1): 94–108.</p>
 </div>
 <div id="ref-Varin:2016">
 <p>Varin, Cristiano, Manuela Cattelan, and David Firth. 2016. “Statistical Modelling of Citation Exchange Between Statistics Journals.” <em>Journal of the Royal Statistical Society: Series A</em> 179 (1): 1–63.</p>
