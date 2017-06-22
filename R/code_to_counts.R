@@ -19,28 +19,28 @@
 #' codes_to_counts(df3, c(1,2))
 #'
 #' @export
-codes_to_counts <- function(df, code) {
+codes_to_counts <- function(df, codes) {
   
   # check arguments
   if (!is.data.frame(df)) stop("df must be a data frame")
   if (ncol(df) != 3) stop("df must have three columns")
-  if (!(is.numeric(code) | is.character(code))) stop("code must be a numeric or character vector")
-  if (!(length(code) %in% 2:3)) stop("code must be a vector of length 2 or 3")
+  if (!(is.numeric(codes) | is.character(codes))) stop("codes must be a numeric or character vector")
+  if (!(length(codes) %in% 2:3)) stop("codes must be a vector of length 2 or 3")
   
   df <- dplyr::as_data_frame(df)
   
   # extract code elements
-  W1 <- code[1]
-  W2 <- code[2]
-  if (length(code) == 3) D <- code[3]
+  W1 <- codes[1]
+  W2 <- codes[2]
+  if (length(codes) == 3) D <- codes[3]
   
   # check that codes match content in column three
-  code_elements <- sort(unique(df[[3]]))
-  if (is.character(code)) {
-    code <- factor(code)
-    code_elements <- factor(code_elements)
+  codes_elements <- sort(unique(df[[3]]))
+  if (is.character(codes)) {
+    codes <- factor(codes)
+    codes_elements <- factor(codes_elements)
   }
-  if (!(identical(sort(code), sort(code_elements)))) stop("The elements in code don't match the elements in the third column of df")
+  if (!(identical(sort(codes), sort(codes_elements)))) stop("The elements in codes don't match the elements in the third column of df")
   
   
   # make col3 name consistent, so can use in mutate statements

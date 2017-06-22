@@ -4,7 +4,7 @@
 \alias{codes_to_counts}
 \title{Converts data frame with a code for wins to counts of wins}
 \usage{
-codes_to_counts(df, code)
+codes_to_counts(df, codes)
 }
 \arguments{
 \item{df}{A three-column data frame. Each row represents a comparison between two items. The first and second columns are the names of the first and second players respectively. The third column gives a code for who won. See Details and Examples.}
