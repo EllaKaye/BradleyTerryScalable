@@ -21,6 +21,8 @@ inst/doc
 # knitr and R markdown default cache directories
 /*_cache/
 /cache
+docs/articles/BradleyTerryScalable_cache/
+vignettes/BradleyTerryScalable_cache/
 
 # Temporary files created by R markdown
 *.utf8.md
