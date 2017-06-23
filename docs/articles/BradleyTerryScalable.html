@@ -57,7 +57,7 @@
       <h1>Fitting the Bradley-Terry model to large and potentially sparse datasets</h1>
                         <h4 class="author">Ella Kaye and David Firth</h4>
             
-            <h4 class="date">2017-06-22</h4>
+            <h4 class="date">2017-06-23</h4>
           </div>
 
     
@@ -150,14 +150,14 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 <ul>
 <li>If the data frame has three columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item.</li>
 <li>If the data frame has four columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item and the fourth column must be the number of times the second item has beaten the first item.</li>
-<li>In either of these cases, the data can be aggregated, or there can be a row per comparison.</li>
+<li>In either of these cases, the data can be aggregated, or there can be one row per comparison.</li>
 <li>Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</li>
 </ul>
 </li>
 </ul>
 <p>We anticipate that the user may have data in a three-column data frame that does not match the description of the three-column data frame above. For example, the data frame could have one row per comparison, where the third column contains a code to indicate which of the two items won, say <code>W1</code> if the item in column 1 won, <code>W2</code> if the item in column 2 won and <code>D</code> if it was a tie/draw. Alternatively, the third column could contain the win-count, but only relative to the first item, i.e. 1 if the first item wins, 0 if it loses and 0.5 if there was a draw. In this case, the <code>btdata</code> function won’t know that a loss for the first item item should be counted as a win for the second item.</p>
 <p>For the cases described in the previous paragraph, the <code>BradleyTerryScalable</code> package provides the <code>codes_to_counts</code> function, which takes such three-column data-frames and returns a four-column data frame of the required format for passing to the <code>btdata</code> function.</p>
-<p>The <code>BradleyTerryScalable</code> package provides two toy data sets with which we’ll use in this demonstration:</p>
+<p>The <code>BradleyTerryScalable</code> package provides two toy data sets which we’ll use in this demonstration:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(citations) 
 citations</code></pre></div>
 <pre><code>##               citing
