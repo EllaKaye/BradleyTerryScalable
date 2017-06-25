@@ -86,13 +86,13 @@ The main fitting function in this package is `btfit`. This function takes as its
 
 The `x` argument to `btdata` can be one of four classes of object:
 
-- A matrix (either a base `matrix` or a class from the `Matrix` package), dimension *K* by *K*, where *K* is the number of items. The *i,j*-th element is $w_{ij}$, the number of times item *i* has beaten item *j*.
+- A matrix (either a base `matrix` or a class from the `Matrix` package), dimension *K* by *K*, where *K* is the number of items. The *i,j*-th element is $w_{ij}$, the number of times item *i* has beaten item *j*. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.
 
 - A contingency table of class `table`, similar to the matrix described in the above point.
 
 - An `igraph`, representing the *comparison graph*, with the K items as nodes. For the edges: 
     - If the graph is unweighted, a directed edge from node *i* to node *j* for every time item *i* has beaten item *j*
-    - If the graph is weighted, then one edge node *i* to node *j* if item *i* has beaten item *j* at least once, with the weight attribute of that edge set to the number of times *i* has beaten *j*.
+    - If the graph is weighted, then one edge from node *i* to node *j* if item *i* has beaten item *j* at least once, with the weight attribute of that edge set to the number of times *i* has beaten *j*.
 
 
 - A data frame (`data.frame` or `tibble`), with three or four columns

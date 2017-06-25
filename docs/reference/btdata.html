@@ -102,7 +102,7 @@
     </tr>
     <tr>
       <th>object</th>
-      <td><p>A <code>btdata</code> object</p></td>
+      <td><p>An object of class "btdata", typically the result <code>ob</code> of <code>ob &lt;- btdata(..)</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -112,24 +112,34 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A btdata object, which is a list containing:</p>
-<dt>wins</dt><dd><p>A K*K square matrix, where the \(i,j\)-th element is the number of times item \(i\) has beaten item \(j\). If the items in <code>x</code> are unnamed, the wins matrix will be assigned row and column names 1:K.</p></dd>
+    <p>An object of class "btdata", which is a list containing:</p>
+<dt>wins</dt><dd><p>A \(K*K\) square matrix, where the \(i,j\)-th element is the number of times item \(i\) has beaten item \(j\). If the items in <code>x</code> are unnamed, the wins matrix will be assigned row and column names 1:K.</p></dd>
 <dt>components</dt><dd><p>A list of the fully-connected components.</p></dd>
-<dt>graph</dt><dd><p>The comparison graph of the data (if return_graph = TRUE).</p></dd>
+<dt>graph</dt><dd><p>The comparison graph of the data (if return_graph = TRUE). See Details.</p></dd>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>If <code>x</code> is a data frame, it must have three or four columns.</p>
-<p>If <code>x</code> is 3-column data-frame, the first column contains the name of the winning item, the second column contains the name of the losing item and the third columns contains the number of times that the winner has beaten the loser. Multiple entries for the same pair of items are handled correctly.</p>
-<p>If <code>x</code> is a 4-column data-frame, the first column contains the name of item 1, the second column contains the name of item 2, the third column contains the number of times that item 1 has beaten item 2 and the fourth column contains the number of times item 2 has beaten item 1. Multiple entries for the same pair of items are handled correctly.</p>
-<p>Alternatively, <code>x</code> can be an igraph object representing the comparison graph of the data, i.e. the graph where the nodes are the items, and there is a directed edge from node \(i\) to node \(j\) whenever item \(i\) has beaten item \(j\) at least once. Then, if <code>x</code> is a weighted graph, the weight on each edge \(i-j\) represents the number of times item \(i\) has beaten item \(j\). If <code>x</code> is not weighted, there is a separate edge from node \(i\) to node \(j\) for each time item \(i\) has beaten item \(j\).</p>
-<p>Finally, <code>x</code> can be a square matrix, where the \(i,j\)-th element is the number of times item \(i\) has beaten item \(j\). The items must be in the same order on the rows and the columns. Similarly, <code>x</code> can be a square contingency table (of the type used as an argument to <code>countsToBinomial</code> in the <code>BradleyTerry2 pacakge</code>).
-    <code>summary.btdata</code> shows the number of items, the density of the <code>wins</code> matrix and whether the underlying comparison graph is fully-connected. If it is not fully-connected, <code>summary.btdata</code> will additional show the number of fully-connected components and a table giving the frequency of components of different sizes.</p>
+    <p>The <code>x</code> argument to <code>btdata</code> can be one of four types:</p><ul>
+<li><p>A matrix (either a base <code>matrix</code>) or a class from the <code>Matrix</code> pacakge), dimension \(K\) by \(K\), where \(K\) is the number of items. The \(i,j\)-th element is \(w_{ij}\), the number of times item \(i\) has beaten item \(j\). Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
+<li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
+<li><p>An <code>igraph</code>, representing the <em>comparison graph</em>, with the \(K\) items as nodes. For the edges:
+<ul>
+<li><p>If the graph is unweighted, a directed edge from node \(i\) to node \(j\) for every time item \(i\) has beaten item \(j\)</p></li>
+<li><p>If the graph is weighted, then one edge from node \(i\) to node \(j\) if item \(i\) has beaten item \(j\) at least once, with the weight attribute of that edge set to the number of times \(i\) has beaten \(j\).</p></li>
+</ul></p></li>
+<li><p>If <code>x</code> is a data frame, it must have three or four columns:
+<ul>
+<li><p>3-column data frameThe first column contains the name of the winning item, the second column contains the name of the losing item and the third columns contains the number of times that the winner has beaten the loser. Multiple entries for the same pair of items are handled correctly. If <code>x</code> is a three-column dataframe, but the third column gives a code for who won, rather than a count, see <code><a href='codes_to_counts.html'>codes_to_counts</a></code>.</p></li>
+<li><p>4-column data frameThe first column contains the name of item 1, the second column contains the name of item 2, the third column contains the number of times that item 1 has beaten item 2 and the fourth column contains the number of times item 2 has beaten item 1. Multiple entries for the same pair of items are handled correctly. This kind of data frame is also the output of <code><a href='codes_to_counts.html'>codes_to_counts</a></code>.</p></li>
+<li><p>In either of these cases, the data can be aggregated, or there can be one row per comparison.</p></li>
+<li><p>Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
+</ul></p></li>
+</ul><p><code>summary.btdata</code> shows the number of items, the density of the <code>wins</code> matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, <code>summary.btdata</code> will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fit, see <code><a href='btfit.html'>btfit</a></code> and the vignette: vignette("BradleyTerryScalable", package = "BradleyTerryScalable").</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='select_components.html'>select_components</a></code></p>
+    <p><code><a href='select_components.html'>select_components</a></code> <code><a href='codes_to_counts.html'>codes_to_counts</a></code></p>
     
 
   </div>

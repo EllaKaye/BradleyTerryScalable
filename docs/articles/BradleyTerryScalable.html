@@ -137,13 +137,13 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 <p>The main fitting function in this package is <code>btfit</code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="../reference/btdata.html">btdata(x)</a></code>.</p>
 <p>The <code>x</code> argument to <code>btdata</code> can be one of four classes of object:</p>
 <ul>
-<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension <em>K</em> by <em>K</em>, where <em>K</em> is the number of items. The <em>i,j</em>-th element is <span class="math inline">\(w_{ij}\)</span>, the number of times item <em>i</em> has beaten item <em>j</em>.</p></li>
+<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension <em>K</em> by <em>K</em>, where <em>K</em> is the number of items. The <em>i,j</em>-th element is <span class="math inline">\(w_{ij}\)</span>, the number of times item <em>i</em> has beaten item <em>j</em>. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
 <li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
 <li>An <code>igraph</code>, representing the <em>comparison graph</em>, with the K items as nodes. For the edges:
 <ul>
 <li>If the graph is unweighted, a directed edge from node <em>i</em> to node <em>j</em> for every time item <em>i</em> has beaten item <em>j</em>
 </li>
-<li>If the graph is weighted, then one edge node <em>i</em> to node <em>j</em> if item <em>i</em> has beaten item <em>j</em> at least once, with the weight attribute of that edge set to the number of times <em>i</em> has beaten <em>j</em>.</li>
+<li>If the graph is weighted, then one edge from node <em>i</em> to node <em>j</em> if item <em>i</em> has beaten item <em>j</em> at least once, with the weight attribute of that edge set to the number of times <em>i</em> has beaten <em>j</em>.</li>
 </ul>
 </li>
 <li>A data frame (<code>data.frame</code> or <code>tibble</code>), with three or four columns

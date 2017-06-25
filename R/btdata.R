@@ -168,25 +168,38 @@ pairs_to_matrix <- function(df) {
 #' 
 #' Creates a btdata object, primarily for use in the \link{btfit} function.
 #' 
-#' If \code{x} is a data frame, it must have three or four columns.
+#' The \code{x} argument to \code{btdata} can be one of four types:
 #' 
-#' If \code{x} is 3-column data-frame, the first column contains the name of the winning item, the second column contains the name of the losing item and the third columns contains the number of times that the winner has beaten the loser. Multiple entries for the same pair of items are handled correctly.
+#' \itemize{
 #' 
-#' If \code{x} is a 4-column data-frame, the first column contains the name of item 1, the second column contains the name of item 2, the third column contains the number of times that item 1 has beaten item 2 and the fourth column contains the number of times item 2 has beaten item 1. Multiple entries for the same pair of items are handled correctly.
+#' \item{A matrix (either a base \code{matrix}) or a class from the \code{Matrix} pacakge), dimension \eqn{K} by \eqn{K}, where \eqn{K} is the number of items. The \eqn{i,j}-th element is \eqn{w_{ij}}, the number of times item \eqn{i} has beaten item \eqn{j}. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.}
+#' \item{A contingency table of class \code{table}, similar to the matrix described in the above point.}
+#' \item{An \code{igraph}, representing the \emph{comparison graph}, with the \eqn{K} items as nodes. For the edges:
+#' \itemize{
+#' \item{If the graph is unweighted, a directed edge from node \eqn{i} to node \eqn{j} for every time item \eqn{i} has beaten item \eqn{j}}
+#' \item{If the graph is weighted, then one edge from node \eqn{i} to node \eqn{j} if item \eqn{i} has beaten item \eqn{j} at least once, with the weight attribute of that edge set to the number of times \eqn{i} has beaten \eqn{j}.}
+#' }}
+#' \item{
+#' If \code{x} is a data frame, it must have three or four columns:
+#' \itemize{
+#' \item{3-column data frame}{The first column contains the name of the winning item, the second column contains the name of the losing item and the third columns contains the number of times that the winner has beaten the loser. Multiple entries for the same pair of items are handled correctly. If \code{x} is a three-column dataframe, but the third column gives a code for who won, rather than a count, see \code{\link{codes_to_counts}}.}
+#' \item{4-column data frame}{The first column contains the name of item 1, the second column contains the name of item 2, the third column contains the number of times that item 1 has beaten item 2 and the fourth column contains the number of times item 2 has beaten item 1. Multiple entries for the same pair of items are handled correctly. This kind of data frame is also the output of \code{\link{codes_to_counts}}.}
+#' \item{In either of these cases, the data can be aggregated, or there can be one row per comparison.}
+#' \item{Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.}
+#' }
+#' }
 #' 
-#' Alternatively, \code{x} can be an igraph object representing the comparison graph of the data, i.e. the graph where the nodes are the items, and there is a directed edge from node \eqn{i} to node \eqn{j} whenever item \eqn{i} has beaten item \eqn{j} at least once. Then, if \code{x} is a weighted graph, the weight on each edge \eqn{i-j} represents the number of times item \eqn{i} has beaten item \eqn{j}. If \code{x} is not weighted, there is a separate edge from node \eqn{i} to node \eqn{j} for each time item \eqn{i} has beaten item \eqn{j}.
+#' }
 #' 
-#' Finally, \code{x} can be a square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. The items must be in the same order on the rows and the columns. Similarly, \code{x} can be a square contingency table (of the type used as an argument to \code{countsToBinomial} in the \code{BradleyTerry2 pacakge}).
-#' 
-#' \code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully-connected. If it is not fully-connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. 
+#' \code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fit, see \code{\link{btfit}} and the vignette: vignette("BradleyTerryScalable", package = "BradleyTerryScalable").
 #' 
 #' @param x The data, which is either a three- or four-column data frame, a directed igraph object, a square matrix or a square contingency table. See Details.
 #' @param return_graph Logical. If TRUE, an igraph object representing the comparison graph will be returned.
-#' @return A btdata object, which is a list containing:
-#' \item{wins}{A K*K square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
+#' @return An object of class "btdata", which is a list containing:
+#' \item{wins}{A \eqn{K*K} square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
 #' \item{components}{A list of the fully-connected components.}
-#' \item{graph}{The comparison graph of the data (if return_graph = TRUE).}
-#' @seealso \code{\link{select_components}}
+#' \item{graph}{The comparison graph of the data (if return_graph = TRUE). See Details.}
+#' @seealso \code{\link{select_components}} \code{\link{codes_to_counts}}
 #' @export
 btdata <- function(x, return_graph = FALSE) {
   
@@ -265,7 +278,7 @@ btdata <- function(x, return_graph = FALSE) {
 }
 
 #' @rdname btdata
-#' @param object A \code{btdata} object
+#' @param object An object of class "btdata", typically the result \code{ob} of \code{ob <- btdata(..)}. 
 #' @param ... Other arguments
 #' @export
 summary.btdata <- function(object, ...){
