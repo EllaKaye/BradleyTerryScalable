@@ -113,7 +113,7 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class "btdata", which is a list containing:</p>
-<dt>wins</dt><dd><p>A \(K*K\) square matrix, where the \(i,j\)-th element is the number of times item \(i\) has beaten item \(j\). If the items in <code>x</code> are unnamed, the wins matrix will be assigned row and column names 1:K.</p></dd>
+<dt>wins</dt><dd><p>A \(K*K\) square matrix, where the \(i,j\)-th element is the number of times item <em>i</em> has beaten item <em>j</em>. If the items in <code>x</code> are unnamed, the wins matrix will be assigned row and column names 1:K.</p></dd>
 <dt>components</dt><dd><p>A list of the fully-connected components.</p></dd>
 <dt>graph</dt><dd><p>The comparison graph of the data (if return_graph = TRUE). See Details.</p></dd>
 
@@ -121,12 +121,12 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>x</code> argument to <code>btdata</code> can be one of four types:</p><ul>
-<li><p>A matrix (either a base <code>matrix</code>) or a class from the <code>Matrix</code> pacakge), dimension <em>K</em> by <em>K</em>, where \(K\) is the number of items. The \(i,j\)-th element is \(w_{ij}\), the number of times item \(i\) has beaten item \(j\). Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
+<li><p>A matrix (either a base <code>matrix</code>) or a class from the <code>Matrix</code> pacakge), dimension <em>K</em> by <em>K</em>, where <em>K</em> is the number of items. The <em>i,j</em>-th element is \(w_{ij}\), the number of times item <em>i</em> has beaten item <em>j</em>. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
 <li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
-<li><p>An <code>igraph</code>, representing the <em>comparison graph</em>, with the \(K\) items as nodes. For the edges:
+<li><p>An <code>igraph</code>, representing the <em>comparison graph</em>, with the <em>K</em> items as nodes. For the edges:
 <ul>
-<li><p>If the graph is unweighted, a directed edge from node \(i\) to node \(j\) for every time item \(i\) has beaten item \(j\)</p></li>
-<li><p>If the graph is weighted, then one edge from node \(i\) to node \(j\) if item \(i\) has beaten item \(j\) at least once, with the weight attribute of that edge set to the number of times \(i\) has beaten \(j\).</p></li>
+<li><p>If the graph is unweighted, a directed edge from node <em>i</em> to node <em>j</em> for every time item <em>i</em> has beaten item <em>j</em></p></li>
+<li><p>If the graph is weighted, then one edge from node <em>i</em> to node <em>j</em> if item <em>i</em> has beaten item <em>j</em> at least once, with the weight attribute of that edge set to the number of times <em>i</em> has beaten <em>j</em>.</p></li>
 </ul></p></li>
 <li><p>If <code>x</code> is a data frame, it must have three or four columns:
 <ul>

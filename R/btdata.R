@@ -172,12 +172,12 @@ pairs_to_matrix <- function(df) {
 #' 
 #' \itemize{
 #' 
-#' \item{A matrix (either a base \code{matrix}) or a class from the \code{Matrix} pacakge), dimension \emph{K} by \emph{K}, where \eqn{K} is the number of items. The \eqn{i,j}-th element is \eqn{w_{ij}}, the number of times item \eqn{i} has beaten item \eqn{j}. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.}
+#' \item{A matrix (either a base \code{matrix}) or a class from the \code{Matrix} pacakge), dimension \emph{K} by \emph{K}, where \emph{K} is the number of items. The \emph{i,j}-th element is \eqn{w_{ij}}, the number of times item \emph{i} has beaten item \emph{j}. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.}
 #' \item{A contingency table of class \code{table}, similar to the matrix described in the above point.}
-#' \item{An \code{igraph}, representing the \emph{comparison graph}, with the \eqn{K} items as nodes. For the edges:
+#' \item{An \code{igraph}, representing the \emph{comparison graph}, with the \emph{K} items as nodes. For the edges:
 #' \itemize{
-#' \item{If the graph is unweighted, a directed edge from node \eqn{i} to node \eqn{j} for every time item \eqn{i} has beaten item \eqn{j}}
-#' \item{If the graph is weighted, then one edge from node \eqn{i} to node \eqn{j} if item \eqn{i} has beaten item \eqn{j} at least once, with the weight attribute of that edge set to the number of times \eqn{i} has beaten \eqn{j}.}
+#' \item{If the graph is unweighted, a directed edge from node \emph{i} to node \emph{j} for every time item \emph{i} has beaten item \emph{j}}
+#' \item{If the graph is weighted, then one edge from node \emph{i} to node \emph{j} if item \emph{i} has beaten item \emph{j} at least once, with the weight attribute of that edge set to the number of times \emph{i} has beaten \emph{j}.}
 #' }}
 #' \item{
 #' If \code{x} is a data frame, it must have three or four columns:
@@ -196,7 +196,7 @@ pairs_to_matrix <- function(df) {
 #' @param x The data, which is either a three- or four-column data frame, a directed igraph object, a square matrix or a square contingency table. See Details.
 #' @param return_graph Logical. If TRUE, an igraph object representing the comparison graph will be returned.
 #' @return An object of class "btdata", which is a list containing:
-#' \item{wins}{A \eqn{K*K} square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
+#' \item{wins}{A \eqn{K*K} square matrix, where the \eqn{i,j}-th element is the number of times item \emph{i} has beaten item \emph{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
 #' \item{components}{A list of the fully-connected components.}
 #' \item{graph}{The comparison graph of the data (if return_graph = TRUE). See Details.}
 #' @seealso \code{\link{select_components}} \code{\link{codes_to_counts}}
