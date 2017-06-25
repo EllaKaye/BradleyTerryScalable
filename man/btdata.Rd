@@ -20,7 +20,7 @@ btdata(x, return_graph = FALSE)
 }
 \value{
 An object of class "btdata", which is a list containing:
-\item{wins}{A \eqn{K*K} square matrix, where the \eqn{i,j}-th element is the number of times item \emph{i} has beaten item \emph{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
+\item{wins}{A \emph{K} by \emph{K} square matrix, where the \eqn{i,j}-th element is the number of times item \emph{i} has beaten item \emph{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
 \item{components}{A list of the fully-connected components.}
 \item{graph}{The comparison graph of the data (if return_graph = TRUE). See Details.}
 }
