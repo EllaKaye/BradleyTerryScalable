@@ -23,6 +23,11 @@ reference:
     desc: "Functions to simulate from the Bradley-Terry model"
     contents:
       - simulate_BT
+  - tite: "Datasets"
+    desc: "Toy datasets for demonstrating the BradleyTerryScalable workflow"
+    contents: 
+      - citations
+      - toy_data
 
 
 

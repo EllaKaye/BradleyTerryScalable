@@ -129,7 +129,7 @@ A `btdata` objects is a list containing two or three elements:
 - `components`: a list of the fully-connected components of the comparison graph (see the third bullet point above)
 - `graph`: if `return_graph = TRUE`, then the `igraph` object of the comparison graph is returned, which can be useful for visualising the data.
 
-```{r message = FALSE, fig.align = "center", cache = TRUE}
+```{r message = FALSE, fig.align = "center"}
 library(igraph)
 par(mar=c(0,0,0,0)+.1)  
 plot.igraph(toy_btdata$graph, vertex.size = 28, edge.arrow.size = 0.5) 
