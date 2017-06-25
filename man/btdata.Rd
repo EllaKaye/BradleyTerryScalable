@@ -53,8 +53,15 @@ If \code{x} is a data frame, it must have three or four columns:
 
 \code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fit, see \code{\link{btfit}} and the vignette: vignette("BradleyTerryScalable", package = "BradleyTerryScalable").
 }
+\examples{
+citations_btdata <- btdata(BradleyTerryScalable::citations)
+summary(citations_btdata)
+toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_df_4col)
+summary(toy_btdata)
+}
 \seealso{
-\code{\link{select_components}} \code{\link{codes_to_counts}}
+\code{\link{codes_to_counts}} \code{\link{select_components}}
 }
 \author{
 Ella Kaye

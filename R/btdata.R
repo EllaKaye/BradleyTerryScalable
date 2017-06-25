@@ -199,8 +199,14 @@ pairs_to_matrix <- function(df) {
 #' \item{wins}{A \emph{K} by \emph{K} square matrix, where the \eqn{i,j}-th element is the number of times item \emph{i} has beaten item \emph{j}. If the items in \code{x} are unnamed, the wins matrix will be assigned row and column names 1:K.}
 #' \item{components}{A list of the fully-connected components.}
 #' \item{graph}{The comparison graph of the data (if return_graph = TRUE). See Details.}
-#' @seealso \code{\link{select_components}} \code{\link{codes_to_counts}}
+#' @seealso \code{\link{codes_to_counts}} \code{\link{select_components}}
 #' @author Ella Kaye
+#' @examples
+#' citations_btdata <- btdata(BradleyTerryScalable::citations)
+#' summary(citations_btdata)
+#' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+#' toy_btdata <- btdata(toy_df_4col)
+#' summary(toy_btdata)
 #' @export
 btdata <- function(x, return_graph = FALSE) {
   
