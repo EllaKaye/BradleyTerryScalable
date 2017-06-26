@@ -35,12 +35,26 @@ component_summary_vec <- function(pi, iters, converged) {
 #' 
 #' @inheritParams btprob 
 #' @param ref the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.
-#' @param SE logical - whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large.
+#' @param SE Logical. whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large. See \code{\link{vcov.btfit}}.
 #' @param ... other arguments
 #' 
 #' @return An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
 #' \item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order.}
 #' \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
+#' @seealso \code{\link{btfit}}
+#' @author Ella Kaye
+#' @examples 
+#' citations_btdata <- btdata(BradleyTerryScalable::citations)
+#' fit1 <- btfit(citations_btdata, 1)
+#' summary(fit1)
+#' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+#' toy_btdata <- btdata(toy_df_4col)
+#' fit2a <- btfit(toy_btdata, 1)
+#' summary(fit2a)
+#' fit2b <- btfit(toy_btdata, 1.1)
+#' summary(fit2b)
+#' fit2c <- btfit(toy_btdata, 1, subset = function(x) length(x) > 3)
+#' summary(fit2c)
 #' 
 #' @export
 summary.btfit <- function(object, subset = NULL, ref = NULL, SE = FALSE, ...){

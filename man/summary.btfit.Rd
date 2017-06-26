@@ -10,11 +10,11 @@
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
 
-\item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
+\item{subset}{A condition for selecting one or more subsets of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
 
 \item{ref}{the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
 
-\item{SE}{logical - whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large.}
+\item{SE}{Logical. whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large. See \code{\link{vcov.btfit}}.}
 
 \item{...}{other arguments}
 }
@@ -25,4 +25,24 @@ An S3 object of class \code{"summary.btfit"}. It is a list containing the follow
 }
 \description{
 \code{summary} method for class "btfit"
+}
+\examples{
+citations_btdata <- btdata(BradleyTerryScalable::citations)
+fit1 <- btfit(citations_btdata, 1)
+summary(fit1)
+toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_df_4col)
+fit2a <- btfit(toy_btdata, 1)
+summary(fit2a)
+fit2b <- btfit(toy_btdata, 1.1)
+summary(fit2b)
+fit2c <- btfit(toy_btdata, 1, subset = function(x) length(x) > 3)
+summary(fit2c)
+
+}
+\seealso{
+\code{\link{btfit}}
+}
+\author{
+Ella Kaye
 }
