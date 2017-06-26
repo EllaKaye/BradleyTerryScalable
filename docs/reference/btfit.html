@@ -92,11 +92,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>btdata</th>
-      <td><p>A <code><a href='btdata.html'>btdata</a></code> object</p></td>
+      <td><p>An object of class "btdata", typically the result ob of ob &lt;- btdata(..). See <code><a href='btdata.html'>btdata</a></code>.</p></td>
     </tr>
     <tr>
       <th>a</th>
-      <td><p>Must be &gt;= 1. When <code>a = 1</code>, the function returns the MLE estimate of \(pi\) (by component, if necessary). When <code>a &gt; 1</code>, <code>a</code> is the shape parameter for the Gamma prior (See Details).</p></td>
+      <td><p>Must be &gt;= 1. When <code>a = 1</code>, the function returns the MLE estimate of \(\pi\) (by component, if necessary). When <code>a &gt; 1</code>, <code>a</code> is the shape parameter for the Gamma prior. See Details.</p></td>
     </tr>
     <tr>
       <th>MAP_by_component</th>
@@ -108,7 +108,7 @@
     </tr>
     <tr>
       <th>maxit</th>
-      <td><p>The maximum number of iterations for the algorithm. If returning <code>pi</code> by component, this will be the maximum number of iterations for each component.</p></td>
+      <td><p>The maximum number of iterations for the algorithm. If returning \(\pi\) by component, this will be the maximum number of iterations for each component.</p></td>
     </tr>
     <tr>
       <th>epsilon</th>
@@ -118,12 +118,12 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>btfit</code> returns an S3 object of class <code>"btfit"</code>. It is a list containing the following components:</p>
+    <p><code>btfit</code> returns an S3 object of class "btfit". It is a list containing the following components:</p>
 <dt>call</dt><dd><p>The matched call</p></dd>
-<dt>pi</dt><dd><p>A list of length \(M\), where \(M\) is the number of fully-connected components of \(G_W\) (or the requested subset) of two or more items. The \(m\)-th item is a vector \(\pi\), the strength parameter, for the items in the \(m\)-th fully connected component, \(m = 1, \ldots, M\). These are sorted in descending order.</p></dd>
+<dt>pi</dt><dd><p>A list of length \(M\), where \(M\) is the number of fully-connected components of the comparison graph \(G_W\) (or the requested subset) of two or more items. The \(m\)-th list item is a named vector \(\pi\), the strength parameter, for the items in the \(m\)-th fully connected component, \(m = 1, \ldots, M\). These are sorted in descending order.</p></dd>
 <dt>iters</dt><dd><p>A vector of length \(M\). The \(m\)-th entry is the number of iterations it took for the algorithm to converge for the \(m\)-th component, for \(m = 1, \ldots, M\). Note that if the algorithm has not converged in any component, a warning will be produced.</p></dd>
 <dt>converged</dt><dd><p>A logical vector of length \(M\), indicating whether the algorithm has converged for the \(m\)-th component in <code>maxit</code> iterations.</p></dd>
-<dt>N</dt><dd><p>A list of length \(M\). The \(m\)-th item is a matrix where each element \(n_{ij}\) is the number of times item \(i\) played against item \(j\), for the items in the \(m\)-th component. The rows and columns are arranged in the same order as the ordered pi vector(s).</p></dd>
+<dt>N</dt><dd><p>A list of length \(M\). The \(m\)-th list item is a matrix where each element \(n_{ij}\) is the number of times item \(i\) played against item \(j\), for the items in the \(m\)-th component. The rows and columns are arranged in the same order as the ordered pi vector(s).</p></dd>
 <dt>diagonal</dt><dd><p>A list of length \(M\). The \(m\)-th item is a vector of the diagonal elements of the <code>btdata$wins</code> matrix, for the items in the \(m\)-th fully-connected component</p></dd>
 <dt>names_dimnames</dt><dd><p>The names of the dimnames of the original <code>btdata$wins</code> matrix.</p></dd>
 
@@ -134,10 +134,10 @@
     $$p_{ij} = \frac{\pi_i}{\pi_i + \pi_j}.$$</p>
 <p>The comparison graph, \(G_W\), has the \(K\) players as the nodes and a directed edge from node \(i\) to node \(j\) whenever item \(i\) has beaten item \(j\) at least once. The MLE of the Bradley-Terry model exists and is finite if and only if the comparison graph is fully-connected (i.e. if there is a directed path from node \(i\) to node \(j\) for all items \(i\) and \(j\)).</p>
 <p>Assuming that the comparison graph of the data is fully-connected, the MLE of the Bradley-Terry model can be found using the MM-algorithm (Hunter, 2004).</p>
-<p>If the comparison graph of the data is not fully-connected, there are two principled options for fitting the Bradley-Terry model. One is to find the MLE within each fully-connected component. The other is to find the Bayesian MAP estimate, as suggested by Caron &amp; Doucet (2012), where a \(Gamma(a,b)\)  gamma prior is placed on each \(\pi_i\), and the product of these is taken as a prior on \(\pi\). The MAP estimate can then be found with an EM-algorithm. When \(a = 1\) and \(b = 0\), the EM and MM-algorithms are equivalent and the MAP estimate and MLE are identical. The rate parameter of the Gamma prior, \(b\), is not likelihood identifiable. When \(a &gt; 1\), \(b\) is set to \(a *K - 1\), where K is the number of items in the component; this minimises the number of iterations needed for the algorithm to converge.</p>
+<p>If the comparison graph of the data is not fully-connected, there are two principled options for fitting the Bradley-Terry model. One is to find the MLE within each fully-connected component. The other is to find the Bayesian MAP estimate, as suggested by Caron &amp; Doucet (2012), where a \(Gamma(a,b)\)  gamma prior is placed on each \(\pi_i\), and the product of these is taken as a prior on \(\pi\). The MAP estimate can then be found with an EM-algorithm. When \(a = 1\) and \(b = 0\), the EM and MM-algorithms are equivalent and the MAP estimate and MLE are identical. The rate parameter of the Gamma prior, \(b\), is not likelihood identifiable. When \(a &gt; 1\), \(b\) is set to \(aK - 1\), where \(K\) is the number of items in the component; this choice of \(b\) minimises the number of iterations needed for the algorithm to converge.</p>
 <p>The likelihood equations give
     $$a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},$$</p>
-<p>for \(i = 1, \ldots, K\). For the algorithm to have converged, we \(\pi\) to be such that the LHS and RHS of this equation are close for all \(i\). Therefore, we set the convergence criteria as
+<p>for \(i = 1, \ldots, K\). For the algorithm to have converged, we want \(\pi\) to be such that the LHS and RHS of this equation are close for all \(i\). Therefore, we set the convergence criteria as
     $$\left|\frac{a - 1 + W_i}{b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j}} - 1\right| &lt; \epsilon,$$</p>
 <p>for all \(i\).</p>
     
@@ -148,9 +148,95 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='btdata.html'>btdata</a></code>, <code><a href='summary.btfit.html'>summary.btfit</a></code>, <code><a href='coef.btfit.html'>coef.btfit</a></code>, <code><a href='vcov.btfit.html'>vcov.btfit</a></code>, <code><a href='simulate_BT.html'>simulate.btfit</a></code></p>
+    <p><code><a href='btdata.html'>btdata</a></code>, <code><a href='summary.btfit.html'>summary.btfit</a></code>, <code><a href='coef.btfit.html'>coef.btfit</a></code>, <code><a href='fitted.btfit.html'>fitted.btfit</a></code>, <code><a href='btprob.html'>btprob</a></code>, <code><a href='vcov.btfit.html'>vcov.btfit</a></code>, <code><a href='simulate_BT.html'>simulate.btfit</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>citations_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>summary</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; $call
+#&gt; btfit(btdata = citations_btdata, a = 1)
+#&gt; 
+#&gt; $item_summary
+#&gt; # A tibble: 4 x 3
+#&gt;      component         item   estimate
+#&gt;          &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1 full_dataset       JRSS-B  1.0604065
+#&gt; 2 full_dataset   Biometrika  0.7897537
+#&gt; 3 full_dataset         JASA  0.3095638
+#&gt; 4 full_dataset Comm Statist -2.1597241
+#&gt; 
+#&gt; $component_summary
+#&gt; # A tibble: 1 x 4
+#&gt;      component num_items iters converged
+#&gt;          &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
+#&gt; 1 full_dataset         4     2      TRUE
+#&gt; </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+<span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
+<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>summary</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; $call
+#&gt; btfit(btdata = toy_btdata, a = 1)
+#&gt; 
+#&gt; $item_summary
+#&gt; # A tibble: 7 x 3
+#&gt;   component  item    estimate
+#&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1         2   Han  0.69564153
+#&gt; 2         2   Gal  0.41253614
+#&gt; 3         2   Fin -1.10817768
+#&gt; 4         3   Cyd  0.59239992
+#&gt; 5         3   Amy  0.03250119
+#&gt; 6         3   Ben -0.24307179
+#&gt; 7         3   Dan -0.38182932
+#&gt; 
+#&gt; $component_summary
+#&gt; # A tibble: 2 x 4
+#&gt;   component num_items iters converged
+#&gt;       &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
+#&gt; 1         2         3     6      TRUE
+#&gt; 2         3         4    10      TRUE
+#&gt; </div><div class='input'><span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
+<span class='fu'>summary</span>(<span class='no'>fit3</span>)</div><div class='output co'>#&gt; $call
+#&gt; btfit(btdata = toy_btdata, a = 1.1)
+#&gt; 
+#&gt; $item_summary
+#&gt; # A tibble: 8 x 3
+#&gt;      component  item    estimate
+#&gt;          &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1 full_dataset   Eve  1.90113420
+#&gt; 2 full_dataset   Cyd  0.47237293
+#&gt; 3 full_dataset   Han  0.24535391
+#&gt; 4 full_dataset   Amy -0.07655328
+#&gt; 5 full_dataset   Gal -0.10175687
+#&gt; 6 full_dataset   Ben -0.42296697
+#&gt; 7 full_dataset   Dan -0.53638389
+#&gt; 8 full_dataset   Fin -1.48120003
+#&gt; 
+#&gt; $component_summary
+#&gt; # A tibble: 1 x 4
+#&gt;      component num_items iters converged
+#&gt;          &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
+#&gt; 1 full_dataset         8   101      TRUE
+#&gt; </div><div class='input'><span class='no'>fit4</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>)
+<span class='fu'>summary</span>(<span class='no'>fit4</span>)</div><div class='output co'>#&gt; $call
+#&gt; btfit(btdata = toy_btdata, a = 1, subset = function(x) length(x) &gt; 
+#&gt;     3)
+#&gt; 
+#&gt; $item_summary
+#&gt; # A tibble: 4 x 3
+#&gt;   component  item    estimate
+#&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1         3   Cyd  0.59239992
+#&gt; 2         3   Amy  0.03250119
+#&gt; 3         3   Ben -0.24307179
+#&gt; 4         3   Dan -0.38182932
+#&gt; 
+#&gt; $component_summary
+#&gt; # A tibble: 1 x 4
+#&gt;   component num_items iters converged
+#&gt;       &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
+#&gt; 1         3         4    10      TRUE
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -164,7 +250,13 @@
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    <h2>Author</h2>
+    
+Ella Kaye, David Firth
 
   </div>
 </div>
