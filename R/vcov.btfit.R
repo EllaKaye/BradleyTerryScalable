@@ -51,8 +51,8 @@ vcov_vec <- function(pi, N, ref = NULL) {
 #' vcov(fit2a)
 #' vcov(fit2a, subset = function(x) length(x) > 3)
 #' fit2b <- btfit(toy_btdata, 1.1)
-#' coef(fit2b)
-#' coef(fit2b, ref = "Cyd")
+#' vcov(fit2b)
+#' vcov(fit2b, ref = "Cyd")
 #' @export
 vcov.btfit <- function(object, subset = NULL, ref = NULL, ...){
   
