@@ -37,6 +37,7 @@ as_df_coef <- function(vec) {
 #' fit2a <- btfit(toy_btdata, 1)
 #' coef(fit2a)
 #' coef(fit2a, subset = function(x) length(x) > 3, as_df = TRUE)
+#' coef(fit2a, subset = function(x) "Amy" %in% names(x))
 #' coef(fit2a, as_df = TRUE)
 #' fit2b <- btfit(toy_btdata, 1.1)
 #' coef(fit2b)

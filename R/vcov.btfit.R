@@ -50,6 +50,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
 #' fit2a <- btfit(toy_btdata, 1)
 #' vcov(fit2a)
 #' vcov(fit2a, subset = function(x) length(x) > 3)
+#' vcov(fit2a, subset = function(x) "Cyd" %in% names(x))
 #' fit2b <- btfit(toy_btdata, 1.1)
 #' vcov(fit2b, ref = "Cyd")
 #' @export

@@ -56,8 +56,8 @@ component_summary_vec <- function(pi, iters, converged) {
 #' fit2b <- btfit(toy_btdata, 1.1)
 #' summary(fit2b, SE = TRUE)
 #' fit2c <- btfit(toy_btdata, 1)
+#' summary(fit2c, subset = function(x) "Amy" %in% names(x))
 #' summary(fit2c, subset = function(x) length(x) > 3, ref = "Amy")
-#' 
 #' @export
 summary.btfit <- function(object, subset = NULL, ref = NULL, SE = FALSE, ...){
     

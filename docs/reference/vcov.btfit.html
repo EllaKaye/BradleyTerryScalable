@@ -153,6 +153,13 @@
 #&gt;     Amy -0.07839002  0.48866229 -0.2694660 -0.1408063
 #&gt;     Ben -0.57920218 -0.26946596  0.8917219 -0.0430538
 #&gt;     Dan -0.32368784 -0.14080631 -0.0430538  0.5075479
+#&gt; </div><div class='input'><span class='fu'>vcov</span>(<span class='no'>fit2a</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"Cyd"</span> <span class='kw'>%in%</span> <span class='fu'>names</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; $`3`
+#&gt;        player2
+#&gt; player1         Cyd         Amy        Ben        Dan
+#&gt;     Cyd  0.98128004 -0.07839002 -0.5792022 -0.3236878
+#&gt;     Amy -0.07839002  0.48866229 -0.2694660 -0.1408063
+#&gt;     Ben -0.57920218 -0.26946596  0.8917219 -0.0430538
+#&gt;     Dan -0.32368784 -0.14080631 -0.0430538  0.5075479
 #&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
 <span class='fu'>vcov</span>(<span class='no'>fit2b</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Cyd"</span>)</div><div class='output co'>#&gt;        player2
 #&gt; player1      Eve Cyd       Han      Amy       Gal      Ben      Dan       Fin

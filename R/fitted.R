@@ -39,6 +39,8 @@ as_df_fitted <- function(sM, N) {
 #' \deqn{m_{ij} = n_{ij}p_{ij},}
 #'
 #' where \eqn{n_{ij}} is the number of comparisons between item \eqn{i} and item \eqn{j}.
+#' 
+#' If there are values on the diagonal in the original \code{btdata$wins} matrix, then these appear as the values on the diagonal of the fitted matrix. These values do not appear in the data frame if the \code{as_df} argument is set to \code{TRUE}. 
 #'
 #' The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilities \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 #'
@@ -49,7 +51,7 @@ as_df_fitted <- function(sM, N) {
 #' @return If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}} (See Details). Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fifth column, \code{fit2}, is the expected number of times that item 2 beats item 1. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. Otherwise these colnames will be \code{item1} and \code{item2}. See Details.
 #' @references Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block designs: 1. The method of paired comparisons. \emph{Biometrika}, \strong{39}(3/4), 324-345.
 #' @references Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
-#' @seealso \code{\link{btfit}}, \code{\link{btprob}}
+#' @seealso \code{\link{btfit}}, \code{\link{btprob}}, \code{\link{btdata}}
 #' @examples
 #' @author Ella Kaye
 #' @examples 

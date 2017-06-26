@@ -40,8 +40,8 @@ summary(fit2a)
 fit2b <- btfit(toy_btdata, 1.1)
 summary(fit2b, SE = TRUE)
 fit2c <- btfit(toy_btdata, 1)
+summary(fit2c, subset = function(x) "Amy" \%in\% names(x))
 summary(fit2c, subset = function(x) length(x) > 3, ref = "Amy")
-
 }
 \seealso{
 \code{\link{btfit}}, \code{\link{coef.btfit}}, \code{\link{vcov.btfit}}

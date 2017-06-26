@@ -32,6 +32,8 @@ The expected, or fitted, values under the Bradley-Terry model are therefore:
 
 where \eqn{n_{ij}} is the number of comparisons between item \eqn{i} and item \eqn{j}.
 
+If there are values on the diagonal in the original \code{btdata$wins} matrix, then these appear as the values on the diagonal of the fitted matrix. These values do not appear in the data frame if the \code{as_df} argument is set to \code{TRUE}.
+
 The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilities \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 
 If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the \eqn{K} items beating any of the others. Alternatively, the MLE can be found for each fully-connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each item in each component beating any other item in that component can be found.
@@ -56,7 +58,7 @@ Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block design
 Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
 }
 \seealso{
-\code{\link{btfit}}, \code{\link{btprob}}
+\code{\link{btfit}}, \code{\link{btprob}}, \code{\link{btdata}}
 }
 \author{
 Ella Kaye
