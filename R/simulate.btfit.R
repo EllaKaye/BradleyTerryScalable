@@ -5,12 +5,11 @@
 #' be numeric representations of non-negative integers.
 #' @param nsim  a scalar integer, the number of datasets to be generated.
 #' @param seed  an object specifying if and how the random number generator should be initialized (‘seeded’).
-#' For details see \code{\link{simulate}}.
+#' For details see \code{\link[stats]{simulate}}.
 #' @param result_class a character vector specifying whether the generated datasets should be of class
-#' "sparseMatrix" or of class "btdata".  The first match among those alternatives is used.
-#' @return a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the
-#' same dimensions as \code{N}.
-#' @seealso \code{\link{btfit}}
+#' "sparseMatrix" or of class "btdata".  If not specified, the first match among those alternatives is used.
+#' @return a list of length \code{nsim} of simulated datasets. If \code{result_class = "sparseMatrix"}, the datasets are sparse matrices with the same dimensions as \code{N}. If \code{result_class = "btdata"} then the datasets are "btdata" objects. See \code{\link{btdata}}
+#' @seealso \code{\link{btfit}}, \code{\link{btdata}}
 #' @author David Firth
 #' @export
 simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata")){
@@ -77,7 +76,16 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
 
 #' @rdname simulate_BT
 #'
-#' @inheritParams fitted.btfit
+#' @param object An object of class "btfit", typically the result of \code{ob} of \code{ob <- btfit(..)}. This object must only have one component, i.e. \code{length(object$pi) == 1}.
+#' @param ... Other arguments
+#' @examples 
+#' citations_btdata <- btdata(BradleyTerryScalable::citations)
+#' fit1 <- btfit(citations_btdata, 1)
+#' simulate(fit1, nsim = 2)
+#' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+#' toy_btdata <- btdata(toy_df_4col)
+#' fit2a <- btfit(toy_btdata, 1, subset = function(x) "Amy" %in% names(x))
+#' simulate(fit2a, result_class = "btdata")
 #'
 #' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
