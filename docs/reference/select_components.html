@@ -91,7 +91,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>btdata</th>
-      <td><p>A <code><a href='btdata.html'>btdata</a></code> object</p></td>
+      <td><p>An object of class "btdata", typically the result ob of ob &lt;- btdata(..). See <code><a href='btdata.html'>btdata</a></code>.</p></td>
     </tr>
     <tr>
       <th>subset</th>
@@ -99,7 +99,7 @@
     </tr>
     <tr>
       <th>return_graph</th>
-      <td><p>Logical. If TRUE, an igraph object representing the comparison graph will be returned.</p></td>
+      <td><p>Logical. If TRUE, an igraph object representing the comparison graph of the selected components will be returned.</p></td>
     </tr>
     </table>
     
@@ -108,7 +108,7 @@
     <p>A <code><a href='btdata.html'>btdata</a></code> object, which is a list containing:</p>
 <dt>wins</dt><dd><p>A square matrix, where the \(i,j\)-th element is the number of times item \(i\) has beaten item \(j\).</p></dd>
 <dt>components</dt><dd><p>A list of the fully-connected components. The names of the list preserve the names of the original <code>btdata</code> object.</p></dd>
-<dt>graph</dt><dd><p>The comparison graph of the data (if return_graph = TRUE).</p></dd>
+<dt>graph</dt><dd><p>The comparison graph of the selected components (if return_graph = TRUE).</p></dd>
 
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -116,6 +116,18 @@
     <p><code><a href='btdata.html'>btdata</a></code>, <code><a href='btfit.html'>btfit</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_df_4col)
+## The following all return the same component
+select_components(toy_btdata, "3", return_graph = TRUE)
+select_components(toy_btdata, function(x) length(x) == 4)
+select_components(toy_btdata, function(x) "Cyd" %in% x), function(x) "Cyd" %in% x)
+select_components(toy_btdata, c(FALSE, FALSE, TRUE))
+</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:6:56: unexpected ','</span>
+#&gt; <span class='error'>5: select_components(toy_btdata, function(x) length(x) == 4)</span>
+#&gt; <span class='error'>6: select_components(toy_btdata, function(x) "Cyd" %in% x),</span>
+#&gt; <span class='error'>                                                          ^</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -125,7 +137,13 @@
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    <h2>Author</h2>
+    
+Ella Kaye
 
   </div>
 </div>

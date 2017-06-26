@@ -7,21 +7,33 @@
 select_components(btdata, subset, return_graph = FALSE)
 }
 \arguments{
-\item{btdata}{A \code{\link{btdata}} object}
+\item{btdata}{An object of class "btdata", typically the result ob of ob <- btdata(..). See \code{\link{btdata}}.}
 
 \item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components, a single predicate function (that takes a component as its argument), or a logical vector of the same length as the number of components).}
 
-\item{return_graph}{Logical. If TRUE, an igraph object representing the comparison graph will be returned.}
+\item{return_graph}{Logical. If TRUE, an igraph object representing the comparison graph of the selected components will be returned.}
 }
 \value{
 A \code{\link{btdata}} object, which is a list containing:
 \item{wins}{A square matrix, where the \eqn{i,j}-th element is the number of times item \eqn{i} has beaten item \eqn{j}.}
 \item{components}{A list of the fully-connected components. The names of the list preserve the names of the original \code{btdata} object.}
-\item{graph}{The comparison graph of the data (if return_graph = TRUE).}
+\item{graph}{The comparison graph of the selected components (if return_graph = TRUE).}
 }
 \description{
 Subset a btdata object by selecting components from it.
 }
+\examples{
+toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+toy_btdata <- btdata(toy_df_4col)
+## The following all return the same component
+select_components(toy_btdata, "3", return_graph = TRUE)
+select_components(toy_btdata, function(x) length(x) == 4)
+select_components(toy_btdata, function(x) "Cyd" \%in\% x), function(x) "Cyd" \%in\% x)
+select_components(toy_btdata, c(FALSE, FALSE, TRUE))
+}
 \seealso{
 \code{\link{btdata}}, \code{\link{btfit}}
+}
+\author{
+Ella Kaye
 }
