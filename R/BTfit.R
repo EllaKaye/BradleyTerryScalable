@@ -22,6 +22,8 @@
 #'
 #'for all \eqn{i}.
 #'
+#' Since the equations do not typeset well within the R help window, we recommend reading this section online: \url{https://ellakaye.github.io/BradleyTerryScalable/reference/btfit.html}.
+#'
 #' @param a Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{\pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior. See Details.
 #' @param MAP_by_component Logical. Only considered if a > 1. Then, if FALSE, the MAP estimate will be found on the full dataset. If TRUE, the MAP estimate will be found separately for each fully-connected component.
 #' @param maxit The maximum number of iterations for the algorithm. If returning \eqn{\pi} by component, this will be the maximum number of iterations for each component.

@@ -191,7 +191,7 @@ pairs_to_matrix <- function(df) {
 #' 
 #' }
 #' 
-#' \code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fit, see \code{\link{btfit}} and the vignette: vignette("BradleyTerryScalable", package = "BradleyTerryScalable").
+#' \code{summary.btdata} shows the number of items, the density of the \code{wins} matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, \code{summary.btdata} will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fit, see \code{\link{btfit}} and the vignette: \url{https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html}.
 #' 
 #' @param x The data, which is either a three- or four-column data frame, a directed igraph object, a square matrix or a square contingency table. See Details.
 #' @param return_graph Logical. If TRUE, an igraph object representing the comparison graph will be returned.

@@ -140,6 +140,7 @@
 <p>for \(i = 1, \ldots, K\). For the algorithm to have converged, we want \(\pi\) to be such that the LHS and RHS of this equation are close for all \(i\). Therefore, we set the convergence criteria as
     $$\left|\frac{a - 1 + W_i}{b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j}} - 1\right| &lt; \epsilon,$$</p>
 <p>for all \(i\).</p>
+<p>Since the equations do not typeset well within the R help window, we recommend reading this section online: <a href = 'https://ellakaye.github.io/BradleyTerryScalable/reference/btfit.html'>https://ellakaye.github.io/BradleyTerryScalable/reference/btfit.html</a>.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -173,8 +174,8 @@
 #&gt; 1 full_dataset         4     2      TRUE
 #&gt; </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
 <span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
-<span class='fu'>summary</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; $call
+<span class='no'>fit2a</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>summary</span>(<span class='no'>fit2a</span>)</div><div class='output co'>#&gt; $call
 #&gt; btfit(btdata = toy_btdata, a = 1)
 #&gt; 
 #&gt; $item_summary
@@ -195,8 +196,8 @@
 #&gt;       &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
 #&gt; 1         2         3     6      TRUE
 #&gt; 2         3         4    10      TRUE
-#&gt; </div><div class='input'><span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
-<span class='fu'>summary</span>(<span class='no'>fit3</span>)</div><div class='output co'>#&gt; $call
+#&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
+<span class='fu'>summary</span>(<span class='no'>fit2b</span>)</div><div class='output co'>#&gt; $call
 #&gt; btfit(btdata = toy_btdata, a = 1.1)
 #&gt; 
 #&gt; $item_summary
@@ -217,8 +218,8 @@
 #&gt;      component num_items iters converged
 #&gt;          &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
 #&gt; 1 full_dataset         8   101      TRUE
-#&gt; </div><div class='input'><span class='no'>fit4</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>)
-<span class='fu'>summary</span>(<span class='no'>fit4</span>)</div><div class='output co'>#&gt; $call
+#&gt; </div><div class='input'><span class='no'>fit2c</span> <span class='kw'>&lt;-</span> <span class='fu'>btfit</span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>)
+<span class='fu'>summary</span>(<span class='no'>fit2c</span>)</div><div class='output co'>#&gt; $call
 #&gt; btfit(btdata = toy_btdata, a = 1, subset = function(x) length(x) &gt; 
 #&gt;     3)
 #&gt; 

@@ -53,6 +53,8 @@ for \eqn{i = 1, \ldots, K}. For the algorithm to have converged, we want \eqn{\p
 \deqn{\left|\frac{a - 1 + W_i}{b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j}} - 1\right| < \epsilon,}
 
 for all \eqn{i}.
+
+Since the equations do not typeset well within the R help window, we recommend reading this section online: \url{https://ellakaye.github.io/BradleyTerryScalable/reference/btfit.html}.
 }
 \examples{
 citations_btdata <- btdata(BradleyTerryScalable::citations)
@@ -60,12 +62,12 @@ fit1 <- btfit(citations_btdata, 1)
 summary(fit1)
 toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
 toy_btdata <- btdata(toy_df_4col)
-fit2 <- btfit(toy_btdata, 1)
-summary(fit2)
-fit3 <- btfit(toy_btdata, 1.1)
-summary(fit3)
-fit4 <- btfit(toy_btdata, 1, subset = function(x) length(x) > 3)
-summary(fit4)
+fit2a <- btfit(toy_btdata, 1)
+summary(fit2a)
+fit2b <- btfit(toy_btdata, 1.1)
+summary(fit2b)
+fit2c <- btfit(toy_btdata, 1, subset = function(x) length(x) > 3)
+summary(fit2c)
 }
 \references{
 Caron, F. and Doucet, A. (2012) Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
