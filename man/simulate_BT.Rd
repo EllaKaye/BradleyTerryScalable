@@ -41,7 +41,7 @@ fit1 <- btfit(citations_btdata, 1)
 simulate(fit1, nsim = 2)
 toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
 toy_btdata <- btdata(toy_df_4col)
-fit2a <- btfit(toy_btdata, 1, subset = function(x) "Amy" \%in\% names(x))
+fit2a <- btfit(toy_btdata, 1, subset = function(x) "Amy" \%in\% x)
 simulate(fit2a, result_class = "btdata")
 
 }
