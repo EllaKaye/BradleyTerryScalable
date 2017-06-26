@@ -22,7 +22,7 @@ be numeric representations of non-negative integers.}
 \item{seed}{an object specifying if and how the random number generator should be initialized (‘seeded’).
 For details see \code{\link{simulate}}.}
 
-\item{result_class}{a character vector specifying whether the generated datasets should be of class 
+\item{result_class}{a character vector specifying whether the generated datasets should be of class
 "sparseMatrix" or of class "btdata".  The first match among those alternatives is used.}
 
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
@@ -30,7 +30,7 @@ For details see \code{\link{simulate}}.}
 \item{...}{Other arguments}
 }
 \value{
-a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the 
+a list of length \code{nsim} of simulated datasets, each dataset being a sparse matrix with the
 same dimensions as \code{N}.
 }
 \description{

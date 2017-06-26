@@ -117,17 +117,70 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
-toy_btdata <- btdata(toy_df_4col)
-## The following all return the same component
-select_components(toy_btdata, "3", return_graph = TRUE)
-select_components(toy_btdata, function(x) length(x) == 4)
-select_components(toy_btdata, function(x) "Cyd" %in% x), function(x) "Cyd" %in% x)
-select_components(toy_btdata, c(FALSE, FALSE, TRUE))
-</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:6:56: unexpected ','</span>
-#&gt; <span class='error'>5: select_components(toy_btdata, function(x) length(x) == 4)</span>
-#&gt; <span class='error'>6: select_components(toy_btdata, function(x) "Cyd" %in% x),</span>
-#&gt; <span class='error'>                                                          ^</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+<span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
+<span class='co'>## The following all return the same component</span>
+<span class='fu'>select_components</span>(<span class='no'>toy_btdata</span>, <span class='st'>"3"</span>, <span class='kw'>return_graph</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: There needs to be a graph component in btdata to return a graph here</span></div><div class='output co'>#&gt; $wins
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Amy Ben Cyd Dan
+#&gt;     Amy .   0.5   .   2
+#&gt;     Ben 0.5 .     .   1
+#&gt;     Cyd 2.0 .     .   .
+#&gt;     Dan .   1.0   1   .
+#&gt; 
+#&gt; $components
+#&gt; $components$`3`
+#&gt; [1] "Amy" "Ben" "Cyd" "Dan"
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "btdata" "list"  </div><div class='input'><span class='fu'>select_components</span>(<span class='no'>toy_btdata</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>==</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; $wins
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Amy Ben Cyd Dan
+#&gt;     Amy .   0.5   .   2
+#&gt;     Ben 0.5 .     .   1
+#&gt;     Cyd 2.0 .     .   .
+#&gt;     Dan .   1.0   1   .
+#&gt; 
+#&gt; $components
+#&gt; $components$`3`
+#&gt; [1] "Amy" "Ben" "Cyd" "Dan"
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "btdata" "list"  </div><div class='input'><span class='fu'>select_components</span>(<span class='no'>toy_btdata</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"Cyd"</span> <span class='kw'>%in%</span> <span class='no'>x</span>)</div><div class='output co'>#&gt; $wins
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Amy Ben Cyd Dan
+#&gt;     Amy .   0.5   .   2
+#&gt;     Ben 0.5 .     .   1
+#&gt;     Cyd 2.0 .     .   .
+#&gt;     Dan .   1.0   1   .
+#&gt; 
+#&gt; $components
+#&gt; $components$`3`
+#&gt; [1] "Amy" "Ben" "Cyd" "Dan"
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "btdata" "list"  </div><div class='input'><span class='fu'>select_components</span>(<span class='no'>toy_btdata</span>, <span class='fu'>c</span>(<span class='fl'>FALSE</span>, <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; $wins
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Amy Ben Cyd Dan
+#&gt;     Amy .   0.5   .   2
+#&gt;     Ben 0.5 .     .   1
+#&gt;     Cyd 2.0 .     .   .
+#&gt;     Dan .   1.0   1   .
+#&gt; 
+#&gt; $components
+#&gt; $components$`3`
+#&gt; [1] "Amy" "Ben" "Cyd" "Dan"
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "btdata" "list"  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

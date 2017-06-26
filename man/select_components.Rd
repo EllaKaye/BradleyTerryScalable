@@ -28,7 +28,7 @@ toy_btdata <- btdata(toy_df_4col)
 ## The following all return the same component
 select_components(toy_btdata, "3", return_graph = TRUE)
 select_components(toy_btdata, function(x) length(x) == 4)
-select_components(toy_btdata, function(x) "Cyd" \%in\% x), function(x) "Cyd" \%in\% x)
+select_components(toy_btdata, function(x) "Cyd" \%in\% x)
 select_components(toy_btdata, c(FALSE, FALSE, TRUE))
 }
 \seealso{
