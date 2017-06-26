@@ -207,7 +207,36 @@ For details see <code><a href='http://www.rdocumentation.org/packages/stats/topi
 #&gt; 
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "btdata" "list"  </div><div class='input'><span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>map</span>(<span class='no'>fit2_sims</span>, <span class='st'>"wins"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in purrr::map(fit2_sims, "wins"): object 'fit2_sims' not found</span></div><div class='input'>
+#&gt; [1] "btdata" "list"  </div><div class='input'><span class='fu'>library</span>(<span class='no'>purrr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘purrr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    contains, order_by</span></div><div class='input'><span class='kw'>purrr</span><span class='kw'>::</span><span class='fu'>map</span>(<span class='no'>fit2_sim</span>, <span class='st'>"wins"</span>)</div><div class='output co'>#&gt; $sim_1
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Cyd Amy Ben Dan
+#&gt;     Cyd   .   1   .   1
+#&gt;     Amy   1   .   1   0
+#&gt;     Ben   .   0   .   1
+#&gt;     Dan   0   2   1   .
+#&gt; 
+#&gt; $sim_2
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Cyd Amy Ben Dan
+#&gt;     Cyd   .   2   .   1
+#&gt;     Amy   0   .   1   2
+#&gt;     Ben   .   0   .   1
+#&gt;     Dan   0   0   1   .
+#&gt; 
+#&gt; $sim_3
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1 Cyd Amy Ben Dan
+#&gt;     Cyd   .   1   .   1
+#&gt;     Amy   1   .   0   2
+#&gt;     Ben   .   1   .   1
+#&gt;     Dan   0   0   1   .
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

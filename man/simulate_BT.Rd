@@ -50,7 +50,8 @@ toy_btdata <- btdata(toy_df_4col)
 fit2 <- btfit(toy_btdata, 1, subset = function(x) "Amy" \%in\% x)
 fit2_sim <- simulate(fit2, nsim = 3, result_class = "btdata")
 fit2_sim$sim_1
-purrr::map(fit2_sims, "wins")
+library(purrr)
+purrr::map(fit2_sim, "wins")
 
 }
 \seealso{

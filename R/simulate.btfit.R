@@ -94,7 +94,8 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
 #' fit2 <- btfit(toy_btdata, 1, subset = function(x) "Amy" %in% x)
 #' fit2_sim <- simulate(fit2, nsim = 3, result_class = "btdata")
 #' fit2_sim$sim_1
-#' purrr::map(fit2_sims, "wins")
+#' library(purrr)
+#' purrr::map(fit2_sim, "wins")
 #'
 #' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
