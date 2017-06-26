@@ -92,7 +92,7 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
 #' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
 #' toy_btdata <- btdata(toy_df_4col)
 #' fit2a <- btfit(toy_btdata, 1, subset = function(x) "Amy" %in% x)
-#' simulate(fit2a, result_class = "btdata", seed = 1)
+#' simulate(fit2a, result_class = "btdata")
 #'
 #' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
