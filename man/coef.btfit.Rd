@@ -22,6 +22,9 @@
 If as_df = TRUE, a data frame a numeric vector of estimated coefficients, where the first column is the component the item is in, the second column in the item and the third column in the coefficient. If as_df = FALSE, then a numeric vector is returned if the model is fitted on the full dataset, or else a list of numeric vectors is returned, one for each fully connected component. Within each component, the items are arranged by estimate, in descending order.
 }
 \description{
+\code{coef} method for class "btfit"
+}
+\details{
 Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}}. By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{ref}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{ref}} is the estimate for the reference item.
 }
 \examples{

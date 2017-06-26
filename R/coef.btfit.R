@@ -18,7 +18,9 @@ as_df_coef <- function(vec) {
 
 #' Extract coefficients of a 'btfit' object
 #' 
-#' Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}}. By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{ref}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{ref}} is the estimate for the reference item.
+#' \code{coef} method for class "btfit"
+#' 
+#' Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}}. By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{ref}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{ref}} is the estimate for the reference item. 
 #' 
 #' @inheritParams btprob
 #' @inheritParams summary.btfit

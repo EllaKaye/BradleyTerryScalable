@@ -20,14 +20,14 @@
 }
 \value{
 An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
-\item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the \code{estimate} is NOT the same as the values in \code{summary$pi}. See Details.}
-\item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
+\item{item_summary}{A \code{tibble} with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the \code{estimate} is NOT the same as the values in \code{summary$pi}. See Details.}
+\item{component_summary}{A \code{tibble} with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
 }
 \description{
 \code{summary} method for class "btfit"
 }
 \details{
-Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}}. By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{\text{ref}}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{\text{ref}}} is the estimate for the reference item.
+Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}} (i.e. the coefficients as found by They are the coefficients, as found by \code{\link{coef.btfit}}.). By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{ref}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{ref}} is the estimate for the reference item.
 }
 \examples{
 citations_btdata <- btdata(BradleyTerryScalable::citations)
@@ -44,7 +44,7 @@ summary(fit2c)
 
 }
 \seealso{
-\code{\link{btfit}}
+\code{\link{btfit}}, \code{\link{coef.btfit}}, \code{\link{vcov.btfit}}
 }
 \author{
 Ella Kaye

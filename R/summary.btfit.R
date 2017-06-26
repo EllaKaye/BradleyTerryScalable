@@ -33,7 +33,7 @@ component_summary_vec <- function(pi, iters, converged) {
 #' 
 #' \code{summary} method for class "btfit"
 #' 
-#' Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}}. By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{\text{ref}}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{\text{ref}}} is the estimate for the reference item.
+#' Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}} (i.e. the coefficients as found by They are the coefficients, as found by \code{\link{coef.btfit}}.). By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{ref}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{ref}} is the estimate for the reference item.
 #' 
 #' @inheritParams btprob 
 #' @param ref A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.
@@ -41,9 +41,9 @@ component_summary_vec <- function(pi, iters, converged) {
 #' @param ... other arguments
 #' 
 #' @return An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
-#' \item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the \code{estimate} is NOT the same as the values in \code{summary$pi}. See Details.}
-#' \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
-#' @seealso \code{\link{btfit}}
+#' \item{item_summary}{A \code{tibble} with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the \code{estimate} is NOT the same as the values in \code{summary$pi}. See Details.}
+#' \item{component_summary}{A \code{tibble} with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
+#' @seealso \code{\link{btfit}}, \code{\link{coef.btfit}}, \code{\link{vcov.btfit}}
 #' @author Ella Kaye
 #' @examples 
 #' citations_btdata <- btdata(BradleyTerryScalable::citations)
