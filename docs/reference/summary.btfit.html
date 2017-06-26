@@ -116,17 +116,17 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An S3 object of class <code>"summary.btfit"</code>. It is a list containing the following components:</p>
-<dt>item_summary</dt><dd><p>A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the <code>estimate</code> is NOT the same as the values in <code>summary$pi</code>. See Details.</p></dd>
-<dt>component_summary</dt><dd><p>A tibble with a row for each component in the <code>btfit</code> object (named according to the original <code>btdata$components</code>, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.</p></dd>
+<dt>item_summary</dt><dd><p>A <code>tibble</code> with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the <code>estimate</code> is NOT the same as the values in <code>summary$pi</code>. See Details.</p></dd>
+<dt>component_summary</dt><dd><p>A <code>tibble</code> with a row for each component in the <code>btfit</code> object (named according to the original <code>btdata$components</code>, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.</p></dd>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note that the values given in the <code>estimate</code> column of the <code>item_summary</code> element are NOT the same as the values in <code>object$pi</code>. Rather, they are the \(\lambda_i\), where \(\lambda_i = \log{\pi_i}\). By detault, these are normalised so that mean(\(\lambda_i\)) = 0. However, if <code>ref</code> is not equal to <code>NULL</code>, then the \(\lambda_i\) in the component in which <code>ref</code> appears are shifted to \(\lambda_i - \lambda_{\text{ref}}\), for \(i = 1, \dots, K_c\), where \(K_c\) is the number of items in the component in whick <code>ref</code> appears, and \(\lambda_{\text{ref}}\) is the estimate for the reference item.</p>
+    <p>Note that the values given in the <code>estimate</code> column of the <code>item_summary</code> element are NOT the same as the values in <code>object$pi</code>. Rather, they are the \(\lambda_i\), where \(\lambda_i = \log{\pi_i}\) (i.e. the coefficients as found by They are the coefficients, as found by <code><a href='coef.btfit.html'>coef.btfit</a></code>.). By detault, these are normalised so that mean(\(\lambda_i\)) = 0. However, if <code>ref</code> is not equal to <code>NULL</code>, then the \(\lambda_i\) in the component in which <code>ref</code> appears are shifted to \(\lambda_i - \lambda_{ref}\), for \(i = 1, \dots, K_c\), where \(K_c\) is the number of items in the component in whick <code>ref</code> appears, and \(\lambda_{ref}\) is the estimate for the reference item.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='btfit.html'>btfit</a></code></p>
+    <p><code><a href='btfit.html'>btfit</a></code>, <code><a href='coef.btfit.html'>coef.btfit</a></code>, <code><a href='vcov.btfit.html'>vcov.btfit</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -174,40 +174,39 @@
 #&gt; 1         2         3     6      TRUE
 #&gt; 2         3         4    10      TRUE
 #&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
-<span class='fu'>summary</span>(<span class='no'>fit2b</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>summary</span>(<span class='no'>fit2b</span>, <span class='kw'>SE</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; $call
 #&gt; btfit(btdata = toy_btdata, a = 1.1)
 #&gt; 
 #&gt; $item_summary
-#&gt; # A tibble: 8 x 3
-#&gt;      component  item    estimate
-#&gt;          &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
-#&gt; 1 full_dataset   Eve  1.90113420
-#&gt; 2 full_dataset   Cyd  0.47237293
-#&gt; 3 full_dataset   Han  0.24535391
-#&gt; 4 full_dataset   Amy -0.07655328
-#&gt; 5 full_dataset   Gal -0.10175687
-#&gt; 6 full_dataset   Ben -0.42296697
-#&gt; 7 full_dataset   Dan -0.53638389
-#&gt; 8 full_dataset   Fin -1.48120003
+#&gt; # A tibble: 8 x 4
+#&gt;      component  item    estimate       SE
+#&gt;          &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1 full_dataset   Eve  1.90113420 1.661724
+#&gt; 2 full_dataset   Cyd  0.47237293 2.050380
+#&gt; 3 full_dataset   Han  0.24535391 2.413081
+#&gt; 4 full_dataset   Amy -0.07655328 1.860738
+#&gt; 5 full_dataset   Gal -0.10175687 2.186308
+#&gt; 6 full_dataset   Ben -0.42296697 1.784100
+#&gt; 7 full_dataset   Dan -0.53638389 1.741972
+#&gt; 8 full_dataset   Fin -1.48120003 2.385354
 #&gt; 
 #&gt; $component_summary
 #&gt; # A tibble: 1 x 4
 #&gt;      component num_items iters converged
 #&gt;          &lt;chr&gt;     &lt;int&gt; &lt;int&gt;     &lt;lgl&gt;
 #&gt; 1 full_dataset         8   101      TRUE
-#&gt; </div><div class='input'><span class='no'>fit2c</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>)
-<span class='fu'>summary</span>(<span class='no'>fit2c</span>)</div><div class='output co'>#&gt; $call
-#&gt; btfit(btdata = toy_btdata, a = 1, subset = function(x) length(x) &gt; 
-#&gt;     3)
+#&gt; </div><div class='input'><span class='no'>fit2c</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>summary</span>(<span class='no'>fit2c</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Amy"</span>)</div><div class='output co'>#&gt; $call
+#&gt; btfit(btdata = toy_btdata, a = 1)
 #&gt; 
 #&gt; $item_summary
 #&gt; # A tibble: 4 x 3
-#&gt;   component  item    estimate
-#&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
-#&gt; 1         3   Cyd  0.59239992
-#&gt; 2         3   Amy  0.03250119
-#&gt; 3         3   Ben -0.24307179
-#&gt; 4         3   Dan -0.38182932
+#&gt;   component  item   estimate
+#&gt;       &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;
+#&gt; 1         3   Cyd  0.5598987
+#&gt; 2         3   Amy  0.0000000
+#&gt; 3         3   Ben -0.2755730
+#&gt; 4         3   Dan -0.4143305
 #&gt; 
 #&gt; $component_summary
 #&gt; # A tibble: 1 x 4

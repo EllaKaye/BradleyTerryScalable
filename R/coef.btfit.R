@@ -36,11 +36,11 @@ as_df_coef <- function(vec) {
 #' toy_btdata <- btdata(toy_df_4col)
 #' fit2a <- btfit(toy_btdata, 1)
 #' coef(fit2a)
+#' coef(fit2a, subset = function(x) length(x) > 3, as_df = TRUE)
 #' coef(fit2a, as_df = TRUE)
 #' fit2b <- btfit(toy_btdata, 1.1)
 #' coef(fit2b)
 #' coef(fit2b, ref = "Cyd")
-#' coef(fit2b, subset = function(x) length(x) > 3, as_df = TRUE)
 #' @export
 coef.btfit <- function(object, subset = NULL, ref = NULL,  as_df = FALSE, ...) {
     pi <- object$pi

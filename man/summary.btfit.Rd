@@ -38,9 +38,9 @@ toy_btdata <- btdata(toy_df_4col)
 fit2a <- btfit(toy_btdata, 1)
 summary(fit2a)
 fit2b <- btfit(toy_btdata, 1.1)
-summary(fit2b)
-fit2c <- btfit(toy_btdata, 1, subset = function(x) length(x) > 3)
-summary(fit2c)
+summary(fit2b, SE = TRUE)
+fit2c <- btfit(toy_btdata, 1)
+summary(fit2c, subset = function(x) length(x) > 3, ref = "Amy")
 
 }
 \seealso{
