@@ -36,13 +36,19 @@ a list of length \code{nsim} of simulated datasets. If \code{result_class = "spa
 Simulate data from a specified Bradley-Terry model
 }
 \examples{
+set.seed(1)
+n <- 6
+W <- matrix(rpois(n ^ 2, lambda = 5), n, n)
+N <- W + t(W)
+pi <- exp(rnorm(n)/4)  
+simulate_BT(pi, N, seed = 6)
 citations_btdata <- btdata(BradleyTerryScalable::citations)
 fit1 <- btfit(citations_btdata, 1)
-simulate(fit1, nsim = 2)
+simulate(fit1, nsim = 2, seed = 1)
 toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
 toy_btdata <- btdata(toy_df_4col)
 fit2a <- btfit(toy_btdata, 1, subset = function(x) "Amy" \%in\% x)
-simulate(fit2a, result_class = "btdata")
+simulate(fit2a, result_class = "btdata", seed = 1)
 
 }
 \seealso{

@@ -11,6 +11,13 @@
 #' @return a list of length \code{nsim} of simulated datasets. If \code{result_class = "sparseMatrix"}, the datasets are sparse matrices with the same dimensions as \code{N}. If \code{result_class = "btdata"} then the datasets are "btdata" objects. See \code{\link{btdata}}
 #' @seealso \code{\link{btfit}}, \code{\link{btdata}}
 #' @author David Firth
+#' @examples 
+#' set.seed(1)
+#' n <- 6
+#' W <- matrix(rpois(n ^ 2, lambda = 5), n, n)
+#' N <- W + t(W)
+#' pi <- exp(rnorm(n)/4)  
+#' simulate_BT(pi, N, seed = 6)
 #' @export
 simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata")){
 
@@ -81,11 +88,11 @@ simulate_BT <- function(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMa
 #' @examples 
 #' citations_btdata <- btdata(BradleyTerryScalable::citations)
 #' fit1 <- btfit(citations_btdata, 1)
-#' simulate(fit1, nsim = 2)
+#' simulate(fit1, nsim = 2, seed = 1)
 #' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
 #' toy_btdata <- btdata(toy_df_4col)
 #' fit2a <- btfit(toy_btdata, 1, subset = function(x) "Amy" %in% x)
-#' simulate(fit2a, result_class = "btdata")
+#' simulate(fit2a, result_class = "btdata", seed = 1)
 #'
 #' @export
 simulate.btfit <- function(object, nsim = 1, seed = NULL, result_class = c("sparseMatrix", "btdata"), ...){
