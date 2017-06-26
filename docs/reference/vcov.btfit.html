@@ -154,26 +154,7 @@
 #&gt;     Ben -0.57920218 -0.26946596  0.8917219 -0.0430538
 #&gt;     Dan -0.32368784 -0.14080631 -0.0430538  0.5075479
 #&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
-<span class='fu'>vcov</span>(<span class='no'>fit2b</span>)</div><div class='output co'>#&gt;        player2
-#&gt; player1         Eve        Cyd        Han        Amy         Gal        Ben
-#&gt;     Eve  2.76132513 -0.8617872 -0.1855933 -0.7372389  0.04802321 -0.4112715
-#&gt;     Cyd -0.86178715  4.2040584 -3.8087056  3.0191036 -3.57508907  2.1960329
-#&gt;     Han -0.18559331 -3.8087056  5.8229584 -3.6841573  4.43754302 -3.3581900
-#&gt;     Amy -0.73723885  3.0191036 -3.6841573  3.4623453 -3.45054077  2.3770318
-#&gt;     Gal  0.04802321 -3.5750891  4.4375430 -3.4505408  4.77994277 -3.1245735
-#&gt;     Ben -0.41127154  2.1960329 -3.3581900  2.3770318 -3.12457346  3.1830116
-#&gt;     Dan -0.51865174  2.5443049 -3.4655702  2.6068260 -3.23195366  2.4053611
-#&gt;     Fin -0.09480574 -3.7179180  4.2417150 -3.5933697  4.11664797 -3.2674024
-#&gt;        player2
-#&gt; player1        Dan         Fin
-#&gt;     Eve -0.5186517 -0.09480574
-#&gt;     Cyd  2.5443049 -3.71791803
-#&gt;     Han -3.4655702  4.24171496
-#&gt;     Amy  2.6068260 -3.59336973
-#&gt;     Gal -3.2319537  4.11664797
-#&gt;     Ben  2.4053611 -3.26740242
-#&gt;     Dan  3.0344662 -3.37478261
-#&gt;     Fin -3.3747826  5.68991560</div><div class='input'><span class='fu'>vcov</span>(<span class='no'>fit2b</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Cyd"</span>)</div><div class='output co'>#&gt;        player2
+<span class='fu'>vcov</span>(<span class='no'>fit2b</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Cyd"</span>)</div><div class='output co'>#&gt;        player2
 #&gt; player1      Eve Cyd       Han      Amy       Gal      Ben      Dan       Fin
 #&gt;     Eve 8.688958   0  8.688958 1.309503  8.688958 2.458541 2.002889  8.688958
 #&gt;     Cyd 0.000000   0  0.000000 0.000000  0.000000 0.000000 0.000000  0.000000

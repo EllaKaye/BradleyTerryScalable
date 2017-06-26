@@ -34,7 +34,6 @@ fit2a <- btfit(toy_btdata, 1)
 vcov(fit2a)
 vcov(fit2a, subset = function(x) length(x) > 3)
 fit2b <- btfit(toy_btdata, 1.1)
-vcov(fit2b)
 vcov(fit2b, ref = "Cyd")
 }
 \seealso{

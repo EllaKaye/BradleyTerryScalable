@@ -100,7 +100,7 @@
     </tr>
     <tr>
       <th>as_df</th>
-      <td><p>Logical scalar, determining class of output. If <code>TRUE</code>, the function returns a data frame. If <code>FALSE</code> (the default), the function returns a matrix (or list of matrices).</p></td>
+      <td><p>Logical scalar, determining class of output. If <code>TRUE</code>, the function returns a data frame. If <code>FALSE</code> (the default), the function returns a matrix (or list of matrices). Note that setting <code>as_df = TRUE</code> can have a significant computational cost when any of the components have a large number of items.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -110,7 +110,7 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>as_df = FALSE</code> and the model has been fit on the full dataset, returns a matrix where the \(i,j\)-th element is the Bradley-Terry expected value \(m_{ij}\). Otherwise, a list of such matrices is returned, one for each fully-connected component. If <code>as_df = TRUE</code>, returns a five-column data frame, where the first column is the component that the two items are in, the second column is <code>item1</code>, the third column is <code>item2</code>, the fourth column, <code>fit1</code>, is the expected number of times that item 1 beats item 2 and the fifth column, <code>fit2</code>, is the expected number of times that item 2 beats item 1. If <code>btdata$wins</code> has named dimnames, these will be the <code>colnames</code> for columns one and two. Otherwise these colnames will be <code>item1</code> and <code>item2</code>. See Details.</p>
+    <p>If <code>as_df = FALSE</code> and the model has been fit on the full dataset, returns a matrix where the \(i,j\)-th element is the Bradley-Terry expected value \(m_{ij}\) (See Details). Otherwise, a list of such matrices is returned, one for each fully-connected component. If <code>as_df = TRUE</code>, returns a five-column data frame, where the first column is the component that the two items are in, the second column is <code>item1</code>, the third column is <code>item2</code>, the fourth column, <code>fit1</code>, is the expected number of times that item 1 beats item 2 and the fifth column, <code>fit2</code>, is the expected number of times that item 2 beats item 1. If <code>btdata$wins</code> has named dimnames, these will be the <code>colnames</code> for columns one and two. Otherwise these colnames will be <code>item1</code> and <code>item2</code>. See Details.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -119,9 +119,9 @@ $$p_{ij} = \frac{\pi_i}{\pi_i + \pi_j},$$
 where \(\pi_i\) and \(\pi_j\) are positive-valued parameters representing the skills of items \(i\) and \(j\), for \(1 \le i, j, \le K\).</p>
 <p>The expected, or fitted, values under the Bradley-Terry model are therefore:
     $$m_{ij} = n_{ij}p_{ij},$$</p>
-<p>where \(n_ij\) is the number of times item \(i\) plays against item \(j\).</p>
+<p>where \(n_{ij}\) is the number of comparisons between item \(i\) and item \(j\).</p>
 <p>The function <code><a href='btfit.html'>btfit</a></code> is used to fit the Bradley-Terry model. It produces a <code>"btfit"</code> object that can then be passed to <code>fitted.btfit</code> to obtain the fitted values \(m_{ij}\). Note that the Bradley-Terry probabilities \(p_{ij}\) can be calculated using <code><a href='btprob.html'>btprob</a></code>.</p>
-<p>If \(G_W\) is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see <code><a href='btfit.html'>btfit</a></code>, with <code>a &gt; 1</code>), which allows for a Bradley-Terry probability of any of the K items beating any of the others. Alternatively, the MLE can be found for each fully connected component of \(G_W\) (see <code><a href='btfit.html'>btfit</a></code>, with <code>a = 1</code>), and the probability of each item in each component beating any other item in that component can be found.</p>
+<p>If \(G_W\) is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see <code><a href='btfit.html'>btfit</a></code>, with <code>a &gt; 1</code>), which allows for a Bradley-Terry probability of any of the \(K\) items beating any of the others. Alternatively, the MLE can be found for each fully-connected component of \(G_W\) (see <code><a href='btfit.html'>btfit</a></code>, with <code>a = 1</code>), and the probability of each item in each component beating any other item in that component can be found.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -134,70 +134,75 @@ where \(\pi_i\) and \(\pi_j\) are positive-valued parameters representing the sk
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>W_connected</span> <span class='kw'>&lt;-</span> <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>rsparsematrix</span>(<span class='fl'>10</span>, <span class='fl'>10</span> , <span class='fl'>0.5</span>, <span class='kw'>rand.x</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>n</span>) <span class='fu'>rbinom</span>(<span class='no'>n</span>, <span class='fl'>10</span>, <span class='fl'>0.5</span>))
-<span class='no'>i</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>8</span>,<span class='fl'>7</span>)
-<span class='no'>j</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>7</span>,<span class='fl'>7</span>,<span class='fl'>8</span>)
-<span class='no'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>8</span>], <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>8</span>])
-<span class='no'>W_not_connected</span> <span class='kw'>&lt;-</span>  <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>sparseMatrix</span>(<span class='no'>i</span>, <span class='no'>j</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>13</span>, <span class='kw'>dims</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>,<span class='fl'>8</span>), <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='no'>dimnames</span>)
-<span class='no'>W_connected_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>W_connected</span>)
-<span class='no'>W_not_connected_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>W_not_connected</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>W_connected_data</span>, <span class='fl'>1</span>)
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>W_not_connected_data</span>, <span class='fl'>1</span>)
-<span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>W_not_connected_data</span>, <span class='fl'>3</span>)
-<span class='fu'>fitted</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"</div><div class='output co'>#&gt; <span class='message'>   [[ suppressing 10 column names ‘3’, ‘2’, ‘9’ ... ]]</span></div><div class='output co'>#&gt;                                                                             
-#&gt; 3  .         6.3358771 .        6.806368 4.676736 .        7.644278 5.960773
-#&gt; 2  3.6641229 6.0000000 6.248298 3.210696 4.700319 6.752192 7.653044 4.610171
-#&gt; 9  .         4.7517015 5.000000 .        6.085100 7.963263 .        .       
-#&gt; 10 2.1936316 1.7893040 .        4.000000 3.727527 .        5.160350 7.138439
-#&gt; 1  1.3232638 2.2996810 3.914900 3.272473 .        3.025540 7.991138 3.712469
-#&gt; 6  .         3.2478081 5.036737 .        2.974460 3.000000 1.831987 2.458880
-#&gt; 5  1.3557215 2.3469558 .        2.839650 5.008862 1.168013 4.000000 2.521374
-#&gt; 4  1.0392270 1.3898295 .        3.861561 2.287531 1.541120 2.478626 .       
-#&gt; 8  .         .         .        .        2.541615 .        2.381511 1.441707
-#&gt; 7  0.3997987 0.8401206 1.813316 .        .        3.559796 1.857483 5.154889
-#&gt;                     
-#&gt; 3  .        2.600201
-#&gt; 2  .        3.159879
-#&gt; 9  .        5.186684
-#&gt; 10 .        .       
-#&gt; 1  4.458385 .       
-#&gt; 6  .        6.440204
-#&gt; 5  2.618489 2.142517
-#&gt; 4  1.558293 5.845111
-#&gt; 8  6.000000 5.631691
-#&gt; 7  5.368309 .       </div><div class='input'><span class='fu'>fitted</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; $`2`
+    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>citations_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>fitted</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;               citing
+#&gt; cited             JRSS-B Biometrika       JASA Comm Statist
+#&gt;   JRSS-B       188.00000   286.4629  317.26219     281.7444
+#&gt;   Biometrika   218.53715   714.0000  505.35443     725.0322
+#&gt;   JASA         149.73781   312.6456 1072.00000     812.2472
+#&gt;   Comm Statist  11.25564    37.9678   68.75276     425.0000</div><div class='input'><span class='fu'>fitted</span>(<span class='no'>fit1</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;      component      cited       citing     fit1      fit2
+#&gt;          &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 full_dataset     JRSS-B   Biometrika 286.4629 218.53715
+#&gt; 2 full_dataset     JRSS-B         JASA 317.2622 149.73781
+#&gt; 3 full_dataset Biometrika         JASA 505.3544 312.64557
+#&gt; 4 full_dataset     JRSS-B Comm Statist 281.7444  11.25564
+#&gt; 5 full_dataset Biometrika Comm Statist 725.0322  37.96780
+#&gt; 6 full_dataset       JASA Comm Statist 812.2472  68.75276</div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+<span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
+<span class='no'>fit2a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>fitted</span>(<span class='no'>fit2a</span>)</div><div class='output co'>#&gt; $`2`
 #&gt; 3 x 3 sparse Matrix of class "dgCMatrix"
-#&gt;           h         g         f
-#&gt; h  .        14.963499  6.034051
-#&gt; g 10.036501  .        10.964697
-#&gt; f  2.965949  8.035303  .       
+#&gt;        player2
+#&gt; player1       Han       Gal       Fin
+#&gt;     Han .         1.1406148 0.8586132
+#&gt;     Gal 0.8593852 .         1.6412871
+#&gt;     Fin 0.1413868 0.3587129 .        
 #&gt; 
 #&gt; $`3`
 #&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
-#&gt;            a         b         d         c
-#&gt; a .          1.0584126 .         0.9402557
-#&gt; b 0.94158742 .         4.0575648 .        
-#&gt; d .          0.9424352 .         3.0592502
-#&gt; c 0.05974435 .         0.9407498 .        
-#&gt; </div><div class='input'><span class='fu'>fitted</span>(<span class='no'>fit2</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 7 x 5
-#&gt;   component item1 item2       fit1        fit2
-#&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;      &lt;dbl&gt;       &lt;dbl&gt;
-#&gt; 1         2     h     g 14.9634994 10.03650056
-#&gt; 2         2     h     f  6.0340508  2.96594922
-#&gt; 3         2     g     f 10.9646972  8.03530284
-#&gt; 4         3     a     b  1.0584126  0.94158742
-#&gt; 5         3     b     d  4.0575648  0.94243521
-#&gt; 6         3     a     c  0.9402557  0.05974435
-#&gt; 7         3     d     c  3.0592502  0.94074985</div><div class='input'><span class='fu'>fitted</span>(<span class='no'>fit3</span>)</div><div class='output co'>#&gt; 8 x 8 sparse Matrix of class "dgCMatrix"
-#&gt;           e         a        b        h        d         g         c         f
-#&gt; e .         .         2.243602 .        5.071470  8.474738 .          6.139576
-#&gt; a .         .         1.045292 .        .         .        0.7112281  .       
-#&gt; b 0.7563976 0.9547078 .        .        3.240289  .        .          .       
-#&gt; h .         .         .        .        .        15.281305 .          6.019156
-#&gt; d 0.9285295 .         1.759711 .        .         .        2.1995308  .       
-#&gt; g 1.5252618 .         .        9.718695 .         .        .         10.682109
-#&gt; c .         0.2887719 .        .        1.800469  .        .          .       
-#&gt; f 0.8604244 .         .        2.980844 .         8.317891 .          .       </div></pre>
+#&gt;        player2
+#&gt; player1       Cyd       Amy       Ben       Dan
+#&gt;     Cyd .         1.2728582 .         0.7259617
+#&gt;     Amy 0.7271418 .         0.5684605 1.2042516
+#&gt;     Ben .         0.4315395 .         1.0692677
+#&gt;     Dan 0.2740383 0.7957484 0.9307323 .        
+#&gt; </div><div class='input'><span class='fu'>fitted</span>(<span class='no'>fit2a</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 5
+#&gt;   component player1 player2      fit1      fit2
+#&gt;       &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1         2     Han     Gal 1.1406148 0.8593852
+#&gt; 2         2     Han     Fin 0.8586132 0.1413868
+#&gt; 3         2     Gal     Fin 1.6412871 0.3587129
+#&gt; 4         3     Cyd     Amy 1.2728582 0.7271418
+#&gt; 5         3     Amy     Ben 0.5684605 0.4315395
+#&gt; 6         3     Cyd     Dan 0.7259617 0.2740383
+#&gt; 7         3     Amy     Dan 1.2042516 0.7957484
+#&gt; 8         3     Ben     Dan 1.0692677 0.9307323</div><div class='input'><span class='fu'>fitted</span>(<span class='no'>fit2a</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"Amy"</span> <span class='kw'>%in%</span> <span class='fu'>names</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; $`3`
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1       Cyd       Amy       Ben       Dan
+#&gt;     Cyd .         1.2728582 .         0.7259617
+#&gt;     Amy 0.7271418 .         0.5684605 1.2042516
+#&gt;     Ben .         0.4315395 .         1.0692677
+#&gt;     Dan 0.2740383 0.7957484 0.9307323 .        
+#&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
+<span class='fu'>fitted</span>(<span class='no'>fit2b</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 12 x 5
+#&gt;       component player1 player2      fit1       fit2
+#&gt;           &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1 full_dataset     Cyd     Amy 1.2677729 0.73222715
+#&gt;  2 full_dataset     Eve     Gal 0.8811003 0.11889971
+#&gt;  3 full_dataset     Han     Gal 1.1718336 0.82816645
+#&gt;  4 full_dataset     Eve     Ben 0.9108535 0.08914648
+#&gt;  5 full_dataset     Amy     Ben 0.5857476 0.41425236
+#&gt;  6 full_dataset     Eve     Dan 0.9196439 0.08035613
+#&gt;  7 full_dataset     Cyd     Dan 0.7327768 0.26722321
+#&gt;  8 full_dataset     Amy     Dan 1.2259480 0.77405202
+#&gt;  9 full_dataset     Ben     Dan 1.0566477 0.94335225
+#&gt; 10 full_dataset     Eve     Fin 0.9671479 0.03285215
+#&gt; 11 full_dataset     Han     Fin 0.8489711 0.15102890
+#&gt; 12 full_dataset     Gal     Fin 1.5978031 0.40219689</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -214,6 +219,10 @@ where \(\pi_i\) and \(\pi_j\) are positive-valued parameters representing the sk
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Ella Kaye
 
   </div>
 </div>

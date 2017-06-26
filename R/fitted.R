@@ -38,33 +38,33 @@ as_df_fitted <- function(sM, N) {
 #'
 #' \deqn{m_{ij} = n_{ij}p_{ij},}
 #'
-#' where \eqn{n_ij} is the number of times item \eqn{i} plays against item \eqn{j}.
+#' where \eqn{n_{ij}} is the number of comparisons between item \eqn{i} and item \eqn{j}.
 #'
 #' The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilities \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 #'
-#' If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the K items beating any of the others. Alternatively, the MLE can be found for each fully connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each item in each component beating any other item in that component can be found.
+#' If \eqn{G_W} is not fully connected, then a penalised strength parameter can be obtained using the method of Caron and Doucet (2012) (see \code{\link{btfit}}, with \code{a > 1}), which allows for a Bradley-Terry probability of any of the \eqn{K} items beating any of the others. Alternatively, the MLE can be found for each fully-connected component of \eqn{G_W} (see \code{\link{btfit}}, with \code{a = 1}), and the probability of each item in each component beating any other item in that component can be found.
 #' @param ... Other arguments
 #' @inheritParams btprob
 #'
-#' @return If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}}. Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fifth column, \code{fit2}, is the expected number of times that item 2 beats item 1. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. Otherwise these colnames will be \code{item1} and \code{item2}. See Details.
+#' @return If \code{as_df = FALSE} and the model has been fit on the full dataset, returns a matrix where the \eqn{i,j}-th element is the Bradley-Terry expected value \eqn{m_{ij}} (See Details). Otherwise, a list of such matrices is returned, one for each fully-connected component. If \code{as_df = TRUE}, returns a five-column data frame, where the first column is the component that the two items are in, the second column is \code{item1}, the third column is \code{item2}, the fourth column, \code{fit1}, is the expected number of times that item 1 beats item 2 and the fifth column, \code{fit2}, is the expected number of times that item 2 beats item 1. If \code{btdata$wins} has named dimnames, these will be the \code{colnames} for columns one and two. Otherwise these colnames will be \code{item1} and \code{item2}. See Details.
 #' @references Bradley, R. A. and Terry, M. E. (1952). Rank analysis of incomplete block designs: 1. The method of paired comparisons. \emph{Biometrika}, \strong{39}(3/4), 324-345.
 #' @references Caron, F. and Doucet, A. (2012). Efficient Bayesian Inference for Generalized Bradley-Terry Models. \emph{Journal of Computational and Graphical Statistics}, \strong{21}(1), 174-196.
 #' @seealso \code{\link{btfit}}, \code{\link{btprob}}
 #' @examples
-#' W_connected <- Matrix::rsparsematrix(10, 10 , 0.5, rand.x = function(n) rbinom(n, 10, 0.5))
-#' i <- c(3,1,5,4,2,5,5,7,8,5,6,8,7)
-#' j <- c(1,2,2,3,4,4,6,6,6,7,7,7,8)
-#' dimnames = list(letters[1:8], letters[1:8])
-#' W_not_connected <-  Matrix::sparseMatrix(i, j, x = 1:13, dims = c(8,8), dimnames = dimnames)
-#' W_connected_data <- btdata(W_connected)
-#' W_not_connected_data <- btdata(W_not_connected)
-#' fit1 <- btfit(W_connected_data, 1)
-#' fit2 <- btfit(W_not_connected_data, 1)
-#' fit3 <- btfit(W_not_connected_data, 3)
+#' @author Ella Kaye
+#' @examples 
+#' citations_btdata <- btdata(BradleyTerryScalable::citations)
+#' fit1 <- btfit(citations_btdata, 1)
 #' fitted(fit1)
-#' fitted(fit2)
-#' fitted(fit2, as_df = TRUE)
-#' fitted(fit3)
+#' fitted(fit1, as_df = TRUE)
+#' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+#' toy_btdata <- btdata(toy_df_4col)
+#' fit2a <- btfit(toy_btdata, 1)
+#' fitted(fit2a)
+#' fitted(fit2a, as_df = TRUE)
+#' fitted(fit2a, subset = function(x) "Amy" %in% names(x))
+#' fit2b <- btfit(toy_btdata, 1.1)
+#' fitted(fit2b, as_df = TRUE)
 #' @export
 fitted.btfit <- function(object, subset = NULL, as_df = FALSE, ...){
   if (!inherits(object, "btfit")) stop("object should be a 'btfit' object")
