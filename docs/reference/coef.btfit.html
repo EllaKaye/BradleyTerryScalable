@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>Extract coefficients of a 'btfit' object</p>
+    <p>Note that the values given in the <code>estimate</code> column of the <code>item_summary</code> element are NOT the same as the values in <code>object$pi</code>. Rather, they are the \(\lambda_i\), where \(\lambda_i = \log{\pi_i}\). By detault, these are normalised so that mean(\(\lambda_i\)) = 0. However, if <code>ref</code> is not equal to <code>NULL</code>, then the \(\lambda_i\) in the component in which <code>ref</code> appears are shifted to \(\lambda_i - \lambda_{ref}\), for \(i = 1, \dots, K_c\), where \(K_c\) is the number of items in the component in whick <code>ref</code> appears, and \(\lambda_{ref}\) is the estimate for the reference item.</p>
     
 
     <pre class="usage"><span class='co'># S3 method for btfit</span>
@@ -97,15 +97,15 @@
     </tr>
     <tr>
       <th>subset</th>
-      <td><p>A condition for selecting a subset of the components. This can either be a character vector of names of the components (i.e. a subset of <code>names(object$pi)</code>), a single predicate function (that takes a vector of <code>object$pi</code> as its argument), or a logical vector of the same length as the number of components, (i.e. <code>length(object$pi)</code>).</p></td>
+      <td><p>A condition for selecting one or more subsets of the components. This can either be a character vector of names of the components (i.e. a subset of <code>names(object$pi)</code>), a single predicate function (that takes a vector of <code>object$pi</code> as its argument), or a logical vector of the same length as the number of components, (i.e. <code>length(object$pi)</code>).</p></td>
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.</p></td>
+      <td><p>A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.</p></td>
     </tr>
     <tr>
       <th>as_df</th>
-      <td><p>Logical scalar, determining class of output. If <code>TRUE</code>, the function returns a data frame. If <code>FALSE</code> (the default), the function returns a matrix (or list of matrices).</p></td>
+      <td><p>Logical scalar, determining class of output. If TRUE, the function returns a data frame. If FALSE (the default), the function returns a named vector (or list of such vectors).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -118,6 +118,47 @@
     <p>If as_df = TRUE, a data frame a numeric vector of estimated coefficients, where the first column is the component the item is in, the second column in the item and the third column in the coefficient. If as_df = FALSE, then a numeric vector is returned if the model is fitted on the full dataset, or else a list of numeric vectors is returned, one for each fully connected component. Within each component, the items are arranged by estimate, in descending order.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>citations_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>coef</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt;       JRSS-B   Biometrika         JASA Comm Statist 
+#&gt;    1.0604065    0.7897537    0.3095638   -2.1597241 </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+<span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
+<span class='no'>fit2a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>coef</span>(<span class='no'>fit2a</span>)</div><div class='output co'>#&gt; $`2`
+#&gt;        Han        Gal        Fin 
+#&gt;  0.6956415  0.4125361 -1.1081777 
+#&gt; 
+#&gt; $`3`
+#&gt;         Cyd         Amy         Ben         Dan 
+#&gt;  0.59239992  0.03250119 -0.24307179 -0.38182932 
+#&gt; </div><div class='input'><span class='fu'>coef</span>(<span class='no'>fit2a</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 7 x 3
+#&gt;   component  item        coef
+#&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1         2   Han  0.69564153
+#&gt; 2         2   Gal  0.41253614
+#&gt; 3         2   Fin -1.10817768
+#&gt; 4         3   Cyd  0.59239992
+#&gt; 5         3   Amy  0.03250119
+#&gt; 6         3   Ben -0.24307179
+#&gt; 7         3   Dan -0.38182932</div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
+<span class='fu'>coef</span>(<span class='no'>fit2b</span>)</div><div class='output co'>#&gt;         Eve         Cyd         Han         Amy         Gal         Ben 
+#&gt;  1.90113420  0.47237293  0.24535391 -0.07655328 -0.10175687 -0.42296697 
+#&gt;         Dan         Fin 
+#&gt; -0.53638389 -1.48120003 </div><div class='input'><span class='fu'>coef</span>(<span class='no'>fit2b</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Cyd"</span>)</div><div class='output co'>#&gt;        Eve        Cyd        Han        Amy        Gal        Ben        Dan 
+#&gt;  1.4287613  0.0000000 -0.2270190 -0.5489262 -0.5741298 -0.8953399 -1.0087568 
+#&gt;        Fin 
+#&gt; -1.9535730 </div><div class='input'><span class='fu'>coef</span>(<span class='no'>fit2b</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 3
+#&gt;      component  item        coef
+#&gt;          &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;
+#&gt; 1 full_dataset   Eve  1.90113420
+#&gt; 2 full_dataset   Cyd  0.47237293
+#&gt; 3 full_dataset   Han  0.24535391
+#&gt; 4 full_dataset   Amy -0.07655328
+#&gt; 5 full_dataset   Gal -0.10175687
+#&gt; 6 full_dataset   Ben -0.42296697
+#&gt; 7 full_dataset   Dan -0.53638389
+#&gt; 8 full_dataset   Fin -1.48120003</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -125,7 +166,13 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    <h2>Author</h2>
+    
+Ella Kaye
 
   </div>
 </div>

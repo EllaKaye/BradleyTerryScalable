@@ -12,19 +12,22 @@
 
 \item{subset}{A condition for selecting one or more subsets of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
 
-\item{ref}{the reference item, either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, they are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
+\item{ref}{A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.}
 
-\item{SE}{Logical. whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large. See \code{\link{vcov.btfit}}.}
+\item{SE}{Logical. Whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large. See \code{\link{vcov.btfit}}.}
 
 \item{...}{other arguments}
 }
 \value{
 An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
-\item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order.}
+\item{item_summary}{A tibble with columns for the item name, its coefficient, the standard error and the component it is in. Within each component, the items are arranged by estimate, in descending order. Note that the \code{estimate} is NOT the same as the values in \code{summary$pi}. See Details.}
 \item{component_summary}{A tibble with a row for each component in the \code{btfit} object (named according to the original \code{btdata$components}, with the number of items in the component, the number of iterations the fitting algorithm ran for, and whether it converged.}
 }
 \description{
 \code{summary} method for class "btfit"
+}
+\details{
+Note that the values given in the \code{estimate} column of the \code{item_summary} element are NOT the same as the values in \code{object$pi}. Rather, they are the \eqn{\lambda_i}, where \eqn{\lambda_i = \log{\pi_i}}. By detault, these are normalised so that mean(\eqn{\lambda_i}) = 0. However, if \code{ref} is not equal to \code{NULL}, then the \eqn{\lambda_i} in the component in which \code{ref} appears are shifted to \eqn{\lambda_i - \lambda_{\text{ref}}}, for \eqn{i = 1, \dots, K_c}, where \eqn{K_c} is the number of items in the component in whick \code{ref} appears, and \eqn{\lambda_{\text{ref}}} is the estimate for the reference item.
 }
 \examples{
 citations_btdata <- btdata(BradleyTerryScalable::citations)

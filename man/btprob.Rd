@@ -9,7 +9,7 @@ btprob(object, subset = NULL, as_df = FALSE)
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
 
-\item{subset}{A condition for selecting a subset of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
+\item{subset}{A condition for selecting one or more subsets of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
 
 \item{as_df}{Logical scalar, determining class of output. If \code{TRUE}, the function returns a data frame. If \code{FALSE} (the default), the function returns a matrix (or list of matrices).}
 }
