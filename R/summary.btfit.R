@@ -37,7 +37,7 @@ component_summary_vec <- function(pi, iters, converged) {
 #' 
 #' @inheritParams btprob 
 #' @param ref A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.
-#' @param SE Logical. Whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. Note that calculating the standard error can be very slow when the number of items is large. See \code{\link{vcov.btfit}}.
+#' @param SE Logical. Whether to include the standard error of the estimate in the \code{item_summary} table. Default is \code{FALSE}. \strong{N.B. calculating the standard error can be very slow when the number of items is large}. See \code{\link{vcov.btfit}}.
 #' @param ... other arguments
 #' 
 #' @return An S3 object of class \code{"summary.btfit"}. It is a list containing the following components:
