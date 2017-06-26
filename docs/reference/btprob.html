@@ -81,7 +81,7 @@
     </div>
 
     
-    <p>Calculates the Bradley-Terry probabilities of each item in a fully-connected component of \(G_W\) winning against every other item in that component (see Details).</p>
+    <p>Calculates the Bradley-Terry probabilities of each item in a fully-connected component of the comparison graph, \(G_W\), winning against every other item in that component (see Details).</p>
     
 
     <pre class="usage"><span class='fu'>btprob</span>(<span class='no'>object</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -105,7 +105,7 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>as_df = FALSE</code>, returns a matrix where the \(i,j\)-th element is the Bradley-Terry probability \(p_{ij}\), or, if \(G_W\) is not fully-connected and <code><a href='btfit.html'>btfit</a></code> has been run with <code>a = 1</code>, a list of such matrices for each fully-connected component of \(G_W\). If <code>as_df = TRUE</code>, returns a five-column data frame, where the first column is the component that the two items are in, the second column is <code>item1</code>, the third column is <code>item2</code>, the fourth column is the Bradley-Terry probability that item 1 beats item 2 and the fifth column is the Bradley-Terry probability that item 2 beats item 1. If the original <code>btdata$wins</code> matrix has named dimnames, these will be the <code>colnames</code> for columns one and two. See Details.</p>
+    <p>If <code>as_df = FALSE</code>, returns a matrix where the \(i,j\)-th element is the Bradley-Terry probability \(p_{ij}\), or, if the comparison graph, \(G_W\), is not fully connected and <code><a href='btfit.html'>btfit</a></code> has been run with <code>a = 1</code>, a list of such matrices for each fully-connected component of \(G_W\). If <code>as_df = TRUE</code>, returns a five-column data frame, where the first column is the component that the two items are in, the second column is <code>item1</code>, the third column is <code>item2</code>, the fourth column is the Bradley-Terry probability that item 1 beats item 2 and the fifth column is the Bradley-Terry probability that item 2 beats item 1. If the original <code>btdata$wins</code> matrix has named dimnames, these will be the <code>colnames</code> for columns one and two. See Details.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -125,81 +125,75 @@ where \(\pi_i\) and \(\pi_j\) are positive-valued parameters representing the sk
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>W_connected</span> <span class='kw'>&lt;-</span> <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>rsparsematrix</span>(<span class='fl'>10</span>, <span class='fl'>10</span> , <span class='fl'>0.5</span>, <span class='kw'>rand.x</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>n</span>) <span class='fu'>rbinom</span>(<span class='no'>n</span>, <span class='fl'>10</span>, <span class='fl'>0.5</span>))
-<span class='no'>i</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>3</span>,<span class='fl'>1</span>,<span class='fl'>5</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>5</span>,<span class='fl'>5</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>8</span>,<span class='fl'>7</span>)
-<span class='no'>j</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>7</span>,<span class='fl'>7</span>,<span class='fl'>8</span>)
-<span class='no'>dimnames</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>8</span>], <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>8</span>])
-<span class='no'>W_not_connected</span> <span class='kw'>&lt;-</span>  <span class='kw'>Matrix</span><span class='kw'>::</span><span class='fu'>sparseMatrix</span>(<span class='no'>i</span>, <span class='no'>j</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>13</span>, <span class='kw'>dims</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>,<span class='fl'>8</span>), <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='no'>dimnames</span>)
-<span class='no'>W_connected_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>W_connected</span>)
-<span class='no'>W_not_connected_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>W_not_connected</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>W_connected_data</span>, <span class='fl'>1</span>)
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>W_not_connected_data</span>, <span class='fl'>1</span>)
-<span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>W_not_connected_data</span>, <span class='fl'>3</span>)
-<span class='fu'>btprob</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"</div><div class='output co'>#&gt; <span class='message'>   [[ suppressing 10 column names ‘7’, ‘10’, ‘9’ ... ]]</span></div><div class='output co'>#&gt;                                                                          
-#&gt; 7  .          0.7635455 0.7692865 0.8796861 0.8885760 0.9132446 0.9137278
-#&gt; 10 0.23645446 .         0.5080167 0.6936510 0.7117832 0.7652522 0.7663489
-#&gt; 9  0.23071349 0.4919833 .         0.6867942 0.7051597 0.7594422 0.7605576
-#&gt; 2  0.12031388 0.3063490 0.3132058 .         0.5216905 0.5901171 0.5915954
-#&gt; 8  0.11142399 0.2882168 0.2948403 0.4783095 .         0.5689659 0.5704649
-#&gt; 3  0.08675544 0.2347478 0.2405578 0.4098829 0.4310341 .         0.5015287
-#&gt; 1  0.08627218 0.2336511 0.2394424 0.4084046 0.4295351 0.4984713 .        
-#&gt; 4  0.07992455 0.2190595 0.2245952 0.3884312 0.4092432 0.4776494 0.4791753
-#&gt; 6  0.05324818 0.1537020 0.1579200 0.2913963 0.3096415 0.3718794 0.3733089
-#&gt; 5  0.03554335 0.1063485 0.1094350 0.2122609 0.2271395 0.2795084 0.2807416
-#&gt;                                 
-#&gt; 7  0.9200754 0.9467518 0.9644567
-#&gt; 10 0.7809405 0.8462980 0.8936515
-#&gt; 9  0.7754048 0.8420800 0.8905650
-#&gt; 2  0.6115688 0.7086037 0.7877391
-#&gt; 8  0.5907568 0.6903585 0.7728605
-#&gt; 3  0.5223506 0.6281206 0.7204916
-#&gt; 1  0.5208247 0.6266911 0.7192584
-#&gt; 4  .         0.6069956 0.7021254
-#&gt; 6  0.3930044 .         0.6041384
-#&gt; 5  0.2978746 0.3958616 .        </div><div class='input'><span class='fu'>btprob</span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; $`2`
+    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>citations_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>btprob</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;               citing
+#&gt; cited              JRSS-B Biometrika       JASA Comm Statist
+#&gt;   JRSS-B       .           0.5672532 0.67936229    0.9615848
+#&gt;   Biometrika   0.43274683  .         0.61779270    0.9502388
+#&gt;   JASA         0.32063771  0.3822073 .             0.9219605
+#&gt;   Comm Statist 0.03841516  0.0497612 0.07803945    .        </div><div class='input'><span class='fu'>btprob</span>(<span class='no'>fit1</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 5
+#&gt;      component      cited       citing prob1wins  prob2wins
+#&gt;          &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1 full_dataset     JRSS-B   Biometrika 0.5672532 0.43274683
+#&gt; 2 full_dataset     JRSS-B         JASA 0.6793623 0.32063771
+#&gt; 3 full_dataset Biometrika         JASA 0.6177927 0.38220730
+#&gt; 4 full_dataset     JRSS-B Comm Statist 0.9615848 0.03841516
+#&gt; 5 full_dataset Biometrika Comm Statist 0.9502388 0.04976120
+#&gt; 6 full_dataset       JASA Comm Statist 0.9219605 0.07803945</div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+<span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
+<span class='no'>fit2a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
+<span class='fu'>btprob</span>(<span class='no'>fit2a</span>)</div><div class='output co'>#&gt; $`2`
 #&gt; 3 x 3 sparse Matrix of class "dgCMatrix"
-#&gt;           h         g         f
-#&gt; h .         0.5985400 0.6704501
-#&gt; g 0.4014600 .         0.5770893
-#&gt; f 0.3295499 0.4229107 .        
+#&gt;        player2
+#&gt; player1       Han       Gal       Fin
+#&gt;     Han .         0.5703074 0.8586132
+#&gt;     Gal 0.4296926 .         0.8206436
+#&gt;     Fin 0.1413868 0.1793564 .        
 #&gt; 
 #&gt; $`3`
 #&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
-#&gt;            a          b         d         c
-#&gt; a .          0.52920629 0.8287550 0.9402557
-#&gt; b 0.47079371 .          0.8115130 0.9333372
-#&gt; d 0.17124498 0.18848704 .         0.7648125
-#&gt; c 0.05974435 0.06666283 0.2351875 .        
-#&gt; </div><div class='input'><span class='fu'>btprob</span>(<span class='no'>fit2</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 9 x 5
-#&gt;   component item1 item2 prob1wins  prob2wins
-#&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1         2     h     g 0.5985400 0.40146002
-#&gt; 2         2     h     f 0.6704501 0.32954991
-#&gt; 3         2     g     f 0.5770893 0.42291068
-#&gt; 4         3     a     b 0.5292063 0.47079371
-#&gt; 5         3     a     d 0.8287550 0.17124498
-#&gt; 6         3     b     d 0.8115130 0.18848704
-#&gt; 7         3     a     c 0.9402557 0.05974435
-#&gt; 8         3     b     c 0.9333372 0.06666283
-#&gt; 9         3     d     c 0.7648125 0.23518746</div><div class='input'><span class='fu'>btprob</span>(<span class='no'>fit3</span>)</div><div class='output co'>#&gt; 8 x 8 sparse Matrix of class "dgCMatrix"
-#&gt;           e         a         b         h         d         g         c
-#&gt; e .         0.7303944 0.7478675 0.7794295 0.8452451 0.8474738 0.8696628
-#&gt; a 0.2696056 .         0.5226461 0.5660419 0.6684448 0.6722324 0.7112281
-#&gt; b 0.2521325 0.4773539 .         0.5436570 0.6480578 0.6519570 0.6922607
-#&gt; h 0.2205705 0.4339581 0.4563430 .         0.6071717 0.6112522 0.6537663
-#&gt; d 0.1547549 0.3315552 0.3519422 0.3928283 .         0.5042848 0.5498827
-#&gt; g 0.1525262 0.3277676 0.3480430 0.3887478 0.4957152 .         0.5456369
-#&gt; c 0.1303372 0.2887719 0.3077393 0.3462337 0.4501173 0.4543631 .        
-#&gt; f 0.1229178 0.2751875 0.2936309 0.3312049 0.4335698 0.4377838 0.4832302
-#&gt;           f
-#&gt; e 0.8770822
-#&gt; a 0.7248125
-#&gt; b 0.7063691
-#&gt; h 0.6687951
-#&gt; d 0.5664302
-#&gt; g 0.5622162
-#&gt; c 0.5167698
-#&gt; f .        </div></pre>
+#&gt;        player2
+#&gt; player1       Cyd       Amy       Ben       Dan
+#&gt;     Cyd .         0.6364291 0.6975107 0.7259617
+#&gt;     Amy 0.3635709 .         0.5684605 0.6021258
+#&gt;     Ben 0.3024893 0.4315395 .         0.5346338
+#&gt;     Dan 0.2740383 0.3978742 0.4653662 .        
+#&gt; </div><div class='input'><span class='fu'>btprob</span>(<span class='no'>fit2a</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 9 x 5
+#&gt;   component player1 player2 prob1wins prob2wins
+#&gt;       &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1         2     Han     Gal 0.5703074 0.4296926
+#&gt; 2         2     Han     Fin 0.8586132 0.1413868
+#&gt; 3         2     Gal     Fin 0.8206436 0.1793564
+#&gt; 4         3     Cyd     Amy 0.6364291 0.3635709
+#&gt; 5         3     Cyd     Ben 0.6975107 0.3024893
+#&gt; 6         3     Amy     Ben 0.5684605 0.4315395
+#&gt; 7         3     Cyd     Dan 0.7259617 0.2740383
+#&gt; 8         3     Amy     Dan 0.6021258 0.3978742
+#&gt; 9         3     Ben     Dan 0.5346338 0.4653662</div><div class='input'><span class='fu'>btprob</span>(<span class='no'>fit2a</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"Amy"</span> <span class='kw'>%in%</span> <span class='fu'>names</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; $`3`
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
+#&gt; player1       Cyd       Amy       Ben       Dan
+#&gt;     Cyd .         0.6364291 0.6975107 0.7259617
+#&gt;     Amy 0.3635709 .         0.5684605 0.6021258
+#&gt;     Ben 0.3024893 0.4315395 .         0.5346338
+#&gt;     Dan 0.2740383 0.3978742 0.4653662 .        
+#&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
+<span class='fu'>btprob</span>(<span class='no'>fit2b</span>, <span class='kw'>as_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; # A tibble: 28 x 5
+#&gt;       component player1 player2 prob1wins prob2wins
+#&gt;           &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1 full_dataset     Eve     Cyd 0.8067082 0.1932918
+#&gt;  2 full_dataset     Eve     Han 0.8396707 0.1603293
+#&gt;  3 full_dataset     Cyd     Han 0.5565123 0.4434877
+#&gt;  4 full_dataset     Eve     Amy 0.8784344 0.1215656
+#&gt;  5 full_dataset     Cyd     Amy 0.6338864 0.3661136
+#&gt;  6 full_dataset     Han     Amy 0.5797890 0.4202110
+#&gt;  7 full_dataset     Eve     Gal 0.8811003 0.1188997
+#&gt;  8 full_dataset     Cyd     Gal 0.6397156 0.3602844
+#&gt;  9 full_dataset     Han     Gal 0.5859168 0.4140832
+#&gt; 10 full_dataset     Amy     Gal 0.5063006 0.4936994
+#&gt; # ... with 18 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -216,6 +210,10 @@ where \(\pi_i\) and \(\pi_j\) are positive-valued parameters representing the sk
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Ella Kaye
 
   </div>
 </div>
