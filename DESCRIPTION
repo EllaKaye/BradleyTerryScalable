@@ -33,7 +33,7 @@ Description: The Bradley-Terry model is a popular method for finding the
     parameters, as well as a function to help the user determine which approaches
     are suitable for their data, and helper functions to ensure that the data is in
     the appropriate format for the main btfit functions.
-License: GPL-3 + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends:
