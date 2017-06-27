@@ -45,14 +45,14 @@ codes_to_counts <- function(df, codes) {
   }
   if (!(identical(sort(codes), sort(codes_elements)))) stop("The elements in codes don't match the elements in the third column of df")
   
-  
   # make col3 name consistent, so can use in mutate statements
   colnames(df)[3] <- "wins_code"
   
-  # sort the data frame
+  # assign win to appropriate team
   df <- dplyr::mutate(df, item1wins = dplyr::if_else(wins_code == W1, 1, 0))
   df <- dplyr::mutate(df, item2wins = dplyr::if_else(wins_code == W2, 1, 0))  
   
+  # deal with ties
   if (length(codes) == 3) {
     df <- dplyr::mutate(df, item1wins = dplyr::if_else(wins_code == D, 0.5, item1wins))
     df <- dplyr::mutate(df, item2wins = dplyr::if_else(wins_code == D, 0.5, item2wins))

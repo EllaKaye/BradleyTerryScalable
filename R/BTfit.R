@@ -95,10 +95,6 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   if (length(dim(a)) >= 2) stop("a must be a single value")
   if (length(a) > 1) stop("a must be a single value")
   if (a < 1) stop("a must be >= 1")
-  #if ((a > 1) && (!is.null(b))) {
-  #  if (!is.numeric(b)) stop("b must be strictly positive or NULL when a > 1")
-  #  if ((b <= 0)) stop("b must be strictly positive or NULL when a > 1")
-  #} 
   
   ### Save diagonal (for fitted values) then set diagonal of matrix to zero
   saved_diag <- Matrix::diag(wins)
@@ -108,9 +104,8 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
   names_dimnames_list <- list(names_dimnames)
-  #names_dimnames_rep <- rep(names_dimnames_list, n)
   
-  ### By component, if necessary or by_comp requested
+  ### Fit by component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
     
     ### remove components of length 1
@@ -123,9 +118,7 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
     
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
     
-    #if (a == 1) btfit_map <- purrr::map(wins_by_comp, BT_EM, a = 1, b = 0, maxit = maxit, epsilon = epsilon)
-    # if (a > 1)  btfit_map <- purrr::map(wins_by_comp, BT_EM, a = a, b = b, maxit = maxit, epsilon = epsilon) 
-    #if (a > 1)  btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
+    # Fit the model
     btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
     # transpose
     btfit_map <- purrr::transpose(btfit_map)
@@ -153,8 +146,10 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
     if (a == 1) b <- 0
     else b <- a * K - 1
     
+    # fit the model
     fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
-    #if(a > 1) fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
+    
+    # extract elements and make sure they're properly named
     pi <- base::as.vector(fit$pi)
     names(pi) <- rownames(wins)
     pi <- list(pi)
@@ -172,13 +167,13 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
   
   if (a > 1 & MAP_by_component & orig_n == 1) names(pi) <- "full_dataset"
   
-  # reorder
+  # reorder (decreasing pi)
   pi_perm <- purrr::map(pi, order, decreasing = TRUE)
   pi <- purrr::map2(pi, pi_perm, ~.x[.y])
   N <- purrr::map2(N, pi_perm, ~.x[.y, .y])
   diagonal <- purrr::map2(diagonal, pi_perm, ~.x[.y])    
   
-  
+  # result
   result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
                  diagonal = diagonal, names_dimnames = names_dimnames)
   

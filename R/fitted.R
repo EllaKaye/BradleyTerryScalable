@@ -18,11 +18,6 @@ as_df_fitted <- function(sM, N) {
 
   }
 
-  #if(!is.null(names(dimnames(N)))) {
-  #  if(!is.na(names(dimnames(N))[1])) colnames(df)[1] <- names(dimnames(N))[1]
-  #  if(!is.na(names(dimnames(N))[2])) colnames(df)[2] <- names(dimnames(N))[2]
-  #}
-
   return(df)
 }
 
@@ -75,8 +70,6 @@ fitted.btfit <- function(object, subset = NULL, as_df = FALSE, ...){
   N <- object$N
   diagonal <- object$diagonal
   
-  #components <- purrr::map(pi, names)
-  
   # check and get subset
   if (!is.null(subset)) {
 
@@ -92,13 +85,13 @@ fitted.btfit <- function(object, subset = NULL, as_df = FALSE, ...){
   # set up names of dimnames  
   names_dimnames <- object$names_dimnames  
   names_dimnames_list <- list(names_dimnames)
-  #names_dimnames_rep <- rep(names_dimnames_list, length(pi))
   
   out <- purrr::map2(pi, N, fitted_vec)
   out <- purrr::map2(out, components, name_matrix_function)
   out <- purrr::map2(out, names_dimnames_list, name_dimnames_function)
   out <- purrr::map2(out, diagonal, my_diag)
   
+  # convert to data frame, if requested
   if (as_df) {
     comp_names <- names(pi)
     
@@ -107,9 +100,7 @@ fitted.btfit <- function(object, subset = NULL, as_df = FALSE, ...){
     reps <- purrr::map_int(out, nrow)
     
     out <- purrr::map(out, df_col_rename_func, names_dimnames)
-      #purrr::map2(comp_names, ~ .x %>% dplyr::mutate(component = .y)) %>%
     out <- dplyr::bind_rows(out)
-    
     
     comps_for_df <- purrr::map2(comp_names, reps, ~rep(.x, each = .y))
     comps_for_df <- unlist(comps_for_df)

@@ -47,9 +47,6 @@ select_components <- function(btdata, subset, return_graph = FALSE) {
   }
   # rely on purrr::keep's error message if length == 1 on comp 1, but > 1 elsewhere
   
-  # correct way to test subset on all components (but may be too costly)
-  # if (purrr::map(components, subset) %>% map_int(length) %>% any(. > 1)) stop("if subset is a function, it must return either TRUE or FALSE")
-  
   if(is.character(subset)) {
     if(!all(subset %in% names(components))) stop("not all elements of subset are names of components")
   }
@@ -69,6 +66,7 @@ select_components <- function(btdata, subset, return_graph = FALSE) {
     g <- igraph::induced_subgraph(graph, unlist(sub_comps))
   }
   
+  # result
   result <- list(wins = sub_wins, components = sub_comps)
   if (!is.null(btdata$graph) & return_graph) result$graph <- g
   class(result) <- c("btdata", "list")

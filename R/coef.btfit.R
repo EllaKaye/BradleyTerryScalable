@@ -6,10 +6,6 @@ coef_vec <- function(pi, ref = NULL, ...){
   if (ref %in% object_names) return(coefs - coefs[ref])
   else if (ref == 1) return(coefs - coefs[1])
   else return(coefs - mean(coefs))
-  #if (ref %in% object_names) ref <- which(object_names == ref)
-  #if (ref %in% seq(coefs)) {
-  #  return(coefs - coefs[ref])
-  #} else stop("Invalid value for the 'ref' argument")
 }
 
 as_df_coef <- function(vec) {

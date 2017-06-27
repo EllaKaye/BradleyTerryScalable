@@ -10,12 +10,6 @@ item_summary_vec <- function(pi, N, ref = NULL, SE = FALSE){
       result <- dplyr::mutate(result, SE = se)
     }
     
-
-    #if (!is.null(names(lambda))) item <- names(lambda)
-    #else item <- 1:length(lambda)
-    #result <- dplyr::data_frame(item = item, estimate = lambda, SE = se)
-    # result <- dplyr::arrange(result, dplyr::desc(estimate))
-    #class(result) <- c("tbl_df", "tbl", "data.frame")
     result
 }
 
@@ -111,7 +105,6 @@ summary.btfit <- function(object, subset = NULL, ref = NULL, SE = FALSE, ...){
     component_summary_result <- dplyr::select(component_summary_result, component, num_items:converged)
     
     result <- list(call = call, item_summary = item_summary_result, component_summary = component_summary_result)
-    
-    #class(result) <- c("summary.btfit", "list")
+  
     result
 }

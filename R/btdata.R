@@ -16,10 +16,6 @@ graph_to_matrix <- function(g) {
   if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight", names = TRUE)
   else W <- igraph::as_adjacency_matrix(g, sparse = TRUE, names = TRUE)
   
-  #if (igraph::is.weighted(g)) W <- igraph::as_adjacency_matrix(g, sparse = TRUE, attr = "weight")
-  #else W <- igraph::as_adjacency_matrix(g, sparse = TRUE)
-  
-  
   return(W)
   
 }
@@ -54,7 +50,7 @@ pairs_to_matrix <- function(df) {
   # get formula for dMcast
   f <- stats::as.formula(paste(names(df)[1:2], collapse= " ~ "))
   
-  # create cross-tabs matrix (not square)
+  # convert names to factors
   if(!is.factor(df[,1])) {
     df[,1] <- factor(df[,1])
   }
@@ -63,6 +59,7 @@ pairs_to_matrix <- function(df) {
     df[,2] <- factor(df[,2])
   }
   
+  # create cross-tabs matrix (not square)
   mat <- Matrix.utils::dMcast(df, f, value.var = names(df)[3], as.factors = TRUE)
   
   # fix colnames
@@ -210,10 +207,6 @@ pairs_to_matrix <- function(df) {
 #' @export
 btdata <- function(x, return_graph = FALSE) {
   
-  # check x is of an appropriate type
-  
-  ## Get wins matrix
-  
   # if x is a table, convert it to a matrix
   if (is.table(x)) {
     attr(x, "class") <- NULL
@@ -296,9 +289,6 @@ summary.btdata <- function(object, ...){
   components_greater_than_one <- Filter(function(x) length(x) > 1, object$components)
   my_tab <- table(sapply(object$components, length))
   my_df <- as.data.frame(my_tab)
-  #my_df <- as.data.frame(rbind(as.integer(names(my_tab)), unname(my_tab)))
-  #rownames(my_df) <- c("Num. players in component:", "Number of components:")
-  #colnames(my_df) <- NULL
   
   colnames(my_df) <- c("Component size", "Freq")
   
@@ -313,9 +303,6 @@ summary.btdata <- function(object, ...){
     cat("Number of fully-connected components:", num_comps, "\n")
     cat("Summary of fully-connected components: \n")
     print(my_df)
-    #cat("Without singleton components... \n")
-    #cat("Number of fully-connected components with two or more players:", length(components_greater_than_one), "\n")
-    #cat("Number of players across fully-connected components with two or more players", )
   }
 }
 

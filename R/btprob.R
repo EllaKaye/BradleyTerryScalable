@@ -3,24 +3,11 @@ as_df_btprob <- function(m) {
   # convert to matrix
   if (!is.matrix(m)) m <- as.matrix(m)
   
-  # Check for reshape2
-  #if (!requireNamespace("reshape2", quietly = TRUE)) {
-  #  stop("The package reshape2 is needed for as_df = TRUE in btprob. Please install it.",
-  #       call. = FALSE)
-  #}
-  
   m[lower.tri(m, diag = TRUE)] <- NA
-  
-  # hack to avoid NOTES on global variables
-  #value <- NULL
-  #prob1wins <- NULL
   
   # make the data frame  
   out <- dplyr::as_data_frame(as.data.frame.table(m, useNA = "no", stringsAsFactors = FALSE))
   out <- dplyr::filter(out, !is.na(Freq))
-  #out <- dplyr::as_data_frame(reshape2::melt(m, na.rm = TRUE)) 
-  #out <- dplyr::mutate_if(out, is.factor, as.character)
-  #out <- dplyr::rename(out, prob1wins = value)
   out <- dplyr::rename(out, prob1wins = Freq)
   out <- dplyr::mutate(out, prob2wins = 1 - as.numeric(prob1wins))
   
@@ -75,12 +62,13 @@ btprob <- function(object, subset = NULL, as_df = FALSE) {
   # set up names of dimnames  
   names_dimnames <- object$names_dimnames  
   names_dimnames_list <- list(names_dimnames)
-  #names_dimnames_rep <- rep(names_dimnames_list, length(pi))
   
+  # calculate the probabilities, by component
   p <- purrr::map(pi, btprob_vec)
   p <- purrr::map2(p, components, name_matrix_function)
   p <- purrr::map2(p, names_dimnames_list, name_dimnames_function)
   
+  # convert to data frame, if requested
   if (as_df) {
     comp_names <- names(pi)
     
@@ -89,9 +77,7 @@ btprob <- function(object, subset = NULL, as_df = FALSE) {
     reps <- purrr::map_int(p, nrow)
     
     p <- purrr::map(p, df_col_rename_func, names_dimnames)
-    #p <- purrr::map2(p, comp_names, ~ .x %>% dplyr::mutate(component = .y))
     p <- dplyr::bind_rows(p)
-    
     
     comps_for_df <- purrr::map2(comp_names, reps, ~rep(.x, each = .y))
     comps_for_df <- unlist(comps_for_df)
