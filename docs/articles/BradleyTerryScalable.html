@@ -57,7 +57,7 @@
       <h1>Fitting the Bradley-Terry model to large and potentially sparse datasets</h1>
                         <h4 class="author">Ella Kaye and David Firth</h4>
             
-            <h4 class="date">2017-06-26</h4>
+            <h4 class="date">2017-06-27</h4>
           </div>
 
     
@@ -67,11 +67,11 @@
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>The Bradley-Terry model <span class="citation">(Bradley and Terry 1952)</span> is a popular method for finding the probabilities for each item in a set being preferred over each of the others, based on repeated pairwise comparisons between the items of the set. It is used to assign a strength parameter to each item in a group, on the basis of a number of pairwise comparisons between those items. An overall ranking may then be formed on the basis of these strengths.</p>
-<p>The model is popular in a sporting context, where the group may be a league and the items are players or teams within that league. The comparisons are matches between the players or teams and the strength parameter represents the overall skill of that player or team. Extensions of the Bradley-Terry model have also been used to rank chess players <span class="citation">(Elo 1978)</span> and NASCAR drivers <span class="citation">(Hunter 2004)</span>. For a non-sporting example, the Bradley-Terry model has been used to derive influence rankings for journals, where the comparison between two journals are the number of citations from each to the other <span class="citation">(Stigler 1994; Varin, Cattelan, and Firth 2016)</span>.</p>
+<p>The model is popular in a sporting context, where the set may be a league and the items are players or teams within that league. The comparisons are matches between the players or teams and the strength parameter represents the overall skill of that player or team. Extensions of the Bradley-Terry model have also been used to rank chess players <span class="citation">(Elo 1978)</span> and NASCAR drivers <span class="citation">(Hunter 2004)</span>. For a non-sporting example, the Bradley-Terry model has been used to derive influence rankings for journals, where the comparison between two journals are the citations from each to the other <span class="citation">(Stigler 1994; Varin, Cattelan, and Firth 2016)</span>.</p>
 <p>In recent years, the de facto method for fitting Bradley-Terry models has been to find the maximum likelihood estimate using the MM-algorithm of <span class="citation">(Hunter 2004)</span>. However, the existence and uniqueness of the MLE is only guaranteed under certain assumptions on the data set, as first described by <span class="citation">Ford (1957)</span>. As an alternative to finding the MLE, <span class="citation">Caron and Doucet (2012)</span> have proposed a Bayesian approach.</p>
 <p>The CRAN package <strong>BradleyTerry2</strong> is a well-established package for fitting the Bradley-Terry model. The <strong>BradleyTerryScalable</strong> package is not as fully-featured, for example it does not allow for home-advantage, nor can it incorporate covariate information. However, <strong>BradleyTerryScalable</strong> is designed to do one thing well, namely to fit the Bradley-Terry model to large and potentially sparse datasets. It can easily handle much bigger datasets, with many more items. Moreover, unlike <strong>BradleyTerry2</strong>, <strong>BradleyTerryScalable</strong> can be used to find both the MLE and a Bayesian MAP estimate of the strength parameter, thus enabling the model to be fitted even when the underlying comparison graph is not fully connected. As with <strong>BradleyTerry2</strong>, a great deal of care has been taken to provide a simple and intuitive user interface.</p>
 <p>In the Background section, we first present the Bradley-Terry model, and the conditions under which the its maximum likelhood estimate exists. We then present algorithms that can be used to find the MLE and MAP estimates.</p>
-<p>In the BradleyTerryScalable section, we present our package, and demonstate its use on a couple of toy datasets.</p>
+<p>In the BradleyTerryScalable section, we present our package, and demonstate its use on a couple of toy datasets, as well as a large simulated dataset.</p>
 </div>
 <div id="background" class="section level1">
 <h1 class="hasAnchor">
@@ -108,7 +108,7 @@ p_{ij} = \mathbb{P}(i \text{ beats } j) = \frac{\pi_i}{\pi_i + \pi_j},
 <p>To find the MLE of the Bradley-Terry model, <span class="citation">Hunter (2004)</span> proposed using an MM-algorithm <span class="citation">(Lange, Hunter, and Yang 2000)</span>. This leads to a fixed-point iteration:</p>
 <p><span class="math display">\[
 \pi_i^{(n+1)} = \frac{W_i}{\sum_{j=1}^K \frac{n_{ij}}{\pi_i^{(n)} + \pi_j^{(n)}}},
-\]</span> where <span class="math inline">\(W_i = \sum_{j = 1}^K w_{ij}\)</span> is the total number of comparisons won by item <span class="math inline">\(i\)</span> and <span class="math inline">\(n_ij = w_{ij} + w_{ji}\)</span> is the number of comparisons between items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
+\]</span> where <span class="math inline">\(W_i = \sum_{j = 1}^K w_{ij}\)</span> is the total number of comparisons won by item <span class="math inline">\(i\)</span> and <span class="math inline">\(n_{ij} = w_{ij} + w_{ji}\)</span> is the number of comparisons between items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
 </div>
 <div id="using-the-em-algorithm-to-find-the-map-estimate" class="section level3">
 <h3 class="hasAnchor">
@@ -127,23 +127,27 @@ p(\pi) = \prod_{i=1}^K \mathcal{G}(\pi_i; a, b).
 <div id="installing-the-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installing-the-package" class="anchor"></a>Installing the package</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># installing from CRAN</span>
+<span class="kw">install.packages</span>(<span class="st">"BradleyTerryScalable"</span>)
+
+<span class="co"># installing from GitHub</span>
+<span class="kw">install.packages</span>(<span class="st">"devtools"</span>) <span class="co"># if required</span>
 devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/BradleyTerryScalable"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(BradleyTerryScalable)</code></pre></div>
 </div>
 <div id="preparing-the-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preparing-the-data" class="anchor"></a>Preparing the data</h2>
-<p>The main fitting function in this package is <code>btfit</code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="../reference/btdata.html">btdata(x)</a></code>.</p>
+<p>The main fitting function in this package is <code><a href="../reference/btfit.html">btfit()</a></code>. This function takes as its main argument an object of class <code>btdata</code>. To create a <code>btdata</code> object, use the function <code><a href="../reference/btdata.html">btdata(x)</a></code>.</p>
 <p>The <code>x</code> argument to <code>btdata</code> can be one of four classes of object:</p>
 <ul>
-<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension <em>K</em> by <em>K</em>, where <em>K</em> is the number of items. The <em>i,j</em>-th element is <span class="math inline">\(w_{ij}\)</span>, the number of times item <em>i</em> has beaten item <em>j</em>. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
+<li><p>A matrix (either a base <code>matrix</code> or a class from the <code>Matrix</code> package), dimension <span class="math inline">\(K\)</span> by <span class="math inline">\(K\)</span>, where <span class="math inline">\(K\)</span> is the number of items. The <span class="math inline">\(i,j\)</span>-th element is <span class="math inline">\(w_{ij}\)</span>, the number of times item <span class="math inline">\(i\)</span> has beaten item <span class="math inline">\(j\)</span>. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
 <li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
-<li>An <code>igraph</code>, representing the <em>comparison graph</em>, with the K items as nodes. For the edges:
+<li>An <code>igraph</code>, representing the <em>comparison graph</em>, with the <span class="math inline">\(K\)</span> items as nodes. For the edges:
 <ul>
-<li>If the graph is unweighted, a directed edge from node <em>i</em> to node <em>j</em> for every time item <em>i</em> has beaten item <em>j</em>
+<li>If the graph is unweighted, a directed edge from node <span class="math inline">\(i\)</span> to node <span class="math inline">\(j\)</span> for every time item <span class="math inline">\(i\)</span> has beaten item <span class="math inline">\(j\)</span>
 </li>
-<li>If the graph is weighted, then one edge from node <em>i</em> to node <em>j</em> if item <em>i</em> has beaten item <em>j</em> at least once, with the weight attribute of that edge set to the number of times <em>i</em> has beaten <em>j</em>.</li>
+<li>If the graph is weighted, then one edge from node <span class="math inline">\(i\)</span> to node <span class="math inline">\(j\)</span> if item <span class="math inline">\(i\)</span> has beaten item <span class="math inline">\(j\)</span> at least once, with the weight attribute of that edge set to the number of times <span class="math inline">\(i\)</span> has beaten <span class="math inline">\(j\)</span>.</li>
 </ul>
 </li>
 <li>A data frame (<code>data.frame</code> or <code>tibble</code>), with three or four columns
@@ -238,7 +242,7 @@ toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../ref
 <li>If <code>Fully-connected: FALSE</code>, then we cannot find the MLE for the full dataset. There are two alternatives:
 <ul>
 <li>Find the MLE on each fully connected component of the comparison graph (and note then that it is only meaningful to rank and compare items within the same component).</li>
-<li>Place a Bayesian prior on the model, then find the maximum a posteriori (MAP) estimate. This always exists and is finite. It gives a principled way of ranking and comparing all <em>K</em> items.</li>
+<li>Place a Bayesian prior on the model, then find the maximum a posteriori (MAP) estimate. This always exists and is finite. It gives a principled way of ranking and comparing all <span class="math inline">\(K\)</span> items.</li>
 </ul>
 </li>
 </ul>
@@ -331,7 +335,7 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <h3 class="hasAnchor">
 <a href="#btprob-and-fitted-btfit" class="anchor"></a><code>btprob</code> and <code>fitted.btfit</code>
 </h3>
-<p>This calculates the Bradley-Terry probabilities that item <em>i</em> beats item <em>j</em>. By default a matrix if <code>btfit</code> was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>. The <code>fitted.btfit</code> method functions similarly, except it returns the expected number of wins (see <code><a href="../reference/fitted.btfit.html">?fitted.btfit</a></code>).</p>
+<p>This calculates the Bradley-Terry probabilities that item <span class="math inline">\(i\)</span> beats item <span class="math inline">\(j\)</span>. By default a matrix if <code>btfit</code> was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>. The <code>fitted.btfit</code> method functions similarly, except it returns the expected number of wins (see <code><a href="../reference/fitted.btfit.html">?fitted.btfit</a></code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/btprob.html">btprob</a></span>(citations_fit)</code></pre></div>
 <pre><code>## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
@@ -357,7 +361,7 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <h3 class="hasAnchor">
 <a href="#simulate-btfit-and-simuate_bt" class="anchor"></a><code>simulate.btfit</code> and <code>simuate_BT</code>
 </h3>
-<p>There are two functions to simuate data from a Bradley-Terry model. <code>simulate.btfit</code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code>simulate_BT</code> takes an <code>N</code> matrix (i.e. where the <em>i,j</em>-th elemenent is the number of times items <em>i</em> and <em>j</em> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code>coef</code> and <code>summary</code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
+<p>There are two functions to simuate data from a Bradley-Terry model. <code>simulate.btfit</code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code>simulate_BT</code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th elemenent is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code>coef</code> and <code>summary</code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit)
 <span class="kw">set.seed</span>(<span class="dv">1982</span>)
 num_items &lt;-<span class="st"> </span><span class="dv">6</span>
