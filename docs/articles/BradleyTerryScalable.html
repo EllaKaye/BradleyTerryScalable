@@ -266,9 +266,9 @@ a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 <div id="methods-for-a-btfit-object" class="section level2">
 <h2 class="hasAnchor">
 <a href="#methods-for-a-btfit-object" class="anchor"></a>Methods for a <code>btfit</code> object</h2>
-<div id="summary-btift-coef-btfit-and-vcov-btfit" class="section level3">
+<div id="summary-btfit-coef-btfit-and-vcov-btfit" class="section level3">
 <h3 class="hasAnchor">
-<a href="#summary-btift-coef-btfit-and-vcov-btfit" class="anchor"></a><code>summary.btift()</code>, <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/vcov.btfit.html">vcov.btfit()</a></code>
+<a href="#summary-btfit-coef-btfit-and-vcov-btfit" class="anchor"></a><code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/vcov.btfit.html">vcov.btfit()</a></code>
 </h3>
 <p>The <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code> method returns a list with</p>
 <ul>
@@ -363,9 +363,9 @@ a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 ## 7         3     Amy     Dan 1.2042516 0.7957484
 ## 8         3     Ben     Dan 1.0692677 0.9307323</code></pre>
 </div>
-<div id="simulate-btfit-and-simuate_bt" class="section level3">
+<div id="simulate-btfit-and-simulate_bt" class="section level3">
 <h3 class="hasAnchor">
-<a href="#simulate-btfit-and-simuate_bt" class="anchor"></a><code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> and <code>simuate_BT()</code>
+<a href="#simulate-btfit-and-simulate_bt" class="anchor"></a><code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> and <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code>
 </h3>
 <p>There are two functions to simuate data from a Bradley-Terry model. <code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th elemenent is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit)

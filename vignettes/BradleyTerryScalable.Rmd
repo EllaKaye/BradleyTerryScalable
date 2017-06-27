@@ -193,7 +193,7 @@ for all $i$. The `epsilon` argument to `btfit()` sets the value of $\epsilon$ (t
 `btfit` objects are a list, and they are not designed to be examined directly, but to be passed to other methods.
     
 ## Methods for a `btfit` object
-### `summary.btift()`, `coef.btfit()` and `vcov.btfit()`
+### `summary.btfit()`, `coef.btfit()` and `vcov.btfit()`
 The `summary.btfit()` method returns a list with
 
 - `call`: the call to `btfit()`
@@ -220,7 +220,7 @@ btprob(citations_fit)
 fitted(toy_fit_MLE, as_df = TRUE)
 ```
 
-### `simulate.btfit()` and `simuate_BT()`
+### `simulate.btfit()` and `simulate_BT()`
 There are two functions to simuate data from a Bradley-Terry model. `simulate.btfit()` takes a `btfit` object *which has been fitted on one component* (either the full dataset, or a one-component subset). `simulate_BT()` takes an `N` matrix (i.e. where the $i,j$-th elemenent is the number of times items $i$ and $j$ have been compared) a vector `pi`, the strength parameters of a Bradley-Terry model (note that `pi` *not* the same as the estimates in `coef.btfit()` and `summary.btfit()`, which are on the log-scale). Both functions return a `wins` matrix by default, but can also be set to return a `btdata` object.
 ```{r}
 citations_sim <- simulate(citations_fit)
