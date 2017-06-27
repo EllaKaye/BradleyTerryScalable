@@ -160,7 +160,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/Brad
 </li>
 </ul>
 <p>We anticipate that the user may have data in a three-column data frame that does not match the description of the three-column data frame above. For example, the data frame could have one row per comparison, where the third column contains a code to indicate which of the two items won, say <code>W1</code> if the item in column 1 won, <code>W2</code> if the item in column 2 won and <code>D</code> if it was a tie/draw. Alternatively, the third column could contain the win-count, but only relative to the first item, i.e. 1 if the first item wins, 0 if it loses and 0.5 if there was a draw. In this case, the <code>btdata</code> function won’t know that a loss for the first item item should be counted as a win for the second item.</p>
-<p>For the cases described in the previous paragraph, the <code>BradleyTerryScalable</code> package provides the <code>codes_to_counts</code> function, which takes such three-column data-frames and returns a four-column data frame of the required format for passing to the <code>btdata</code> function.</p>
+<p>For the cases described in the previous paragraph, the <code>BradleyTerryScalable</code> package provides the <code><a href="../reference/codes_to_counts.html">codes_to_counts()</a></code> function, which takes such three-column data-frames and returns a four-column data frame of the required format for passing to the <code><a href="../reference/btdata.html">btdata()</a></code> function.</p>
 <p>The <code>BradleyTerryScalable</code> package provides two toy data sets which we’ll use in this demonstration:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(citations) 
 citations</code></pre></div>
@@ -190,7 +190,7 @@ toy_data</code></pre></div>
 ## 15     Cyd     Amy      W1
 ## 16     Ben     Dan       D
 ## 17     Dan     Amy      W2</code></pre>
-<p><code>citations</code> is in an appropriate format to pass to <code>btdata</code>, whereas <code>toy_data</code> needs to be passed through <code>codes_to_counts</code> first:</p>
+<p><code>citations</code> is in an appropriate format to pass to <code><a href="../reference/btdata.html">btdata()</a></code>, whereas <code>toy_data</code> needs to be passed through <code><a href="../reference/codes_to_counts.html">codes_to_counts()</a></code> first:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(citations)
 toy_data_4col &lt;-<span class="st"> </span><span class="kw"><a href="../reference/codes_to_counts.html">codes_to_counts</a></span>(toy_data, <span class="kw">c</span>(<span class="st">"W1"</span>, <span class="st">"W2"</span>, <span class="st">"D"</span>))
 toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(toy_data_4col, <span class="dt">return_graph =</span> <span class="ot">TRUE</span>) </code></pre></div>
@@ -207,7 +207,7 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)+.<span class="dv">1</span>)  
 <span class="kw">plot.igraph</span>(toy_btdata$graph, <span class="dt">vertex.size =</span> <span class="dv">28</span>, <span class="dt">edge.arrow.size =</span> <span class="fl">0.5</span>) </code></pre></div>
 <p><img src="BradleyTerryScalable_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>Information about the <code>btdata</code> objects can be seen through the <code>summary</code> method:</p>
+<p>Information about the <code>btdata</code> objects can be seen through the <code><a href="../reference/btdata.html">summary.btdata()</a></code> method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_btdata)</code></pre></div>
 <pre><code>## Number of items: 4 
 ## Density of wins matrix: 1 
@@ -223,7 +223,7 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 ## 2              3    1
 ## 3              4    1</code></pre>
 <p>Note that components of size 1 will be filtered out in the MLE fit (see next section); the model doesn’t make sense for them.</p>
-<p><code>select_components</code> can be used to create a subset of a <code>btdata</code> object. In our toy case, the following all give the same subset:</p>
+<p><code><a href="../reference/select_components.html">select_components()</a></code> can be used to create a subset of a <code>btdata</code> object. In our toy case, the following all give the same subset:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, <span class="st">"3"</span>)
 toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="kw">length</span>(x) ==<span class="st"> </span><span class="dv">4</span>)
 toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"Cyd"</span> %in%<span class="st"> </span>x)
@@ -231,30 +231,36 @@ toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../ref
 <pre><code>## Number of items: 4 
 ## Density of wins matrix: 0.4375 
 ## Fully-connected: TRUE</code></pre>
-<p>Alternatively, set the <code>subset</code> argument in <code>btfit</code>.</p>
+<p>Alternatively, set the <code>subset</code> argument in <code><a href="../reference/btfit.html">btfit()</a></code>.</p>
 </div>
 <div id="fitting-the-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fitting-the-model" class="anchor"></a>Fitting the model</h2>
-<p>The summary of the <code>btdata</code> object reveals whether the comparison graph is fully connected or not. This affects the type of estimate available for the strength parameter.</p>
+<p><code><a href="../reference/btdata.html">summary.btdata(object)</a></code> prints to the console whether or not the underlying comparison graph is fully connected. This affects the type of estimate available for the strength parameter.</p>
 <ul>
-<li>If <code>Fully-connected: TRUE</code>, then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.</li>
-<li>If <code>Fully-connected: FALSE</code>, then we cannot find the MLE for the full dataset. There are two alternatives:
+<li>If the comparison graph is fully connected (i.e. if <code>Fully-connected: TRUE</code> is printed), then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.</li>
+<li>If the comparison graph is not fully connected (i.e. if <code>Fully-connected: FALSE</code> is printed), then we cannot find the MLE for the full dataset. There are two alternatives:
 <ul>
 <li>Find the MLE on each fully connected component of the comparison graph (and note then that it is only meaningful to rank and compare items within the same component).</li>
 <li>Place a Bayesian prior on the model, then find the maximum a posteriori (MAP) estimate. This always exists and is finite. It gives a principled way of ranking and comparing all <span class="math inline">\(K\)</span> items.</li>
 </ul>
 </li>
 </ul>
-<p>The function <code>btfit</code> requires two arguments: the data (in the form of a <code>btdata</code> oject), and <code>a</code>, which controls whether the MLE or MAP estimate is returned.</p>
+<p>The function <code><a href="../reference/btfit.html">btfit()</a></code> requires two arguments: the data (in the form of a <code>btdata</code> oject), and <code>a</code>, which controls whether the MLE or MAP estimate is returned.</p>
 <ul>
 <li>If <code>a = 1</code>, the MLE is returned, either on the full dataset if the comparison graph is fully-connected, or else the MLE is found separately for each fully-connected component.</li>
 <li>If <code>a &gt; 1</code>, the MAP estimate is returned, with <code>a</code> as the value of the shape parameter in the prior.</li>
 </ul>
-<p>See <code><a href="../reference/btfit.html">?btfit</a></code> or the <em>Fitting the Bradley-Terry model</em> section above for more details.</p>
+<p>See <code><a href="../reference/btfit.html">?btfit()</a></code> or the <em>Fitting the Bradley-Terry model</em> section above for more details.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_fit &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(citations_btdata, <span class="dv">1</span>)
 toy_fit_MLE &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(toy_btdata, <span class="dv">1</span>)
 toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(toy_btdata, <span class="fl">1.1</span>)</code></pre></div>
+<p>The likelihood equations for the Bradley_Terry model, including the prior, give <span class="math display">\[
+a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
+\]</span> <span class="math inline">\(i = 1, \ldots, K\)</span>. For the algorithm to have converged, we want <span class="math inline">\(\pi\)</span> to be such that the LHS and RHS of this equation are close for all <span class="math inline">\(i\)</span>. Therefore, we set the convergence criteria as</p>
+<p><span class="math display">\[
+\left|\frac{a - 1 + W_i}{b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j}} - 1\right| &lt; \epsilon,
+\]</span> for all <span class="math inline">\(i\)</span>. The <code>epsilon</code> argument to <code><a href="../reference/btfit.html">btfit()</a></code> sets the value of <span class="math inline">\(\epsilon\)</span> (the default is 0.001). There is also a <code>maxit</code> argument to set the maximum number of iterations for each component (the default is 10,000).</p>
 <p><code>btfit</code> objects are a list, and they are not designed to be examined directly, but to be passed to other methods.</p>
 </div>
 <div id="methods-for-a-btfit-object" class="section level2">
@@ -262,12 +268,12 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <a href="#methods-for-a-btfit-object" class="anchor"></a>Methods for a <code>btfit</code> object</h2>
 <div id="summary-btift-coef-btfit-and-vcov-btfit" class="section level3">
 <h3 class="hasAnchor">
-<a href="#summary-btift-coef-btfit-and-vcov-btfit" class="anchor"></a><code>summary.btift</code>, <code>coef.btfit</code> and <code>vcov.btfit</code>
+<a href="#summary-btift-coef-btfit-and-vcov-btfit" class="anchor"></a><code>summary.btift()</code>, <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/vcov.btfit.html">vcov.btfit()</a></code>
 </h3>
-<p>The <code>summary.btfit</code> method returns a list with</p>
+<p>The <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code> method returns a list with</p>
 <ul>
 <li>
-<code>call</code>: the call to <code>btfit</code>
+<code>call</code>: the call to <code><a href="../reference/btfit.html">btfit()</a></code>
 </li>
 <li>
 <code>item_summary</code>: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranking in descending order <em>within each component</em>
@@ -275,9 +281,9 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <li>
 <code>component_summary</code>: a data frame with one row per component in the fit.</li>
 </ul>
-<p>The standard errors are <em>not</em> returned by default (since the underlying <code>vcov.btfit</code> function can be slow for large matrices), but can be included by setting <code>SE = TRUE</code>. It is also possible to set a reference item, and to return the summary for only a subset of components (see <code><a href="../reference/summary.btfit.html">?summary.btfit</a></code>).</p>
-<p>The <code>coef.btfit</code> method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained such that the mean of the estimates is zero. By default a vector if <code>btfit</code> was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>.</p>
-<p>The <code>vcov.btfit</code> method returns the variance-covariance matrix (or a list of these matrices by component), and also has <code>ref</code> and <code>subset</code> arguments (see <code><a href="../reference/vcov.btfit.html">?vcov.btfit</a></code>).</p>
+<p>The standard errors are <em>not</em> returned by default (since the underlying <code><a href="../reference/vcov.btfit.html">vcov.btfit()</a></code> function can be slow for large matrices), but can be included by setting <code>SE = TRUE</code>. It is also possible to set a reference item, and to return the summary for only a subset of components (see <code><a href="../reference/summary.btfit.html">?summary.btfit()</a></code>).</p>
+<p>The <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained such that the mean of the estimates is zero. By default a vector if <code><a href="../reference/btfit.html">btfit()</a></code> was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>.</p>
+<p>The <code><a href="../reference/vcov.btfit.html">vcov.btfit()</a></code> method returns the variance-covariance matrix (or a list of these matrices by component), and also has <code>ref</code> and <code>subset</code> arguments (see <code><a href="../reference/vcov.btfit.html">?vcov.btfit()</a></code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_fit)</code></pre></div>
 <pre><code>## $call
 ## btfit(btdata = citations_btdata, a = 1)
@@ -333,9 +339,9 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 </div>
 <div id="btprob-and-fitted-btfit" class="section level3">
 <h3 class="hasAnchor">
-<a href="#btprob-and-fitted-btfit" class="anchor"></a><code>btprob</code> and <code>fitted.btfit</code>
+<a href="#btprob-and-fitted-btfit" class="anchor"></a><code><a href="../reference/btprob.html">btprob()</a></code> and <code><a href="../reference/fitted.btfit.html">fitted.btfit()</a></code>
 </h3>
-<p>This calculates the Bradley-Terry probabilities that item <span class="math inline">\(i\)</span> beats item <span class="math inline">\(j\)</span>. By default a matrix if <code>btfit</code> was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>. The <code>fitted.btfit</code> method functions similarly, except it returns the expected number of wins (see <code><a href="../reference/fitted.btfit.html">?fitted.btfit</a></code>).</p>
+<p>This calculates the Bradley-Terry probabilities that item <span class="math inline">\(i\)</span> beats item <span class="math inline">\(j\)</span>. By default a matrix if <code>btfit</code> was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting <code>as_df = TRUE</code>. The <code><a href="../reference/fitted.btfit.html">fitted.btfit()</a></code> method functions similarly, except it returns the expected number of wins (see <code><a href="../reference/fitted.btfit.html">?fitted.btfit()</a></code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/btprob.html">btprob</a></span>(citations_fit)</code></pre></div>
 <pre><code>## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
@@ -359,9 +365,9 @@ toy_fit_MAP &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 </div>
 <div id="simulate-btfit-and-simuate_bt" class="section level3">
 <h3 class="hasAnchor">
-<a href="#simulate-btfit-and-simuate_bt" class="anchor"></a><code>simulate.btfit</code> and <code>simuate_BT</code>
+<a href="#simulate-btfit-and-simuate_bt" class="anchor"></a><code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> and <code>simuate_BT()</code>
 </h3>
-<p>There are two functions to simuate data from a Bradley-Terry model. <code>simulate.btfit</code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code>simulate_BT</code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th elemenent is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code>coef</code> and <code>summary</code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
+<p>There are two functions to simuate data from a Bradley-Terry model. <code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th elemenent is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> <em>not</em> the same as the estimates in <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, which are on the log-scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit)
 <span class="kw">set.seed</span>(<span class="dv">1982</span>)
 num_items &lt;-<span class="st"> </span><span class="dv">6</span>
