@@ -21,7 +21,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
 
   if (!is.null(ref)) {
       if (ref %in% object_names) ref <- which(names(pi) == ref)
-      cmat <- Diagonal(K)
+      cmat <- Matrix::Diagonal(K)
       cmat[ref,] <- -1
       cmat[,ref] <-  0
       result <- Matrix::crossprod(cmat, result) %*% cmat
