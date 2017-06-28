@@ -330,12 +330,13 @@ a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 ##         Dan         Fin 
 ## -0.53638389 -1.48120003</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vcov</span>(citations_fit, <span class="dt">ref =</span> <span class="st">"JASA"</span>)</code></pre></div>
-<pre><code>##               citing
+<pre><code>## 4 x 4 sparse Matrix of class "dgCMatrix"
+##               citing
 ## cited               JRSS-B  Biometrika JASA Comm Statist
-##   JRSS-B       0.005323938 0.001988435    0  0.001172936
-##   Biometrika   0.001988435 0.003671841    0  0.001396292
-##   JASA         0.000000000 0.000000000    0  0.000000000
-##   Comm Statist 0.001172936 0.001396292    0  0.009638953</code></pre>
+##   JRSS-B       0.005323938 0.001988435    .  0.001172936
+##   Biometrika   0.001988435 0.003671841    .  0.001396292
+##   JASA         .           .              .  .          
+##   Comm Statist 0.001172936 0.001396292    .  0.009638953</code></pre>
 </div>
 <div id="btprob-and-fitted-btfit" class="section level3">
 <h3 class="hasAnchor">
@@ -367,7 +368,7 @@ a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 <h3 class="hasAnchor">
 <a href="#simulate-btfit-and-simulate_bt" class="anchor"></a><code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> and <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code>
 </h3>
-<p>There are two functions to simulate data from a Bradley-Terry model. The S3 method <code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). The underlying function <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th elemenent is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> is <em>not</em> the same as the estimates in <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, which are on the logarithmic scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object instead.</p>
+<p>There are two functions to simulate data from a Bradley-Terry model. The S3 method <code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). The underlying function <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th element is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) and a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> is <em>not</em> the same as the estimates in <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, which are on the logarithmic scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object instead.</p>
 <p>For example, we can simulate 100 new datasets from the fitted model for the small <code>citations</code> dataset:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit, <span class="dt">nsim =</span> <span class="dv">100</span>)
 citations_sim[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre></div>
@@ -375,23 +376,24 @@ citations_sim[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre><
 ## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
 ## cited          JRSS-B Biometrika JASA Comm Statist
-##   JRSS-B            .        286  324          284
-##   Biometrika      219          .  528          725
-##   JASA            143        290    .          797
-##   Comm Statist      9         38   84            .
+##   JRSS-B            .        281  321          286
+##   Biometrika      224          .  483          722
+##   JASA            146        335    .          825
+##   Comm Statist      7         41   56            .
 ## 
 ## $sim_2
 ## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
 ## cited          JRSS-B Biometrika JASA Comm Statist
-##   JRSS-B            .        292  322          283
-##   Biometrika      213          .  500          717
-##   JASA            145        318    .          825
-##   Comm Statist     10         46   56            .</code></pre>
+##   JRSS-B            .        271  304          284
+##   Biometrika      234          .  516          711
+##   JASA            163        302    .          804
+##   Comm Statist      9         52   77            .</code></pre>
 <p>As a bigger example, let’s simulate a single instance of a fairly sparse tournament with 1000 items (or ‘players’), and then fit the Bradley-Terry model to the resulting data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(Matrix)
 <span class="kw">set.seed</span>(<span class="dv">1989</span>)
-n_items&lt;-<span class="st"> </span><span class="dv">1000</span>
+n_items &lt;-<span class="st"> </span><span class="dv">1000</span>
+
 ##  Generate at random a sparse, symmetric matrix of binomial totals: 
 Nvalues &lt;-<span class="st"> </span><span class="kw">rpois</span>(<span class="dt">n =</span> n_items *<span class="st"> </span>(n_items -<span class="st"> </span><span class="dv">1</span>) /<span class="st"> </span><span class="dv">2</span>, <span class="dt">lambda =</span> <span class="dv">1</span>)  
 notzero &lt;-<span class="st"> </span>Nvalues &gt;<span class="st"> </span><span class="dv">0</span>
@@ -403,12 +405,15 @@ Nmatrix &lt;-<span class="st"> </span><span class="kw">sparseMatrix</span>(
              <span class="dt">x =</span> Nvalues[notzero],
              <span class="dt">symmetric =</span> <span class="ot">TRUE</span>,   
              <span class="dt">dims =</span> <span class="kw">c</span>(n_items, n_items)) 
+
 ##  Generate at random the (normalized to mean 1) 'player abilities':
 pi_vec &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(n_items) /<span class="st"> </span><span class="dv">4</span>)
 pi_vec &lt;-<span class="st"> </span>pi_vec /<span class="st"> </span><span class="kw">mean</span>(pi_vec)
+
 ##  Now generate contest outcome counts from the Bradley-Terry model:
 big_matrix &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulate_BT.html">simulate_BT</a></span>(pi_vec, Nmatrix, <span class="dt">nsim =</span> <span class="dv">1</span>)[[<span class="dv">1</span>]]
 big_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btdata.html">btdata</a></span>(big_matrix)
+
 ##  Fit the Bradley-Terry model to the simulated data, and plot fitted vs true abilities:
 the_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(big_btdata, <span class="dt">a =</span> <span class="dv">1</span>)
 pi_fitted &lt;-<span class="st"> </span>the_model $<span class="st"> </span>pi $<span class="st"> </span>full_dataset

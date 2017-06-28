@@ -221,7 +221,7 @@ fitted(toy_fit_MLE, as_df = TRUE)
 ```
 
 ### `simulate.btfit()` and `simulate_BT()`
-There are two functions to simulate data from a Bradley-Terry model. The S3 method `simulate.btfit()` takes a `btfit` object *which has been fitted on one component* (either the full dataset, or a one-component subset). The underlying function `simulate_BT()` takes an `N` matrix (i.e. where the $i,j$-th elemenent is the number of times items $i$ and $j$ have been compared) a vector `pi`, the strength parameters of a Bradley-Terry model (note that `pi` is *not* the same as the estimates in `coef.btfit()` and `summary.btfit()`, which are on the logarithmic scale). Both functions return a `wins` matrix by default, but can also be set to return a `btdata` object instead.
+There are two functions to simulate data from a Bradley-Terry model. The S3 method `simulate.btfit()` takes a `btfit` object *which has been fitted on one component* (either the full dataset, or a one-component subset). The underlying function `simulate_BT()` takes an `N` matrix (i.e. where the $i,j$-th element is the number of times items $i$ and $j$ have been compared) and a vector `pi`, the strength parameters of a Bradley-Terry model (note that `pi` is *not* the same as the estimates in `coef.btfit()` and `summary.btfit()`, which are on the logarithmic scale). Both functions return a `wins` matrix by default, but can also be set to return a `btdata` object instead.
 
 For example, we can simulate 100 new datasets from the fitted model for the small `citations` dataset:
 ```{r}
@@ -233,7 +233,8 @@ As a bigger example, let's simulate a single instance of a fairly sparse tournam
 ```{r, fig.width = 7, fig.height = 7, out.width = '97%'}
 library(Matrix)
 set.seed(1989)
-n_items<- 1000
+n_items <- 1000
+
 ##  Generate at random a sparse, symmetric matrix of binomial totals: 
 Nvalues <- rpois(n = n_items * (n_items - 1) / 2, lambda = 1)  
 notzero <- Nvalues > 0
@@ -245,12 +246,15 @@ Nmatrix <- sparseMatrix(
              x = Nvalues[notzero],
              symmetric = TRUE,   
              dims = c(n_items, n_items)) 
+
 ##  Generate at random the (normalized to mean 1) 'player abilities':
 pi_vec <- exp(rnorm(n_items) / 4)
 pi_vec <- pi_vec / mean(pi_vec)
+
 ##  Now generate contest outcome counts from the Bradley-Terry model:
 big_matrix <- simulate_BT(pi_vec, Nmatrix, nsim = 1)[[1]]
 big_btdata <- btdata(big_matrix)
+
 ##  Fit the Bradley-Terry model to the simulated data, and plot fitted vs true abilities:
 the_model <- btfit(big_btdata, a = 1)
 pi_fitted <- the_model $ pi $ full_dataset

@@ -213,12 +213,13 @@ coef(toy_fit_MAP)
 #>         Dan         Fin 
 #> -0.53638389 -1.48120003
 vcov(citations_fit, ref = "JASA")
+#> 4 x 4 sparse Matrix of class "dgCMatrix"
 #>               citing
 #> cited               JRSS-B  Biometrika JASA Comm Statist
-#>   JRSS-B       0.005323938 0.001988435    0  0.001172936
-#>   Biometrika   0.001988435 0.003671841    0  0.001396292
-#>   JASA         0.000000000 0.000000000    0  0.000000000
-#>   Comm Statist 0.001172936 0.001396292    0  0.009638953
+#>   JRSS-B       0.005323938 0.001988435    .  0.001172936
+#>   Biometrika   0.001988435 0.003671841    .  0.001396292
+#>   JASA         .           .              .  .          
+#>   Comm Statist 0.001172936 0.001396292    .  0.009638953
 ```
 
 ### `btprob` and `fitted.btfit`
