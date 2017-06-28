@@ -21,7 +21,7 @@ The CRAN package **BradleyTerry2** is a well-established package for fitting the
 
 In the Background section, we first present the Bradley-Terry model, and the conditions under which the its maximum likelhood estimate exists. We then present algorithms that can be used to find the MLE and MAP estimates.
 
-In the BradleyTerryScalable section, we present our package, and demonstate its use on a couple of toy datasets, as well as a large simulated dataset.
+In the BradleyTerryScalable section, we present our package, and demonstate its use on a couple of toy datasets, as well as a larger, synthetic dataset.
 
 
 # Background
@@ -86,7 +86,7 @@ library(BradleyTerryScalable)
 ```
 
 ## Preparing the data
-The main fitting function in this package is `btfit()`. This function takes as its main argument an object of class `btdata`. To create a `btdata` object, use the function `btdata(x)`.
+The main model-fitting function in this package is `btfit()`. This function takes as its main argument an object of class `btdata`. To create a `btdata` object, use the function `btdata(x)`.
 
 The `x` argument to `btdata` can be one of four classes of object:
 
@@ -127,7 +127,7 @@ toy_data_4col <- codes_to_counts(toy_data, c("W1", "W2", "D"))
 toy_btdata <- btdata(toy_data_4col, return_graph = TRUE) 
 ```
 
-A `btdata` objects is a list containing two or three elements: 
+A `btdata` object is a list containing two or three elements: 
 
 - `wins`: a matrix of the form described in the second bullet point above
 - `components`: a list of the fully-connected components of the comparison graph (see the third bullet point above)
@@ -135,7 +135,7 @@ A `btdata` objects is a list containing two or three elements:
 
 ```{r message = FALSE, fig.align = "center"}
 library(igraph)
-par(mar=c(0,0,0,0)+.1)  
+par(mar = c(0, 0, 0, 0) + 0.1)  
 plot.igraph(toy_btdata$graph, vertex.size = 28, edge.arrow.size = 0.5) 
 ```
 
@@ -159,7 +159,7 @@ summary(toy_btdata_subset)
 Alternatively, set the `subset` argument in `btfit()`.
 
 ## Fitting the model
-`summary.btdata(object)` prints to the console whether or not the underlying comparison graph is fully connected. This affects the type of estimate available for the strength parameter.
+`summary.btdata(object)` gives information on whether or not the underlying comparison graph is fully connected. This affects the type of estimate available for the strength parameter.
 
 - If the comparison graph is fully connected (i.e. if `Fully-connected: TRUE` is printed), then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.
 - If the comparison graph is not fully connected (i.e. if `Fully-connected: FALSE` is printed), then we cannot find the MLE for the full dataset. There are two alternatives:
@@ -183,26 +183,26 @@ The likelihood equations for the Bradley_Terry model, including the prior, give
 $$
 a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 $$
-$i = 1, \ldots, K$. For the algorithm to have converged, we want $\pi$ to be such that the LHS and RHS of this equation are close for all $i$. Therefore, we set the convergence criteria as
+$i = 1, \ldots, K$. For the algorithm to have converged, we want $\pi$ to be such that the LHS and RHS of this equation are close for all $i$. Therefore, we set the convergence criterion as
 
 $$
 \left|\frac{a - 1 + W_i}{b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j}} - 1\right| < \epsilon,
 $$
 for all $i$. The `epsilon` argument to `btfit()` sets the value of $\epsilon$ (the default is 0.001). There is also a `maxit` argument to set the maximum number of iterations for each component (the default is 10,000).
 
-`btfit` objects are a list, and they are not designed to be examined directly, but to be passed to other methods.
+`btfit` objects are lists, and they are not designed to be examined directly, but to be passed to other methods.
     
 ## Methods for a `btfit` object
 ### `summary.btfit()`, `coef.btfit()` and `vcov.btfit()`
 The `summary.btfit()` method returns a list with
 
 - `call`: the call to `btfit()`
-- `item_summary`: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranking in descending order *within each component*
+- `item_summary`: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranked in descending order *within each component*
 - `component_summary`: a data frame with one row per component in the fit.
 
 The standard errors are *not* returned by default (since the underlying `vcov.btfit()` function can be slow for large matrices), but can be included by setting `SE = TRUE`. It is also possible to set a reference item, and to return the summary for only a subset of components (see `?summary.btfit()`).
 
-The `coef.btfit()` method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained such that the mean of the estimates is zero. By default a vector if `btfit()` was run on the full-dataset or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`.
+The `coef.btfit()` method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained (by default) such that the mean of the estimates is zero. By default it is a vector if `btfit()` was run on the full dataset, or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`.
 
 The `vcov.btfit()` method returns the variance-covariance matrix (or a list of these matrices by component), and also has `ref` and `subset` arguments (see `?vcov.btfit()`).
 
@@ -214,7 +214,7 @@ vcov(citations_fit, ref = "JASA")
 ```
 
 ### `btprob()` and `fitted.btfit()`
-This calculates the Bradley-Terry probabilities that item $i$ beats item $j$. By default a matrix if `btfit` was run on the full-dataset or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`. The `fitted.btfit()` method functions similarly, except it returns the expected number of wins (see `?fitted.btfit()`).
+The `btprob` function calculates the Bradley-Terry probabilities that item $i$ beats item $j$. By default the result is a matrix if `btfit` was run on the full dataset, or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`. The `fitted.btfit()` method functions similarly, except it returns the expected number of wins (see `?fitted.btfit()`).
 ```{r}
 btprob(citations_fit)
 fitted(toy_fit_MLE, as_df = TRUE)
