@@ -1,9 +1,14 @@
-#' Simulate data from a specified Bradley-Terry model
+#' This function simulates one or more pseudo-random datasets from a specified
+#' Bradley-Terry model.  Counts are simulated from independent binomial
+#' distributions, with the binomial probabilities and totals specified
+#' through the function arguments.
 #'
-#' @param pi a numeric vector, with all values finite and positive.
+#' @param pi a numeric vector, with all values finite and positive.  The vector
+#' of item strengths in the Bradley-Terry model.
 #' @param N  a symmetric, numeric matrix with dimensions the same as
 #' \code{length(pi)}.  The elements should
-#' be numeric representations of non-negative integers.
+#' be numeric representations of non-negative integers.  These are the
+#' binomial totals to use for the simulated data.
 #' @param nsim  a scalar integer, the number of datasets to be generated.
 #' @param seed  an object specifying if and how the random number generator
 #' should be initialized (‘seeded’).
