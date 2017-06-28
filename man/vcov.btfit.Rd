@@ -22,6 +22,9 @@ A square numeric matrix, which is a non-full-rank variance-covariance matrix for
 \description{
 \code{vcov} method for class "btfit"
 }
+\details{
+\strong{N.B. this can be slow when there are a large number of items in any component.}
+}
 \examples{
 citations_btdata <- btdata(BradleyTerryScalable::citations)
 #' fit1 <- btfit(citations_btdata, 1)
