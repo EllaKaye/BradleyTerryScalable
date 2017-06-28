@@ -43,7 +43,6 @@ Imports:
     Matrix,
     Rcpp (>= 0.12.7),
     methods,
-    MASS,
     purrr,
     dplyr
 LinkingTo: Rcpp, RcppArmadillo
