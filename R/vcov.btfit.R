@@ -7,7 +7,7 @@ vcov_vec <- function(pi, N, ref = NULL) {
   diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix::diag(wmat)
   result <- diag(Matrix::rowSums(wmat)) - result
 
-  cmat <- contr.sum(K, sparse = TRUE)
+  cmat <- stats::contr.sum(K, sparse = TRUE)
   result <- Matrix::chol2inv(Matrix::chol(Matrix::crossprod(cmat, result) %*% cmat))
   result <- cmat %*% Matrix::tcrossprod(result, cmat)
 
