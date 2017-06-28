@@ -5,7 +5,7 @@
 #' Let there be \eqn{K} items, let \eqn{\pi_k} be the Bradley-Terry strength parameter of item \eqn{k}, for \eqn{k = 1, \ldots, K} and let \eqn{\pi} be the vector of all the \eqn{\pi_k}. Let \eqn{w_{ij}} be the number of times item \eqn{i} wins against item \eqn{j}, let \eqn{n_{ij} = w_{ij} + w_{ji}} be the number of times they play, with \eqn{w_{ii} = 0} by convention and let \eqn{W_i = \sum_{j=1}^K w_{ij}}. Then the Bradley-Terry model states that the probability of item \eqn{i} beating item \eqn{j}, \eqn{p_{ij}}, is:
 #'
 #' \deqn{p_{ij} = \frac{\pi_i}{\pi_i + \pi_j}.}
-#' 
+#'
 #' The comparison graph, \eqn{G_W}, has the \eqn{K} players as the nodes and a directed edge from node \eqn{i} to node \eqn{j} whenever item \eqn{i} has beaten item \eqn{j} at least once. The MLE of the Bradley-Terry model exists and is finite if and only if the comparison graph is fully-connected (i.e. if there is a directed path from node \eqn{i} to node \eqn{j} for all items \eqn{i} and \eqn{j}).
 #'
 #' Assuming that the comparison graph of the data is fully-connected, the MLE of the Bradley-Terry model can be found using the MM-algorithm (Hunter, 2004).
@@ -24,7 +24,7 @@
 #'
 #' Since the equations do not typeset well within the R help window, we recommend reading this section online: \url{https://ellakaye.github.io/BradleyTerryScalable/reference/btfit.html}.
 #'
-#' @param a Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{\pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior. See Details.
+#' @param a Must be >= 1. When \code{a = 1}, the function returns the maximum likelihood estimate (MLE) of \eqn{\pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior. See Details.
 #' @param MAP_by_component Logical. Only considered if a > 1. Then, if FALSE, the MAP estimate will be found on the full dataset. If TRUE, the MAP estimate will be found separately for each fully-connected component.
 #' @param maxit The maximum number of iterations for the algorithm. If returning \eqn{\pi} by component, this will be the maximum number of iterations for each component.
 #' @param epsilon Determines when the algorithm is deemed to have converged. (See Details.)
@@ -58,97 +58,97 @@
 #' summary(fit2c)
 #' @export
 btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000, epsilon = 1e-3) {
-  
+
   call <- match.call()
-  
+
   ### Check for correct data object, and extract elements
   if (!inherits(btdata, "btdata")) stop("btdata argument must be a 'btdata' object, as created by btdata() function.")
-  
+
   orig_components <- btdata$components
   orig_n <- length(orig_components)
-  
+
   if (length(orig_components) == 1 & !is.null(subset)) {
     warning("There is only one component, so subset argument ignored")
     subset <- NULL
   }
-  
+
   if (!is.null(subset)) {
     btdata <- select_components(btdata, subset)
   }
-  
+
   wins <- btdata$wins
   components <- btdata$components
   n <- length(components)
-  
+
   if(!identical(rownames(wins), colnames(wins))) stop("The wins matrix should have identical row and column names")
-  
-  
+
+
   ### Check there's enough data to fit the model
   if (is.numeric(wins)) stop("there is not enough data to fit the model")
   if (nrow(wins) == 1) stop("there is not enough data to fit the model")
   if(is.list(components)) {
     if (sum(purrr::map_int(components, length) > 1) == 0) stop("there is not enough data to fit the model")
   }
-  
+
   ### Check a and b
   if (!is.numeric(a)) stop("a must be >= 1")
   if (length(dim(a)) >= 2) stop("a must be a single value")
   if (length(a) > 1) stop("a must be a single value")
   if (a < 1) stop("a must be >= 1")
-  
+
   ### Save diagonal (for fitted values) then set diagonal of matrix to zero
   saved_diag <- Matrix::diag(wins)
   if(!is.null(rownames(wins))) names(saved_diag) <- rownames(wins)
   diag(wins) <- 0
-  
+
   ### Save names of dimnames (for naming df columns in fitted and btprob)
   names_dimnames <- names(dimnames(wins))
   names_dimnames_list <- list(names_dimnames)
-  
+
   ### Fit by component, if necessary or by_comp requested
   if ((a == 1 & orig_n > 1) | (a > 1 & MAP_by_component) | (a > 1 & !MAP_by_component & n == 1 & orig_n > 1)) {
-    
+
     ### remove components of length 1
     components <- purrr::discard(components, function(x) length(x) == 1)
-    
+
     # get K and b
     K <- purrr::map_int(components, length)
     if (a == 1) b <- 0
     else b <- a * K - 1
-    
+
     wins_by_comp <- purrr::map(components, ~ wins[.x, .x])
-    
+
     # Fit the model
     btfit_map <- purrr::map2(wins_by_comp, b, ~ BT_EM(.x, a = a, b = .y, maxit = maxit, epsilon = epsilon))
     # transpose
     btfit_map <- purrr::transpose(btfit_map)
-    
+
     # extract elements and make sure things are properly named
-    pi <- purrr::map(btfit_map$pi, as.vector) 
+    pi <- purrr::map(btfit_map$pi, as.vector)
     pi <- purrr::map2(pi, components, name_vec_function)
     N <- purrr::map2(btfit_map$N, components, name_matrix_function)
     N <- purrr::map2(N, names_dimnames_list, name_dimnames_function)
     iters <- unlist(btfit_map$iters)
     converged <- unlist(btfit_map$converged)
-    
+
     # diagonal
-    diagonal <- purrr::map(components, ~ saved_diag[.x]) 
-    diagonal <- purrr::map2(diagonal, components, name_vec_function)    
-    
+    diagonal <- purrr::map(components, ~ saved_diag[.x])
+    diagonal <- purrr::map2(diagonal, components, name_vec_function)
+
     # check for convergence problems and provide warning
     n <- length(components)
-    if (sum(converged) != n) warning("The algorithm did not converge in at least one component. See the 'converged' element of the output for which.")    
+    if (sum(converged) != n) warning("The algorithm did not converge in at least one component. See the 'converged' element of the output for which.")
   }
-  
+
   ### Or on whole matrix
   else {
     K <- nrow(wins)
     if (a == 1) b <- 0
     else b <- a * K - 1
-    
+
     # fit the model
     fit <- BT_EM(wins, a = a, b = b, maxit = maxit, epsilon = epsilon)
-    
+
     # extract elements and make sure they're properly named
     pi <- base::as.vector(fit$pi)
     names(pi) <- rownames(wins)
@@ -161,23 +161,23 @@ btfit <- function(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10
     converged <- fit$converged
     diagonal <- list(saved_diag)
     names(pi) <- names(N) <- names(diagonal) <- "full_dataset"
-    
+
     if (!converged) warning(paste("The algorithm did not converged in maxit =", maxit, "iterations"))
   }
-  
+
   if (a > 1 & MAP_by_component & orig_n == 1) names(pi) <- "full_dataset"
-  
+
   # reorder (decreasing pi)
   pi_perm <- purrr::map(pi, order, decreasing = TRUE)
   pi <- purrr::map2(pi, pi_perm, ~.x[.y])
   N <- purrr::map2(N, pi_perm, ~.x[.y, .y])
-  diagonal <- purrr::map2(diagonal, pi_perm, ~.x[.y])    
-  
+  diagonal <- purrr::map2(diagonal, pi_perm, ~.x[.y])
+
   # result
   result <- list(call = call, pi = pi, iters = iters, converged = converged, N = N,
                  diagonal = diagonal, names_dimnames = names_dimnames)
-  
+
   class(result) <- c("btfit", "list")
-  
+
   return(result)
 }
