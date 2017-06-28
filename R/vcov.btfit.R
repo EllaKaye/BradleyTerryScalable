@@ -32,9 +32,27 @@ vcov_vec <- function(pi, N, ref = NULL) {
 }
 
 #' Calculate variance-covariance matrix for a btfit object
+#' 
+#' \code{vcov} method for class "btfit"
+#' 
 #' @inheritParams btprob
 #' @inheritParams summary.btfit
 #' @return  A square numeric matrix, which is a non-full-rank variance-covariance matrix for the estimates in \code{coef(object, subset = subset, ref = ref)}; or a list of such matrices if \code{object} has more than one component. The rows and columns of the matrix (or matrices) are arranged in the same order as the \code{object$pi} vector(s).
+#' -#' @author David Firth, Ella Kaye
+#' @seealso \code{\link{btfit}}, \code{\link{coef.btfit}}, \code{\link{summary.btfit}}
+#' @examples 
+#' citations_btdata <- btdata(BradleyTerryScalable::citations)
+#' #' fit1 <- btfit(citations_btdata, 1)
+#' #' vcov(fit1)
+#' toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
+#' toy_btdata <- btdata(toy_df_4col)
+#' fit2a <- btfit(toy_btdata, 1)
+#' vcov(fit2a)
+#' vcov(fit2a, subset = function(x) length(x) > 3)
+#' vcov(fit2a, subset = function(x) "Cyd" %in% names(x))
+#' fit2b <- btfit(toy_btdata, 1.1)
+#' vcov(fit2b, ref = "Cyd")
+#' 
 #' @export
 vcov.btfit <- function(object, subset = NULL, ref = NULL, ...){
 

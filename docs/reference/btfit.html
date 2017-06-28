@@ -96,7 +96,7 @@
     </tr>
     <tr>
       <th>a</th>
-      <td><p>Must be &gt;= 1. When <code>a = 1</code>, the function returns the MLE estimate of \(\pi\) (by component, if necessary). When <code>a &gt; 1</code>, <code>a</code> is the shape parameter for the Gamma prior. See Details.</p></td>
+      <td><p>Must be &gt;= 1. When <code>a = 1</code>, the function returns the maximum likelihood estimate (MLE) of \(\pi\) (by component, if necessary). When <code>a &gt; 1</code>, <code>a</code> is the shape parameter for the Gamma prior. See Details.</p></td>
     </tr>
     <tr>
       <th>MAP_by_component</th>
@@ -124,7 +124,7 @@
 <dt>iters</dt><dd><p>A vector of length \(M\). The \(m\)-th entry is the number of iterations it took for the algorithm to converge for the \(m\)-th component, for \(m = 1, \ldots, M\). Note that if the algorithm has not converged in any component, a warning will be produced.</p></dd>
 <dt>converged</dt><dd><p>A logical vector of length \(M\), indicating whether the algorithm has converged for the \(m\)-th component in <code>maxit</code> iterations.</p></dd>
 <dt>N</dt><dd><p>A list of length \(M\). The \(m\)-th list item is a matrix where each element \(n_{ij}\) is the number of times item \(i\) played against item \(j\), for the items in the \(m\)-th component. The rows and columns are arranged in the same order as the ordered pi vector(s).</p></dd>
-<dt>diagonal</dt><dd><p>A list of length \(M\). The \(m\)-th item is a vector of the diagonal elements of the <code>btdata$wins</code> matrix, for the items in the \(m\)-th fully-connected component</p></dd>
+<dt>diagonal</dt><dd><p>A list of length \(M\). The \(m\)-th item is a vector of the diagonal elements of the <code>btdata$wins</code> matrix, for the items in the \(m\)-th fully-connected component. These values are used as the fitted values for the diagonal of the matrix output in <code>fitted.btfit</code>.</p></dd>
 <dt>names_dimnames</dt><dd><p>The names of the dimnames of the original <code>btdata$wins</code> matrix.</p></dd>
 
     

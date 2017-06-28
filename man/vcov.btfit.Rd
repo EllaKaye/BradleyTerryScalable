@@ -2,7 +2,7 @@
 % Please edit documentation in R/vcov.btfit.R
 \name{vcov.btfit}
 \alias{vcov.btfit}
-\title{Calculate variance-covariance matrix for a btfit object.}
+\title{Calculate variance-covariance matrix for a btfit object}
 \usage{
 \method{vcov}{btfit}(object, subset = NULL, ref = NULL, ...)
 }
@@ -11,23 +11,21 @@
 
 \item{subset}{A condition for selecting one or more subsets of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
 
-\item{ref}{A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.}
+\item{ref}{A reference item. Either a string with the item name, or the number 1, or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
 
 \item{...}{other arguments}
 }
 \value{
 A square numeric matrix, which is a non-full-rank variance-covariance matrix for the estimates in \code{coef(object, subset = subset, ref = ref)}; or a list of such matrices if \code{object} has more than one component. The rows and columns of the matrix (or matrices) are arranged in the same order as the \code{object$pi} vector(s).
+-#' @author David Firth, Ella Kaye
 }
 \description{
 \code{vcov} method for class "btfit"
 }
-\details{
-\strong{N.B. this can be slow when there are a large number of items in any component.}
-}
 \examples{
 citations_btdata <- btdata(BradleyTerryScalable::citations)
-fit1 <- btfit(citations_btdata, 1)
-vcov(fit1)
+#' fit1 <- btfit(citations_btdata, 1)
+#' vcov(fit1)
 toy_df_4col <- codes_to_counts(BradleyTerryScalable::toy_data, c("W1", "W2", "D"))
 toy_btdata <- btdata(toy_df_4col)
 fit2a <- btfit(toy_btdata, 1)
@@ -36,10 +34,8 @@ vcov(fit2a, subset = function(x) length(x) > 3)
 vcov(fit2a, subset = function(x) "Cyd" \%in\% names(x))
 fit2b <- btfit(toy_btdata, 1.1)
 vcov(fit2b, ref = "Cyd")
+
 }
 \seealso{
 \code{\link{btfit}}, \code{\link{coef.btfit}}, \code{\link{summary.btfit}}
-}
-\author{
-David Firth, Ella Kaye
 }

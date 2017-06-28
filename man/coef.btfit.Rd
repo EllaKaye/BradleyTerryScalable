@@ -12,7 +12,7 @@
 
 \item{subset}{A condition for selecting one or more subsets of the components. This can either be a character vector of names of the components (i.e. a subset of \code{names(object$pi)}), a single predicate function (that takes a vector of \code{object$pi} as its argument), or a logical vector of the same length as the number of components, (i.e. \code{length(object$pi)}).}
 
-\item{ref}{A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.}
+\item{ref}{A reference item. Either a string with the item name, or the number 1, or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.}
 
 \item{as_df}{Logical scalar, determining class of output. If TRUE, the function returns a data frame. If FALSE (the default), the function returns a named vector (or list of such vectors).}
 

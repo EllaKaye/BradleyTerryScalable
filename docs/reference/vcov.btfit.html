@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate variance-covariance matrix for a btfit object. — vcov.btfit • BradleyTerryScalable</title>
+<title>Calculate variance-covariance matrix for a btfit object — vcov.btfit • BradleyTerryScalable</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,7 +77,7 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate variance-covariance matrix for a btfit object.</h1>
+    <h1>Calculate variance-covariance matrix for a btfit object</h1>
     </div>
 
     
@@ -100,7 +100,7 @@
     </tr>
     <tr>
       <th>ref</th>
-      <td><p>A reference item. Either a string with the item name, 1 or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item. See Details.</p></td>
+      <td><p>A reference item. Either a string with the item name, or the number 1, or NULL. If NULL, then the coefficients are constrained such that their mean is zero. If an item name is given, the coefficient estimates are shifted so that the coefficient for the ref item is zero. If there is more than one component, the components that do not include the ref item will be treated as if ref = NULL. If ref = 1, then the first item of each component is made the reference item.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -110,11 +110,8 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A square numeric matrix, which is a non-full-rank variance-covariance matrix for the estimates in <code>coef(object, subset = subset, ref = ref)</code>; or a list of such matrices if <code>object</code> has more than one component. The rows and columns of the matrix (or matrices) are arranged in the same order as the <code>object$pi</code> vector(s).</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><strong>N.B. this can be slow when there are a large number of items in any component.</strong></p>
+    <p>A square numeric matrix, which is a non-full-rank variance-covariance matrix for the estimates in <code>coef(object, subset = subset, ref = ref)</code>; or a list of such matrices if <code>object</code> has more than one component. The rows and columns of the matrix (or matrices) are arranged in the same order as the <code>object$pi</code> vector(s).
+-#' @author David Firth, Ella Kaye</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -123,16 +120,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>citations_btdata</span>, <span class='fl'>1</span>)
-<span class='fu'>vcov</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt;               citing
-#&gt; cited                 JRSS-B    Biometrika          JASA Comm Statist
-#&gt;   JRSS-B        0.0028156619 -1.626555e-04 -3.869486e-04 -0.002266058
-#&gt;   Biometrika   -0.0001626555  1.877936e-03 -2.976349e-05 -0.001685517
-#&gt;   JASA         -0.0003869486 -2.976349e-05  1.734379e-03 -0.001317667
-#&gt;   Comm Statist -0.0022660578 -1.685517e-03 -1.317667e-03  0.005269241</div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+<span class='co'>#' fit1 &lt;- btfit(citations_btdata, 1)</span>
+<span class='co'>#' vcov(fit1)</span>
+<span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
 <span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
 <span class='no'>fit2a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
 <span class='fu'>vcov</span>(<span class='no'>fit2a</span>)</div><div class='output co'>#&gt; $`2`
+#&gt; 3 x 3 sparse Matrix of class "dgCMatrix"
 #&gt;        player2
 #&gt; player1        Han        Gal        Fin
 #&gt;     Han  0.8299348 -0.1583918 -0.6715430
@@ -140,6 +134,7 @@
 #&gt;     Fin -0.6715430 -0.4308048  1.1023478
 #&gt; 
 #&gt; $`3`
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
 #&gt;        player2
 #&gt; player1         Cyd         Amy        Ben        Dan
 #&gt;     Cyd  0.98128004 -0.07839002 -0.5792022 -0.3236878
@@ -147,6 +142,7 @@
 #&gt;     Ben -0.57920218 -0.26946596  0.8917219 -0.0430538
 #&gt;     Dan -0.32368784 -0.14080631 -0.0430538  0.5075479
 #&gt; </div><div class='input'><span class='fu'>vcov</span>(<span class='no'>fit2a</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>length</span>(<span class='no'>x</span>) <span class='kw'>&gt;</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; $`3`
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
 #&gt;        player2
 #&gt; player1         Cyd         Amy        Ben        Dan
 #&gt;     Cyd  0.98128004 -0.07839002 -0.5792022 -0.3236878
@@ -154,6 +150,7 @@
 #&gt;     Ben -0.57920218 -0.26946596  0.8917219 -0.0430538
 #&gt;     Dan -0.32368784 -0.14080631 -0.0430538  0.5075479
 #&gt; </div><div class='input'><span class='fu'>vcov</span>(<span class='no'>fit2a</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='st'>"Cyd"</span> <span class='kw'>%in%</span> <span class='fu'>names</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; $`3`
+#&gt; 4 x 4 sparse Matrix of class "dgCMatrix"
 #&gt;        player2
 #&gt; player1         Cyd         Amy        Ben        Dan
 #&gt;     Cyd  0.98128004 -0.07839002 -0.5792022 -0.3236878
@@ -161,16 +158,18 @@
 #&gt;     Ben -0.57920218 -0.26946596  0.8917219 -0.0430538
 #&gt;     Dan -0.32368784 -0.14080631 -0.0430538  0.5075479
 #&gt; </div><div class='input'><span class='no'>fit2b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1.1</span>)
-<span class='fu'>vcov</span>(<span class='no'>fit2b</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Cyd"</span>)</div><div class='output co'>#&gt;        player2
+<span class='fu'>vcov</span>(<span class='no'>fit2b</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"Cyd"</span>)</div><div class='output co'>#&gt; 8 x 8 sparse Matrix of class "dgCMatrix"
+#&gt;        player2
 #&gt; player1      Eve Cyd       Han      Amy       Gal      Ben      Dan       Fin
-#&gt;     Eve 8.688958   0  8.688958 1.309503  8.688958 2.458541 2.002889  8.688958
-#&gt;     Cyd 0.000000   0  0.000000 0.000000  0.000000 0.000000 0.000000  0.000000
-#&gt;     Han 8.688958   0 17.644428 1.309503 16.025396 2.458541 2.002889 15.972397
-#&gt;     Amy 1.309503   0  1.309503 1.628197  1.309503 1.365954 1.247476  1.309503
-#&gt;     Gal 8.688958   0 16.025396 1.309503 16.134179 2.458541 2.002889 15.613713
-#&gt;     Ben 2.458541   0  2.458541 1.365954  2.458541 2.995004 1.869082  2.458541
-#&gt;     Dan 2.002889   0  2.002889 1.247476  2.002889 1.869082 2.149915  2.002889
-#&gt;     Fin 8.688958   0 15.972397 1.309503 15.613713 2.458541 2.002889 17.329810</div></pre>
+#&gt;     Eve 8.688958   .  8.688958 1.309503  8.688958 2.458541 2.002889  8.688958
+#&gt;     Cyd .          .  .        .         .        .        .         .       
+#&gt;     Han 8.688958   . 17.644428 1.309503 16.025396 2.458541 2.002889 15.972397
+#&gt;     Amy 1.309503   .  1.309503 1.628197  1.309503 1.365954 1.247476  1.309503
+#&gt;     Gal 8.688958   . 16.025396 1.309503 16.134179 2.458541 2.002889 15.613713
+#&gt;     Ben 2.458541   .  2.458541 1.365954  2.458541 2.995004 1.869082  2.458541
+#&gt;     Dan 2.002889   .  2.002889 1.247476  2.002889 1.869082 2.149915  2.002889
+#&gt;     Fin 8.688958   . 15.972397 1.309503 15.613713 2.458541 2.002889 17.329810</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -179,16 +178,10 @@
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-David Firth, Ella Kaye
 
   </div>
 </div>

@@ -6,7 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulate data from a specified Bradley-Terry model — simulate_BT • BradleyTerryScalable</title>
+<title>This function simulates one or more pseudo-random datasets from a specified
+Bradley-Terry model.  Counts are simulated from independent binomial
+distributions, with the binomial probabilities and totals specified
+through the function arguments. — simulate_BT • BradleyTerryScalable</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -77,11 +80,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Simulate data from a specified Bradley-Terry model</h1>
+    <h1>This function simulates one or more pseudo-random datasets from a specified
+Bradley-Terry model.  Counts are simulated from independent binomial
+distributions, with the binomial probabilities and totals specified
+through the function arguments.</h1>
     </div>
 
     
-    <p>Simulate data from a specified Bradley-Terry model</p>
+    <p>This function simulates one or more pseudo-random datasets from a specified
+Bradley-Terry model.  Counts are simulated from independent binomial
+distributions, with the binomial probabilities and totals specified
+through the function arguments.</p>
     
 
     <pre class="usage"><span class='fu'>simulate_BT</span>(<span class='no'>pi</span>, <span class='no'>N</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>result_class</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sparseMatrix"</span>,
@@ -96,12 +105,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pi</th>
-      <td><p>a numeric vector, with all values finite and positive.</p></td>
+      <td><p>a numeric vector, with all values finite and positive.  The vector
+of item strengths in the Bradley-Terry model.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>a symmetric, numeric matrix with dimensions the same as <code>length(pi)</code>.  The elements should
-be numeric representations of non-negative integers.</p></td>
+      <td><p>a symmetric, numeric matrix with dimensions the same as
+<code>length(pi)</code>.  The elements should
+be numeric representations of non-negative integers.  These are the
+binomial totals to use for the simulated data.</p></td>
     </tr>
     <tr>
       <th>nsim</th>
@@ -109,13 +121,16 @@ be numeric representations of non-negative integers.</p></td>
     </tr>
     <tr>
       <th>seed</th>
-      <td><p>an object specifying if and how the random number generator should be initialized (‘seeded’).
+      <td><p>an object specifying if and how the random number generator
+should be initialized (‘seeded’).
 For details see <code><a href='http://www.rdocumentation.org/packages/stats/topics/simulate'>simulate</a></code>.</p></td>
     </tr>
     <tr>
       <th>result_class</th>
-      <td><p>a character vector specifying whether the generated datasets should be of class
-"sparseMatrix" or of class "btdata".  If not specified, the first match among those alternatives is used.</p></td>
+      <td><p>a character vector specifying whether the generated
+datasets should be of class
+"sparseMatrix" or of class "btdata".  If not specified, the first match among
+those alternatives is used.</p></td>
     </tr>
     <tr>
       <th>object</th>
@@ -129,7 +144,10 @@ For details see <code><a href='http://www.rdocumentation.org/packages/stats/topi
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of length <code>nsim</code> of simulated datasets. If <code>result_class = "sparseMatrix"</code>, the datasets are sparse matrices with the same dimensions as <code>N</code>. If <code>result_class = "btdata"</code> then the datasets are "btdata" objects. See <code><a href='btdata.html'>btdata</a></code></p>
+    <p>a list of length <code>nsim</code> of simulated datasets.
+If <code>result_class = "sparseMatrix"</code>, the datasets are sparse matrices
+with the same dimensions as <code>N</code>. If <code>result_class = "btdata"</code> then
+the datasets are "btdata" objects. See <code><a href='btdata.html'>btdata</a></code></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -139,18 +157,19 @@ For details see <code><a href='http://www.rdocumentation.org/packages/stats/topi
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>1</span>)
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>6</span>
-<span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rpois</span>(<span class='no'>n</span> ^ <span class='fl'>2</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='no'>n</span>, <span class='no'>n</span>)
-<span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='no'>W</span> + <span class='fu'>t</span>(<span class='no'>W</span>)
-<span class='no'>pi</span> <span class='kw'>&lt;-</span> <span class='fu'>exp</span>(<span class='fu'>rnorm</span>(<span class='no'>n</span>)/<span class='fl'>4</span>)
-<span class='fu'>simulate_BT</span>(<span class='no'>pi</span>, <span class='no'>N</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>6</span>)</div><div class='output co'>#&gt; $sim_1
+<span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(<span class='fu'>rpois</span>(<span class='no'>n</span> ^ <span class='fl'>2</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='no'>n</span>, <span class='no'>n</span>)
+<span class='no'>N</span> <span class='kw'>&lt;-</span> <span class='no'>N</span> + <span class='fu'>t</span>(<span class='no'>N</span>) ; <span class='fu'>diag</span>(<span class='no'>N</span>) <span class='kw'>&lt;-</span> <span class='fl'>0</span>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>exp</span>(<span class='fu'>rnorm</span>(<span class='no'>n</span>)/<span class='fl'>4</span>)
+<span class='fu'>names</span>(<span class='no'>p</span>) <span class='kw'>&lt;-</span> <span class='fu'>rownames</span>(<span class='no'>N</span>) <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>N</span>) <span class='kw'>&lt;-</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>6</span>]
+<span class='fu'>simulate_BT</span>(<span class='no'>p</span>, <span class='no'>N</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>6</span>)</div><div class='output co'>#&gt; $sim_1
 #&gt; 6 x 6 sparse Matrix of class "dgCMatrix"
-#&gt;                      
-#&gt; [1,] 8  6  8  7  4  7
-#&gt; [2,] 7 12  8  7  3  5
-#&gt; [3,] 3  2 14 10  3  8
-#&gt; [4,] 5  2  4  6  7  5
-#&gt; [5,] 3  4  4  3 16  6
-#&gt; [6,] 6  3  8  1  5 12
+#&gt;   a b c d e f
+#&gt; a . 2 2 2 . 2
+#&gt; b 2 . 2 2 0 0
+#&gt; c 0 0 . 2 1 3
+#&gt; d 1 0 2 . 0 .
+#&gt; e . 1 0 2 . 2
+#&gt; f 1 1 2 . 0 .
 #&gt; 
 #&gt; attr(,"seed")
 #&gt; [1] 6

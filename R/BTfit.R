@@ -36,7 +36,7 @@
 #'\item{iters}{A vector of length \eqn{M}. The \eqn{m}-th entry is the number of iterations it took for the algorithm to converge for the \eqn{m}-th component, for \eqn{m = 1, \ldots, M}. Note that if the algorithm has not converged in any component, a warning will be produced.}
 #'\item{converged}{A logical vector of length \eqn{M}, indicating whether the algorithm has converged for the \eqn{m}-th component in \code{maxit} iterations.}
 #'\item{N}{A list of length \eqn{M}. The \eqn{m}-th list item is a matrix where each element \eqn{n_{ij}} is the number of times item \eqn{i} played against item \eqn{j}, for the items in the \eqn{m}-th component. The rows and columns are arranged in the same order as the ordered pi vector(s).}
-#'\item{diagonal}{A list of length \eqn{M}. The \eqn{m}-th item is a vector of the diagonal elements of the \code{btdata$wins} matrix, for the items in the \eqn{m}-th fully-connected component}
+#'\item{diagonal}{A list of length \eqn{M}. The \eqn{m}-th item is a vector of the diagonal elements of the \code{btdata$wins} matrix, for the items in the \eqn{m}-th fully-connected component. These values are used as the fitted values for the diagonal of the matrix output in \code{\link{fitted.btfit}}.}
 #'\item{names_dimnames}{The names of the dimnames of the original \code{btdata$wins} matrix.}
 #'
 #' @seealso \code{\link{btdata}}, \code{\link{summary.btfit}}, \code{\link{coef.btfit}}, \code{\link{fitted.btfit}}, \code{\link{btprob}}, \code{\link{vcov.btfit}}, \code{\link{simulate.btfit}}

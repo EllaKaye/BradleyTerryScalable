@@ -10,7 +10,7 @@ btfit(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000,
 \arguments{
 \item{btdata}{An object of class "btdata", typically the result ob of ob <- btdata(..). See \code{\link{btdata}}.}
 
-\item{a}{Must be >= 1. When \code{a = 1}, the function returns the MLE estimate of \eqn{\pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior. See Details.}
+\item{a}{Must be >= 1. When \code{a = 1}, the function returns the maximum likelihood estimate (MLE) of \eqn{\pi} (by component, if necessary). When \code{a > 1}, \code{a} is the shape parameter for the Gamma prior. See Details.}
 
 \item{MAP_by_component}{Logical. Only considered if a > 1. Then, if FALSE, the MAP estimate will be found on the full dataset. If TRUE, the MAP estimate will be found separately for each fully-connected component.}
 
@@ -27,7 +27,7 @@ btfit(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000,
 \item{iters}{A vector of length \eqn{M}. The \eqn{m}-th entry is the number of iterations it took for the algorithm to converge for the \eqn{m}-th component, for \eqn{m = 1, \ldots, M}. Note that if the algorithm has not converged in any component, a warning will be produced.}
 \item{converged}{A logical vector of length \eqn{M}, indicating whether the algorithm has converged for the \eqn{m}-th component in \code{maxit} iterations.}
 \item{N}{A list of length \eqn{M}. The \eqn{m}-th list item is a matrix where each element \eqn{n_{ij}} is the number of times item \eqn{i} played against item \eqn{j}, for the items in the \eqn{m}-th component. The rows and columns are arranged in the same order as the ordered pi vector(s).}
-\item{diagonal}{A list of length \eqn{M}. The \eqn{m}-th item is a vector of the diagonal elements of the \code{btdata$wins} matrix, for the items in the \eqn{m}-th fully-connected component}
+\item{diagonal}{A list of length \eqn{M}. The \eqn{m}-th item is a vector of the diagonal elements of the \code{btdata$wins} matrix, for the items in the \eqn{m}-th fully-connected component. These values are used as the fitted values for the diagonal of the matrix output in \code{\link{fitted.btfit}}.}
 \item{names_dimnames}{The names of the dimnames of the original \code{btdata$wins} matrix.}
 }
 \description{

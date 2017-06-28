@@ -3,7 +3,10 @@
 \name{simulate_BT}
 \alias{simulate_BT}
 \alias{simulate.btfit}
-\title{Simulate data from a specified Bradley-Terry model}
+\title{This function simulates one or more pseudo-random datasets from a specified
+Bradley-Terry model.  Counts are simulated from independent binomial
+distributions, with the binomial probabilities and totals specified
+through the function arguments.}
 \usage{
 simulate_BT(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix",
   "btdata"))
@@ -12,36 +15,49 @@ simulate_BT(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix",
   result_class = c("sparseMatrix", "btdata"), ...)
 }
 \arguments{
-\item{pi}{a numeric vector, with all values finite and positive.}
+\item{pi}{a numeric vector, with all values finite and positive.  The vector
+of item strengths in the Bradley-Terry model.}
 
-\item{N}{a symmetric, numeric matrix with dimensions the same as \code{length(pi)}.  The elements should
-be numeric representations of non-negative integers.}
+\item{N}{a symmetric, numeric matrix with dimensions the same as
+\code{length(pi)}.  The elements should
+be numeric representations of non-negative integers.  These are the
+binomial totals to use for the simulated data.}
 
 \item{nsim}{a scalar integer, the number of datasets to be generated.}
 
-\item{seed}{an object specifying if and how the random number generator should be initialized (‘seeded’).
+\item{seed}{an object specifying if and how the random number generator
+should be initialized (‘seeded’).
 For details see \code{\link[stats]{simulate}}.}
 
-\item{result_class}{a character vector specifying whether the generated datasets should be of class
-"sparseMatrix" or of class "btdata".  If not specified, the first match among those alternatives is used.}
+\item{result_class}{a character vector specifying whether the generated
+datasets should be of class
+"sparseMatrix" or of class "btdata".  If not specified, the first match among
+those alternatives is used.}
 
 \item{object}{An object of class "btfit", typically the result of \code{ob} of \code{ob <- btfit(..)}. This object must only have one component, i.e. \code{length(object$pi) == 1}.}
 
 \item{...}{Other arguments}
 }
 \value{
-a list of length \code{nsim} of simulated datasets. If \code{result_class = "sparseMatrix"}, the datasets are sparse matrices with the same dimensions as \code{N}. If \code{result_class = "btdata"} then the datasets are "btdata" objects. See \code{\link{btdata}}
+a list of length \code{nsim} of simulated datasets.
+If \code{result_class = "sparseMatrix"}, the datasets are sparse matrices
+with the same dimensions as \code{N}. If \code{result_class = "btdata"} then
+the datasets are "btdata" objects. See \code{\link{btdata}}
 }
 \description{
-Simulate data from a specified Bradley-Terry model
+This function simulates one or more pseudo-random datasets from a specified
+Bradley-Terry model.  Counts are simulated from independent binomial
+distributions, with the binomial probabilities and totals specified
+through the function arguments.
 }
 \examples{
 set.seed(1)
 n <- 6
-W <- matrix(rpois(n ^ 2, lambda = 5), n, n)
-N <- W + t(W)
-pi <- exp(rnorm(n)/4)  
-simulate_BT(pi, N, seed = 6)
+N <- matrix(rpois(n ^ 2, lambda = 1), n, n)
+N <- N + t(N) ; diag(N) <- 0
+p <- exp(rnorm(n)/4)
+names(p) <- rownames(N) <- colnames(N) <- letters[1:6]
+simulate_BT(p, N, seed = 6)
 citations_btdata <- btdata(BradleyTerryScalable::citations)
 fit1 <- btfit(citations_btdata, 1)
 simulate(fit1, nsim = 2, seed = 1)
