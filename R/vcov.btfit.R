@@ -28,9 +28,9 @@ vcov_vec <- function(pi, N, ref = NULL) {
           }
           cmat <- Diagonal(K)
           cmat[ref,] <- -1
-          cmat[,ref] <- -1
-          cmat[ref, ref] <- 0
-          result <- cmat %*% Matrix::tcrossprod(result, cmat)
+          cmat[,ref] <-  0
+#          result <- cmat %*% Matrix::tcrossprod(result, cmat)
+          result <- Matrix::crossprod(cmat, result) %*% cmat
       }
   }
 
