@@ -370,25 +370,25 @@ a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 </h3>
 <p>There are two functions to simulate data from a Bradley-Terry model. The S3 method <code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). The underlying function <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th element is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) and a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> is <em>not</em> the same as the estimates in <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, which are on the logarithmic scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object instead.</p>
 <p>For example, we can simulate 100 new datasets from the fitted model for the small <code>citations</code> dataset:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit, <span class="dt">nsim =</span> <span class="dv">100</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit, <span class="dt">nsim =</span> <span class="dv">100</span>, <span class="dt">seed =</span> <span class="dv">1</span>)
 citations_sim[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre></div>
 <pre><code>## $sim_1
 ## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
 ## cited          JRSS-B Biometrika JASA Comm Statist
-##   JRSS-B            .        281  321          286
-##   Biometrika      224          .  483          722
-##   JASA            146        335    .          825
-##   Comm Statist      7         41   56            .
+##   JRSS-B            .        286  316          285
+##   Biometrika      219          .  495          725
+##   JASA            151        323    .          817
+##   Comm Statist      8         38   64            .
 ## 
 ## $sim_2
 ## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
 ## cited          JRSS-B Biometrika JASA Comm Statist
-##   JRSS-B            .        271  304          284
-##   Biometrika      234          .  516          711
-##   JASA            163        302    .          804
-##   Comm Statist      9         52   77            .</code></pre>
+##   JRSS-B            .        291  315          273
+##   Biometrika      214          .  511          723
+##   JASA            152        307    .          811
+##   Comm Statist     20         40   70            .</code></pre>
 <p>As a bigger example, let’s simulate a single instance of a fairly sparse tournament with 1000 items (or ‘players’), and then fit the Bradley-Terry model to the resulting data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(Matrix)
 <span class="kw">set.seed</span>(<span class="dv">1989</span>)

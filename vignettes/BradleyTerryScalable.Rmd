@@ -225,7 +225,7 @@ There are two functions to simulate data from a Bradley-Terry model. The S3 meth
 
 For example, we can simulate 100 new datasets from the fitted model for the small `citations` dataset:
 ```{r}
-citations_sim <- simulate(citations_fit, nsim = 100)
+citations_sim <- simulate(citations_fit, nsim = 100, seed = 1)
 citations_sim[1:2]
 ```
 
