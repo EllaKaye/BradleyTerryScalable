@@ -52,10 +52,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../articles/BradleyTerryScalable.html">Get Started</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
@@ -121,7 +127,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>x</code> argument to <code>btdata</code> can be one of four types:</p><ul>
-<li><p>A matrix (either a base <code>matrix</code>) or a class from the <code>Matrix</code> pacakge), dimension \(K\) by \(K\), where \(K\) is the number of items. The <em>i,j</em>-th element is \(w_{ij}\), the number of times item \(i\) has beaten item \(j\). Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
+<li><p>A matrix (either a base <code>matrix</code>) or a class from the <code>Matrix</code> package), dimension \(K\) by \(K\), where \(K\) is the number of items. The <em>i,j</em>-th element is \(w_{ij}\), the number of times item \(i\) has beaten item \(j\). Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
 <li><p>A contingency table of class <code>table</code>, similar to the matrix described in the above point.</p></li>
 <li><p>An <code>igraph</code>, representing the <em>comparison graph</em>, with the \(K\) items as nodes. For the edges:
 <ul>
@@ -135,7 +141,7 @@
 <li><p>In either of these cases, the data can be aggregated, or there can be one row per comparison.</p></li>
 <li><p>Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.</p></li>
 </ul></p></li>
-</ul><p><code>summary.btdata</code> shows the number of items, the density of the <code>wins</code> matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, <code>summary.btdata</code> will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fitted, see <code><a href='btfit.html'>btfit</a></code> and the vignette: <a href = 'https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html'>https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html</a>.</p>
+</ul><p><code>summary.btdata</code> shows the number of items, the density of the <code>wins</code> matrix and whether the underlying comparison graph is fully connected. If it is not fully connected, <code>summary.btdata</code> will additional show the number of fully-connected components and a table giving the frequency of components of different sizes. For more details on the comparison graph, and how its structure affects how the Bradley-Terry model is fitted, see <code><a href='btfit.html'>btfit</a></code> and the vignette: <a href='https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html'>https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -143,10 +149,10 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'>btdata</span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
+    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'>btdata</span>(<span class='kw pkg'>BradleyTerryScalable</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/BradleyTerryScalable/topics/citations'>citations</a></span>)
 <span class='fu'>summary</span>(<span class='no'>citations_btdata</span>)</div><div class='output co'>#&gt; Number of items: 4 
 #&gt; Density of wins matrix: 1 
-#&gt; Fully-connected: TRUE </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+#&gt; Fully-connected: TRUE </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw pkg'>BradleyTerryScalable</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/BradleyTerryScalable/topics/toy_data'>toy_data</a></span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
 <span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'>btdata</span>(<span class='no'>toy_df_4col</span>)
 <span class='fu'>summary</span>(<span class='no'>toy_btdata</span>)</div><div class='output co'>#&gt; Number of items: 8 
 #&gt; Density of wins matrix: 0.25 

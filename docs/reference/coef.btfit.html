@@ -52,10 +52,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../articles/BradleyTerryScalable.html">Get Started</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       
@@ -119,14 +125,14 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note that the values given in the <code>estimate</code> column of the <code>item_summary</code> element are NOT the same as the values in <code>object$pi</code>. Rather, they are the \(\lambda_i\), where \(\lambda_i = \log{\pi_i}\). By detault, these are normalised so that mean(\(\lambda_i\)) = 0. However, if <code>ref</code> is not equal to <code>NULL</code>, then the \(\lambda_i\) in the component in which <code>ref</code> appears are shifted to \(\lambda_i - \lambda_{ref}\), for \(i = 1, \dots, K_c\), where \(K_c\) is the number of items in the component in whick <code>ref</code> appears, and \(\lambda_{ref}\) is the estimate for the reference item.</p>
+    <p>Note that the values given in the <code>estimate</code> column of the <code>item_summary</code> element are NOT the same as the values in <code>object$pi</code>. Rather, they are the \(\lambda_i\), where \(\lambda_i = \log{\pi_i}\). By default, these are normalised so that mean(\(\lambda_i\)) = 0. However, if <code>ref</code> is not equal to <code>NULL</code>, then the \(\lambda_i\) in the component in which <code>ref</code> appears are shifted to \(\lambda_i - \lambda_{ref}\), for \(i = 1, \dots, K_c\), where \(K_c\) is the number of items in the component in which <code>ref</code> appears, and \(\lambda_{ref}\) is the estimate for the reference item.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>citations</span>)
+    <pre class="examples"><div class='input'><span class='no'>citations_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='kw pkg'>BradleyTerryScalable</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/BradleyTerryScalable/topics/citations'>citations</a></span>)
 <span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>citations_btdata</span>, <span class='fl'>1</span>)
 <span class='fu'>coef</span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt;       JRSS-B   Biometrika         JASA Comm Statist 
-#&gt;    1.0604065    0.7897537    0.3095638   -2.1597241 </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw'>BradleyTerryScalable</span><span class='kw'>::</span><span class='no'>toy_data</span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
+#&gt;    1.0604065    0.7897537    0.3095638   -2.1597241 </div><div class='input'><span class='no'>toy_df_4col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='codes_to_counts.html'>codes_to_counts</a></span>(<span class='kw pkg'>BradleyTerryScalable</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/BradleyTerryScalable/topics/toy_data'>toy_data</a></span>, <span class='fu'>c</span>(<span class='st'>"W1"</span>, <span class='st'>"W2"</span>, <span class='st'>"D"</span>))
 <span class='no'>toy_btdata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btdata.html'>btdata</a></span>(<span class='no'>toy_df_4col</span>)
 <span class='no'>fit2a</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='btfit.html'>btfit</a></span>(<span class='no'>toy_btdata</span>, <span class='fl'>1</span>)
 <span class='fu'>coef</span>(<span class='no'>fit2a</span>)</div><div class='output co'>#&gt; $`2`

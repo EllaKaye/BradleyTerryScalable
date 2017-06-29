@@ -169,7 +169,7 @@ pairs_to_matrix <- function(df) {
 #'
 #' \itemize{
 #'
-#' \item{A matrix (either a base \code{matrix}) or a class from the \code{Matrix} pacakge), dimension \eqn{K} by \eqn{K}, where \eqn{K} is the number of items. The \emph{i,j}-th element is \eqn{w_{ij}}, the number of times item \eqn{i} has beaten item \eqn{j}. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.}
+#' \item{A matrix (either a base \code{matrix}) or a class from the \code{Matrix} package), dimension \eqn{K} by \eqn{K}, where \eqn{K} is the number of items. The \emph{i,j}-th element is \eqn{w_{ij}}, the number of times item \eqn{i} has beaten item \eqn{j}. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.}
 #' \item{A contingency table of class \code{table}, similar to the matrix described in the above point.}
 #' \item{An \code{igraph}, representing the \emph{comparison graph}, with the \eqn{K} items as nodes. For the edges:
 #' \itemize{
