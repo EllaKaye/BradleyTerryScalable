@@ -6,7 +6,7 @@
 ## R CMD check results
 here were no ERRORs and no WARNINGs
 
-There was one NOTE from the windows check and local OS X check:
+There was one NOTE:
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Ella Kaye <E.Kaye.1@warwick.ac.uk>’
 
