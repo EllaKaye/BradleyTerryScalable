@@ -19,12 +19,11 @@ Moreover, this NOTE also did not appear when checking on a local linux environme
 My understanding is that this inflation of the libs subdirectory is due to the use of Rcpp. Indeed, some functions of the BradleyTerryScalable package have been written in C++ using Rcpp. They are needed to fit the Bradley-Terry model to large datasets. Without the speed up gained from those C++ functions, this package would not be fit for purpose.
 
 
-There was one NOTE from the windows check (but not on the OS X or linux check): 
-
+There was one NOTE from the windows check and local OS X check:
 * checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Ella Kaye <E.Kaye.1@warwick.ac.uk>'
+Maintainer: ‘Ella Kaye <E.Kaye.1@warwick.ac.uk>’
 
-My understanding is that is because this is the first submission of this package on CRAN
+New submission
 
 ## First submission
 * This is the first submission of this package 
