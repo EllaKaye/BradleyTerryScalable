@@ -430,10 +430,6 @@ big_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 ##  Fit the Bradley-Terry model to the simulated data, and plot fitted vs true abilities:
 the_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(big_btdata, <span class="dt">a =</span> <span class="dv">1</span>)
 pi_fitted &lt;-<span class="st"> </span>the_model $<span class="st"> </span>pi $<span class="st"> </span>full_dataset
-<span class="co">#plot(log(pi_vec[as.numeric(names(pi_fitted))]), log(pi_fitted),</span>
-<span class="co">#     xlab = "true strength", ylab = "maximum likelihood estimate",</span>
-<span class="co">#     main = "1000-player simulation from a Bradley-Terry model")</span>
-<span class="co">#abline(0,1)</span>
 
 plot_df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">x =</span> <span class="kw">log</span>(pi_vec[<span class="kw">as.numeric</span>(<span class="kw">names</span>(pi_fitted))]),
                   <span class="dt">y =</span> <span class="kw">log</span>(pi_fitted))

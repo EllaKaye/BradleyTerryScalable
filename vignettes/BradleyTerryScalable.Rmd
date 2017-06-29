@@ -260,10 +260,6 @@ big_btdata <- btdata(big_matrix)
 ##  Fit the Bradley-Terry model to the simulated data, and plot fitted vs true abilities:
 the_model <- btfit(big_btdata, a = 1)
 pi_fitted <- the_model $ pi $ full_dataset
-#plot(log(pi_vec[as.numeric(names(pi_fitted))]), log(pi_fitted),
-#     xlab = "true strength", ylab = "maximum likelihood estimate",
-#     main = "1000-player simulation from a Bradley-Terry model")
-#abline(0,1)
 
 plot_df <- tibble(x = log(pi_vec[as.numeric(names(pi_fitted))]),
                   y = log(pi_fitted))
