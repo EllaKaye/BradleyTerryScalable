@@ -308,17 +308,6 @@ As a bigger example, let's simulate a single instance of a fairly sparse tournam
 ``` r
 library(Matrix)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:igraph':
-#> 
-#>     %>%, as_data_frame, groups, union
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(ggplot2)
 set.seed(1989)
 n_items <- 1000
@@ -340,7 +329,7 @@ pi_vec <- exp(rnorm(n_items) / 4)
 pi_vec <- pi_vec / mean(pi_vec)
 
 ## Now generate contest outcome counts from the Bradley-Terry model:
-big_matrix <- simulate_BT(pi_vec, Nmatrix, nsim = 1)[[1]]
+big_matrix <- simulate_BT(pi_vec, Nmatrix, nsim = 1, seed = 1)[[1]]
 big_btdata <- btdata(big_matrix)
 
 ## Fit the Bradley-Terry model to the simulated data:

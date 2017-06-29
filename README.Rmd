@@ -178,7 +178,7 @@ citations_sim[1:2]
 ```
 
 As a bigger example, let's simulate a single instance of a fairly sparse tournament with 1000 items (or 'players'), and then fit the Bradley-Terry model to the resulting data:
-```{r, fig.width = 7, fig.height = 7, out.width = '97%', warning = FALSE, message = FALSE}
+```{r, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 7, out.width = '97%'}
 library(Matrix)
 library(dplyr)
 library(ggplot2)
@@ -202,7 +202,7 @@ pi_vec <- exp(rnorm(n_items) / 4)
 pi_vec <- pi_vec / mean(pi_vec)
 
 ## Now generate contest outcome counts from the Bradley-Terry model:
-big_matrix <- simulate_BT(pi_vec, Nmatrix, nsim = 1)[[1]]
+big_matrix <- simulate_BT(pi_vec, Nmatrix, nsim = 1, seed = 1)[[1]]
 big_btdata <- btdata(big_matrix)
 
 ## Fit the Bradley-Terry model to the simulated data:

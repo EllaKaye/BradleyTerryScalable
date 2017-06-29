@@ -230,7 +230,7 @@ citations_sim[1:2]
 ```
 
 As a bigger example, let's simulate a single instance of a fairly sparse tournament with 1000 items (or 'players'), and then fit the Bradley-Terry model to the resulting data:
-```{r, fig.width = 7, fig.height = 7, out.width = '97%', warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, fig.width = 7, fig.height = 7, out.width = '97%'}
 library(Matrix)
 library(dplyr)
 library(ggplot2)
