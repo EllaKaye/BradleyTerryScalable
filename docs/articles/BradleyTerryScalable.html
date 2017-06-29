@@ -132,7 +132,7 @@ p(\pi) = \prod_{i=1}^K \mathcal{G}(\pi_i; a, b).
 
 <span class="co"># installing from GitHub</span>
 <span class="kw">install.packages</span>(<span class="st">"devtools"</span>) <span class="co"># if required</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"EllaKaye/BradleyTerryScalable"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"EllaKaye/BradleyTerryScalable"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(BradleyTerryScalable)</code></pre></div>
 </div>
 <div id="preparing-the-data" class="section level2">
@@ -204,8 +204,8 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <code>graph</code>: if <code>return_graph = TRUE</code>, then the <code>igraph</code> object of the comparison graph is returned, which can be useful for visualising the data.</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(igraph)
-<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>) +<span class="st"> </span><span class="fl">0.1</span>)  
-<span class="kw">plot.igraph</span>(toy_btdata$graph, <span class="dt">vertex.size =</span> <span class="dv">28</span>, <span class="dt">edge.arrow.size =</span> <span class="fl">0.5</span>) </code></pre></div>
+<span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>) <span class="op">+</span><span class="st"> </span><span class="fl">0.1</span>)  
+<span class="kw">plot.igraph</span>(toy_btdata<span class="op">$</span>graph, <span class="dt">vertex.size =</span> <span class="dv">28</span>, <span class="dt">edge.arrow.size =</span> <span class="fl">0.5</span>) </code></pre></div>
 <p><img src="BradleyTerryScalable_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Information about the <code>btdata</code> objects can be seen through the <code><a href="../reference/btdata.html">summary.btdata()</a></code> method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(citations_btdata)</code></pre></div>
@@ -225,8 +225,8 @@ toy_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p>Note that components of size 1 will be filtered out in the MLE fit (see next section); the model doesn’t make sense for them.</p>
 <p><code><a href="../reference/select_components.html">select_components()</a></code> can be used to create a subset of a <code>btdata</code> object. In our toy case, the following all give the same subset:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, <span class="st">"3"</span>)
-toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="kw">length</span>(x) ==<span class="st"> </span><span class="dv">4</span>)
-toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, function(x) <span class="st">"Cyd"</span> %in%<span class="st"> </span>x)
+toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, <span class="cf">function</span>(x) <span class="kw">length</span>(x) <span class="op">==</span><span class="st"> </span><span class="dv">4</span>)
+toy_btdata_subset &lt;-<span class="st"> </span><span class="kw"><a href="../reference/select_components.html">select_components</a></span>(toy_btdata, <span class="cf">function</span>(x) <span class="st">"Cyd"</span> <span class="op">%in%</span><span class="st"> </span>x)
 <span class="kw">summary</span>(toy_btdata_subset)</code></pre></div>
 <pre><code>## Number of items: 4 
 ## Density of wins matrix: 0.4375 
@@ -371,7 +371,7 @@ a - 1 + W_i = b\pi_i + \sum_{j \neq i} \frac{n_{ij}\pi_i}{\pi_i + \pi_j},
 <p>There are two functions to simulate data from a Bradley-Terry model. The S3 method <code><a href="../reference/simulate_BT.html">simulate.btfit()</a></code> takes a <code>btfit</code> object <em>which has been fitted on one component</em> (either the full dataset, or a one-component subset). The underlying function <code><a href="../reference/simulate_BT.html">simulate_BT()</a></code> takes an <code>N</code> matrix (i.e. where the <span class="math inline">\(i,j\)</span>-th element is the number of times items <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> have been compared) and a vector <code>pi</code>, the strength parameters of a Bradley-Terry model (note that <code>pi</code> is <em>not</em> the same as the estimates in <code><a href="../reference/coef.btfit.html">coef.btfit()</a></code> and <code><a href="../reference/summary.btfit.html">summary.btfit()</a></code>, which are on the logarithmic scale). Both functions return a <code>wins</code> matrix by default, but can also be set to return a <code>btdata</code> object instead.</p>
 <p>For example, we can simulate 100 new datasets from the fitted model for the small <code>citations</code> dataset:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">citations_sim &lt;-<span class="st"> </span><span class="kw">simulate</span>(citations_fit, <span class="dt">nsim =</span> <span class="dv">100</span>, <span class="dt">seed =</span> <span class="dv">1</span>)
-citations_sim[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre></div>
+citations_sim[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</code></pre></div>
 <pre><code>## $sim_1
 ## 4 x 4 sparse Matrix of class "dgCMatrix"
 ##               citing
@@ -397,8 +397,8 @@ citations_sim[<span class="dv">1</span>:<span class="dv">2</span>]</code></pre><
 n_items &lt;-<span class="st"> </span><span class="dv">1000</span>
 
 ## Generate at random a sparse, symmetric matrix of binomial totals: 
-Nvalues &lt;-<span class="st"> </span><span class="kw">rpois</span>(<span class="dt">n =</span> n_items *<span class="st"> </span>(n_items -<span class="st"> </span><span class="dv">1</span>) /<span class="st"> </span><span class="dv">2</span>, <span class="dt">lambda =</span> <span class="dv">1</span>)  
-notzero &lt;-<span class="st"> </span>Nvalues &gt;<span class="st"> </span><span class="dv">0</span>
+Nvalues &lt;-<span class="st"> </span><span class="kw">rpois</span>(<span class="dt">n =</span> n_items <span class="op">*</span><span class="st"> </span>(n_items <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">lambda =</span> <span class="dv">1</span>)  
+notzero &lt;-<span class="st"> </span>Nvalues <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>
 Nmatrix &lt;-<span class="st"> </span><span class="kw">Matrix</span>(<span class="dt">nrow =</span> n_items, <span class="dt">ncol =</span> n_items)
 ij &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">lower.tri</span>(Nmatrix), <span class="dt">arr.ind =</span> <span class="ot">TRUE</span>)[notzero, ]
 Nmatrix &lt;-<span class="st"> </span><span class="kw">sparseMatrix</span>(
@@ -409,8 +409,8 @@ Nmatrix &lt;-<span class="st"> </span><span class="kw">sparseMatrix</span>(
              <span class="dt">dims =</span> <span class="kw">c</span>(n_items, n_items)) 
 
 ## Generate at random the (normalized to mean 1) 'player abilities':
-pi_vec &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(n_items) /<span class="st"> </span><span class="dv">4</span>)
-pi_vec &lt;-<span class="st"> </span>pi_vec /<span class="st"> </span><span class="kw">mean</span>(pi_vec)
+pi_vec &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(n_items) <span class="op">/</span><span class="st"> </span><span class="dv">4</span>)
+pi_vec &lt;-<span class="st"> </span>pi_vec <span class="op">/</span><span class="st"> </span><span class="kw">mean</span>(pi_vec)
 
 ##  Now generate contest outcome counts from the Bradley-Terry model:
 big_matrix &lt;-<span class="st"> </span><span class="kw"><a href="../reference/simulate_BT.html">simulate_BT</a></span>(pi_vec, Nmatrix, <span class="dt">nsim =</span> <span class="dv">1</span>)[[<span class="dv">1</span>]]
@@ -418,18 +418,18 @@ big_btdata &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 
 ## Fit the Bradley-Terry model to the simulated data:
 the_model &lt;-<span class="st"> </span><span class="kw"><a href="../reference/btfit.html">btfit</a></span>(big_btdata, <span class="dt">a =</span> <span class="dv">1</span>)
-pi_fitted &lt;-<span class="st"> </span>the_model $<span class="st"> </span>pi $<span class="st"> </span>full_dataset
+pi_fitted &lt;-<span class="st"> </span>the_model <span class="op">$</span><span class="st"> </span>pi <span class="op">$</span><span class="st"> </span>full_dataset
 
 ## Plot fitted vs true abilities:
 plot_df &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">x =</span> <span class="kw">log</span>(pi_vec[<span class="kw">as.numeric</span>(<span class="kw">names</span>(pi_fitted))]),
                   <span class="dt">y =</span> <span class="kw">log</span>(pi_fitted))
 
-<span class="kw">ggplot</span>(plot_df, <span class="kw">aes</span>(x, y)) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) +
-<span class="st">  </span><span class="kw">geom_abline</span>() +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">"true strength"</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">"maximum likelihood estimate"</span>) +
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"1000-player simulation from a Bradley-Terry model"</span>) +
+<span class="kw">ggplot</span>(plot_df, <span class="kw">aes</span>(x, y)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">"true strength"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">"maximum likelihood estimate"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">"1000-player simulation from a Bradley-Terry model"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre></div>
 <p><img src="BradleyTerryScalable_files/figure-html/unnamed-chunk-12-1.png" width="97%"></p>
 </div>

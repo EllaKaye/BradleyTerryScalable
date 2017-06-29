@@ -9,7 +9,7 @@ An R package for fitting the Bradley-Terry model to pair-comparison data, to ena
 
 Given a number of items for which we have pair-comparison data, the Bradley-Terry model assigns a 'strength' parameter to each item. These can be used to rank the items. Moreover, they can be used to determine the probability that any given item will 'beat' any other given item when they are compared. Further details of the mathematical model, and the algorithms used to fit it, are available in the package vignette.
 
-**The documentation website for this packaing can be found [here](https://ellakaye.github.io/BradleyTerryScalable/) (thanks to [`pkgdown`](https://github.com/hadley/pkgdown))**
+**The documentation website for this package can be found [here](https://ellakaye.github.io/BradleyTerryScalable/) (thanks to [`pkgdown`](https://github.com/hadley/pkgdown))**
 
 The Bradley-Terry model
 -----------------------
