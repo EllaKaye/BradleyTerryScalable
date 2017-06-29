@@ -230,14 +230,14 @@ citations_sim[1:2]
 ```
 
 As a bigger example, let's simulate a single instance of a fairly sparse tournament with 1000 items (or 'players'), and then fit the Bradley-Terry model to the resulting data:
-```{r, fig.width = 7, fig.height = 7, out.width = '97%'}
+```{r, fig.width = 7, fig.height = 7, out.width = '97%', warning=FALSE, message=FALSE}
 library(Matrix)
 library(dplyr)
 library(ggplot2)
 set.seed(1989)
 n_items <- 1000
 
-##  Generate at random a sparse, symmetric matrix of binomial totals: 
+## Generate at random a sparse, symmetric matrix of binomial totals: 
 Nvalues <- rpois(n = n_items * (n_items - 1) / 2, lambda = 1)  
 notzero <- Nvalues > 0
 Nmatrix <- Matrix(nrow = n_items, ncol = n_items)
@@ -249,7 +249,7 @@ Nmatrix <- sparseMatrix(
              symmetric = TRUE,   
              dims = c(n_items, n_items)) 
 
-##  Generate at random the (normalized to mean 1) 'player abilities':
+## Generate at random the (normalized to mean 1) 'player abilities':
 pi_vec <- exp(rnorm(n_items) / 4)
 pi_vec <- pi_vec / mean(pi_vec)
 
@@ -257,10 +257,11 @@ pi_vec <- pi_vec / mean(pi_vec)
 big_matrix <- simulate_BT(pi_vec, Nmatrix, nsim = 1)[[1]]
 big_btdata <- btdata(big_matrix)
 
-##  Fit the Bradley-Terry model to the simulated data, and plot fitted vs true abilities:
+## Fit the Bradley-Terry model to the simulated data:
 the_model <- btfit(big_btdata, a = 1)
 pi_fitted <- the_model $ pi $ full_dataset
 
+## Plot fitted vs true abilities:
 plot_df <- tibble(x = log(pi_vec[as.numeric(names(pi_fitted))]),
                   y = log(pi_fitted))
 
