@@ -29,5 +29,6 @@ Suggests:
     Matrix.utils,
     stringr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2
 VignetteBuilder: knitr

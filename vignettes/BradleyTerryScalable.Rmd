@@ -232,6 +232,8 @@ citations_sim[1:2]
 As a bigger example, let's simulate a single instance of a fairly sparse tournament with 1000 items (or 'players'), and then fit the Bradley-Terry model to the resulting data:
 ```{r, fig.width = 7, fig.height = 7, out.width = '97%'}
 library(Matrix)
+library(dplyr)
+library(ggplot2)
 set.seed(1989)
 n_items <- 1000
 
@@ -258,10 +260,21 @@ big_btdata <- btdata(big_matrix)
 ##  Fit the Bradley-Terry model to the simulated data, and plot fitted vs true abilities:
 the_model <- btfit(big_btdata, a = 1)
 pi_fitted <- the_model $ pi $ full_dataset
-plot(log(pi_vec[as.numeric(names(pi_fitted))]), log(pi_fitted),
-     xlab = "true strength", ylab = "maximum likelihood estimate",
-     main = "1000-player simulation from a Bradley-Terry model")
-abline(0,1)
+#plot(log(pi_vec[as.numeric(names(pi_fitted))]), log(pi_fitted),
+#     xlab = "true strength", ylab = "maximum likelihood estimate",
+#     main = "1000-player simulation from a Bradley-Terry model")
+#abline(0,1)
+
+plot_df <- tibble(x = log(pi_vec[as.numeric(names(pi_fitted))]),
+                  y = log(pi_fitted))
+
+ggplot(plot_df, aes(x, y)) +
+  geom_point(alpha = 0.5) +
+  geom_abline() + 
+  xlab("true strength") +
+  ylab("maximum likelihood estimate") +
+  ggtitle("1000-player simulation from a Bradley-Terry model") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ## Further information
