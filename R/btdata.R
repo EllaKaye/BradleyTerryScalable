@@ -58,55 +58,67 @@ pairs_to_matrix <- function(df) {
   if(!is.factor(df[,2])) {
     df[,2] <- factor(df[,2])
   }
-
-  # create cross-tabs matrix (not square)
-  mat <- Matrix.utils::dMcast(df, f, value.var = names(df)[3], as.factors = TRUE)
-
-  # fix colnames
-  colnames(mat) <- stringr::str_replace(colnames(mat), names(df)[2], "")
-
-  # remove zeros, if any, taking care with dimnames
-  summary_mat <- Matrix::summary(mat)
-  x <- NULL # hack to avoid CRAN note
-  if (any(summary_mat[,3] == 0)) {
-    summary_mat <- dplyr::filter(summary_mat, x != 0)
-
-    mat_rownames <- rownames(mat)
-    mat_colnames <- colnames(mat)
-
-    new_mat_rownames <- mat_rownames[sort(unique(summary_mat[,1]))]
-    new_mat_colnames <- mat_colnames[sort(unique(summary_mat[,2]))]
-
-    mat <- Matrix::sparseMatrix(i = summary_mat[,1], j = summary_mat[,2], x = summary_mat[,3])
-
-    nonzero_rows <- which(Matrix::rowSums(mat) != 0)
-    nonzero_cols <- which(Matrix::colSums(mat) != 0)
-
-    mat <- mat[nonzero_rows, nonzero_cols]
-    dimnames(mat) <- list(new_mat_rownames, new_mat_colnames)
+  
+  # create empty mat if all zeros in column 3
+  if(all(df[,3] == 0)) {
+    mat <- Matrix::Matrix(0, n, n, sparse = TRUE)
   }
-
-
-  # add in zeros for missing rows
-  if (nrow(mat) < n) {
-    new_rows <- Matrix::Matrix(0, n - nrow(mat), ncol(mat),
-                               dimnames = list(base::setdiff(items, rownames(mat)), colnames(mat)))
-    mat <- rbind(mat, new_rows)
+  
+  # create matrix with wins from column 3
+  else {
+    # create cross-tabs matrix (not square)
+    mat <- Matrix.utils::dMcast(df, f, value.var = names(df)[3], as.factors = TRUE)
+  
+    # fix colnames
+    colnames(mat) <- stringr::str_replace(colnames(mat), names(df)[2], "")
+  
+    # remove zeros, if any, taking care with dimnames
+    summary_mat <- Matrix::summary(mat)
+    x <- NULL # hack to avoid CRAN note
+    if (any(summary_mat[,3] == 0)) {
+      summary_mat <- dplyr::filter(summary_mat, x != 0)
+  
+      mat_rownames <- rownames(mat)
+      mat_colnames <- colnames(mat)
+  
+      new_mat_rownames <- mat_rownames[sort(unique(summary_mat[,1]))]
+      new_mat_colnames <- mat_colnames[sort(unique(summary_mat[,2]))]
+  
+      mat <- Matrix::sparseMatrix(i = summary_mat[,1], j = summary_mat[,2], x = summary_mat[,3])
+  
+      nonzero_rows <- which(Matrix::rowSums(mat) != 0)
+      nonzero_cols <- which(Matrix::colSums(mat) != 0)
+  
+      mat <- mat[nonzero_rows, nonzero_cols, drop = FALSE]
+      dimnames(mat) <- list(new_mat_rownames, new_mat_colnames)
+    }
+  
+  
+    # add in zeros for missing rows
+    if (nrow(mat) < n) {
+      new_rows <- Matrix::Matrix(0, n - nrow(mat), ncol(mat),
+                                 dimnames = list(base::setdiff(items, rownames(mat)), colnames(mat)))
+      mat <- rbind(mat, new_rows)
+    }
+  
+    # add in zeros for missing columns
+    if (ncol(mat) < n) {
+      new_cols <- Matrix::Matrix(0, n, n - ncol(mat),
+                                 dimnames = list(rownames(mat), base::setdiff(items, colnames(mat))))
+      mat <- cbind(mat, new_cols)
+    }
+  
+    # get rows and columns in same, sorted order and return
+    mat <- mat[items,]
+    mat <- mat[, rownames(mat)]
   }
-
-  # add in zeros for missing columns
-  if (ncol(mat) < n) {
-    new_cols <- Matrix::Matrix(0, n, n - ncol(mat),
-                               dimnames = list(rownames(mat), base::setdiff(items, colnames(mat))))
-    mat <- cbind(mat, new_cols)
-  }
-
-  # get rows and columns in same, sorted order and return
-  mat <- mat[items,]
-  mat <- mat[, rownames(mat)]
 
   # repeat above steps if in 4-column format (for item2 beating item1)
-  if (ncol(df) == 4) {
+  # as long as col 4 isn't all zeros
+  if (ncol(df) == 4) fourth_all_zero <- all(df[,4] == 0)
+  else fourth_all_zero <- TRUE
+  
+  if (ncol(df) == 4 & !fourth_all_zero) {
     f2 <- stats::as.formula(paste(names(df)[2:1], collapse= " ~ "))
     mat2 <- Matrix.utils::dMcast(df, f2, value.var = names(df)[4], as.factors = TRUE)
     colnames(mat2) <- stringr::str_replace(colnames(mat2), names(df)[1], "")
@@ -128,7 +140,7 @@ pairs_to_matrix <- function(df) {
       nonzero_rows2 <- which(Matrix::rowSums(mat2) != 0)
       nonzero_cols2 <- which(Matrix::colSums(mat2) != 0)
 
-      mat2 <- mat2[nonzero_rows2, nonzero_cols2]
+      mat2 <- mat2[nonzero_rows2, nonzero_cols2, drop = FALSE]
       dimnames(mat2) <- list(new_mat2_rownames, new_mat2_colnames)
     }
 
