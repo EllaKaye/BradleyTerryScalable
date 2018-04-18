@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // BT_EM
 List BT_EM(S4 W, double a, double b, int maxit, double epsilon);
-RcppExport SEXP BradleyTerryScalable_BT_EM(SEXP WSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+RcppExport SEXP _BradleyTerryScalable_BT_EM(SEXP WSEXP, SEXP aSEXP, SEXP bSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // btprob_vec
 arma::sp_mat btprob_vec(arma::vec pi);
-RcppExport SEXP BradleyTerryScalable_btprob_vec(SEXP piSEXP) {
+RcppExport SEXP _BradleyTerryScalable_btprob_vec(SEXP piSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -34,7 +34,7 @@ END_RCPP
 }
 // fitted_vec
 arma::sp_mat fitted_vec(arma::vec pi, arma::sp_mat N);
-RcppExport SEXP BradleyTerryScalable_fitted_vec(SEXP piSEXP, SEXP NSEXP) {
+RcppExport SEXP _BradleyTerryScalable_fitted_vec(SEXP piSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // ILSR
 List ILSR(S4 W, int maxit, double epsilon);
-RcppExport SEXP BradleyTerryScalable_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+RcppExport SEXP _BradleyTerryScalable_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -59,10 +59,10 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"BradleyTerryScalable_BT_EM", (DL_FUNC) &BradleyTerryScalable_BT_EM, 5},
-    {"BradleyTerryScalable_btprob_vec", (DL_FUNC) &BradleyTerryScalable_btprob_vec, 1},
-    {"BradleyTerryScalable_fitted_vec", (DL_FUNC) &BradleyTerryScalable_fitted_vec, 2},
-    {"BradleyTerryScalable_ILSR", (DL_FUNC) &BradleyTerryScalable_ILSR, 3},
+    {"_BradleyTerryScalable_BT_EM", (DL_FUNC) &_BradleyTerryScalable_BT_EM, 5},
+    {"_BradleyTerryScalable_btprob_vec", (DL_FUNC) &_BradleyTerryScalable_btprob_vec, 1},
+    {"_BradleyTerryScalable_fitted_vec", (DL_FUNC) &_BradleyTerryScalable_fitted_vec, 2},
+    {"_BradleyTerryScalable_ILSR", (DL_FUNC) &_BradleyTerryScalable_ILSR, 3},
     {NULL, NULL, 0}
 };
 
