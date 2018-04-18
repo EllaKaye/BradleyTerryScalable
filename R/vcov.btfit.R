@@ -3,9 +3,8 @@ vcov_vec <- function(pi, N, ref = NULL) {
   object_names <- names(pi)
   wmat <- fitted_vec(pi, N)
   pmat <- btprob_vec(pi)
-  result <- wmat * Matrix::t(pmat)
-  diag(result) <- Matrix::rowSums(wmat * pmat) + Matrix::diag(wmat)
-  result <- diag(Matrix::rowSums(wmat)) - result
+  result <- - wmat * Matrix::t(pmat)
+  diag(result) <- - Matrix::rowSums(result)
 
   cmat <- stats::contr.sum(K, sparse = TRUE)
   result <- Matrix::chol2inv(Matrix::chol(Matrix::crossprod(cmat, result) %*% cmat))
