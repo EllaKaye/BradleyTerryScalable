@@ -12,15 +12,15 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call('_BradleyTerryScalable_BT_EM', PACKAGE = 'BradleyTerryScalable', W, a, b, maxit, epsilon)
 }
 
+ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
+    .Call('_BradleyTerryScalable_ILSR', PACKAGE = 'BradleyTerryScalable', W, maxit, epsilon)
+}
+
 btprob_vec <- function(pi) {
     .Call('_BradleyTerryScalable_btprob_vec', PACKAGE = 'BradleyTerryScalable', pi)
 }
 
 fitted_vec <- function(pi, N) {
     .Call('_BradleyTerryScalable_fitted_vec', PACKAGE = 'BradleyTerryScalable', pi, N)
-}
-
-ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
-    .Call('_BradleyTerryScalable_ILSR', PACKAGE = 'BradleyTerryScalable', W, maxit, epsilon)
 }
 
