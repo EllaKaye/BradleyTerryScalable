@@ -3,7 +3,6 @@
 \docType{package}
 \name{BradleyTerryScalable}
 \alias{BradleyTerryScalable}
-\alias{BradleyTerryScalable-package}
 \title{A package for fitting the Bradley-Terry model to (potentially) large and sparse data sets.}
 \description{
 A package for fitting the Bradley-Terry model to (potentially) large and sparse data sets.

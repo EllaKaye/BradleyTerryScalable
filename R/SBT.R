@@ -5,5 +5,5 @@
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rcpp sourceCpp
 #' @importFrom stats simulate
-#' @useDynLib BradleyTerryScalable
+#' @useDynLib BradleyTerryScalable, .registration = TRUE
 NULL

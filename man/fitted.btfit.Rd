@@ -32,7 +32,7 @@ The expected, or fitted, values under the Bradley-Terry model are therefore:
 
 where \eqn{n_{ij}} is the number of comparisons between item \eqn{i} and item \eqn{j}.
 
-If there are values on the diagonal in the original \code{btdata$wins} matrix, then these appear as the values on the diagonal of the fitted matrix. These values do not appear in the data frame if the \code{as_df} argument is set to \code{TRUE}.
+If there are values on the diagonal in the original \code{btdata$wins} matrix, then these appear as the values on the diagonal of the fitted matrix. These values do not appear in the data frame if the \code{as_df} argument is set to \code{TRUE}. 
 
 The function \code{\link{btfit}} is used to fit the Bradley-Terry model. It produces a \code{"btfit"} object that can then be passed to \code{fitted.btfit} to obtain the fitted values \eqn{m_{ij}}. Note that the Bradley-Terry probabilities \eqn{p_{ij}} can be calculated using \code{\link{btprob}}.
 
