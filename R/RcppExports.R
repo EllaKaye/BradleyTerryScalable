@@ -13,25 +13,14 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
 }
 
 ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
-<<<<<<< HEAD
     .Call(`_BradleyTerryScalable_ILSR`, W, maxit, epsilon)
-=======
-    .Call('_BradleyTerryScalable_ILSR', PACKAGE = 'BradleyTerryScalable', W, maxit, epsilon)
-}
-
-btprob_vec <- function(pi) {
-    .Call('_BradleyTerryScalable_btprob_vec', PACKAGE = 'BradleyTerryScalable', pi)
->>>>>>> master
 }
 
 btprob_vec <- function(pi) {
     .Call(`_BradleyTerryScalable_btprob_vec`, pi)
 }
 
-<<<<<<< HEAD
 fitted_vec <- function(pi, N) {
     .Call(`_BradleyTerryScalable_fitted_vec`, pi, N)
 }
 
-=======
->>>>>>> master
