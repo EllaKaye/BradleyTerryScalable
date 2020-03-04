@@ -4,8 +4,14 @@
 \alias{btfit}
 \title{Fits the Bradley-Terry model}
 \usage{
-btfit(btdata, a, MAP_by_component = FALSE, subset = NULL, maxit = 10000,
-  epsilon = 0.001)
+btfit(
+  btdata,
+  a,
+  MAP_by_component = FALSE,
+  subset = NULL,
+  maxit = 10000,
+  epsilon = 0.001
+)
 }
 \arguments{
 \item{btdata}{An object of class "btdata", typically the result ob of ob <- btdata(..). See \code{\link{btdata}}.}

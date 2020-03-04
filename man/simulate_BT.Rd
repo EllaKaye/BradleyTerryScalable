@@ -8,11 +8,21 @@ Bradley-Terry model.  Counts are simulated from independent binomial
 distributions, with the binomial probabilities and totals specified
 through the function arguments.}
 \usage{
-simulate_BT(pi, N, nsim = 1, seed = NULL, result_class = c("sparseMatrix",
-  "btdata"))
+simulate_BT(
+  pi,
+  N,
+  nsim = 1,
+  seed = NULL,
+  result_class = c("sparseMatrix", "btdata")
+)
 
-\method{simulate}{btfit}(object, nsim = 1, seed = NULL,
-  result_class = c("sparseMatrix", "btdata"), ...)
+\method{simulate}{btfit}(
+  object,
+  nsim = 1,
+  seed = NULL,
+  result_class = c("sparseMatrix", "btdata"),
+  ...
+)
 }
 \arguments{
 \item{pi}{a numeric vector, with all values finite and positive.  The vector
