@@ -2,7 +2,7 @@ Package: BradleyTerryScalable
 Type: Package
 Title: Fits the Bradley-Terry Model to Potentially Large and Sparse Networks of
     Comparison Data
-Version: 0.1.0.9000
+Version: 0.1.0.9100
 Year: 2017
 Authors@R: c(
   person("Ella", "Kaye", email = "E.Kaye.1@warwick.ac.uk", role = c("aut", "cre")),
@@ -20,12 +20,12 @@ Depends:
 Imports:
     igraph,
     Matrix,
-    Rcpp (>= 0.12.7),
+    Rcpp (>= 1.0.3),
     methods,
     purrr,
     dplyr
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Suggests:
     Matrix.utils,
     stringr,
