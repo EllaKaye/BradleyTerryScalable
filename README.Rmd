@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # BradleyTerryScalable
 
-[![Travis-CI Build Status](https://travis-ci.org/EllaKaye/BradleyTerryScalable.svg?branch=master)](https://travis-ci.org/EllaKaye/BradleyTerryScalable)
+[![Travis build status](https://travis-ci.org/EllaKaye/BradleyTerryScalable.svg?branch=master)](https://travis-ci.org/EllaKaye/BradleyTerryScalable)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/BradleyTerryScalable)](https://cran.r-project.org/package=BradleyTerryScalable)
 
 An R package for fitting the Bradley-Terry model to pair-comparison data, to enable statistically principled ranking of a potentially large number of objects. 
