@@ -1,12 +1,2 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
-^docs$
-^README\.Rmd$
-^README-.*\.png$
-^_pkgdown\.yml$
-^cran-comments.md$
-
-^README-unnamed-chuck-14-1\.png$
-^README-unnamed-chuck-7-1\.png$
-^README\.md$

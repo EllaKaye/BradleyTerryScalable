@@ -2,8 +2,13 @@ Package: BradleyTerryScalable
 Type: Package
 Title: Fits the Bradley-Terry Model to Potentially Large and Sparse Networks of
     Comparison Data
+<<<<<<< HEAD
 Version: 0.1.0.9100
 Year: 2017
+=======
+Version: 0.1.0.9000
+Date: 2017
+>>>>>>> master
 Authors@R: c(
   person("Ella", "Kaye", email = "E.Kaye.1@warwick.ac.uk", role = c("aut", "cre")),
   person("David", "Firth", role = c("aut")))
@@ -20,7 +25,11 @@ Depends:
 Imports:
     igraph,
     Matrix,
+<<<<<<< HEAD
     Rcpp (>= 1.0.3),
+=======
+    Rcpp (>= 1.0.0),
+>>>>>>> master
     methods,
     purrr,
     dplyr
