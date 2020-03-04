@@ -21,6 +21,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ILSR
+List ILSR(S4 W, int maxit, double epsilon);
+RcppExport SEXP _BradleyTerryScalable_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type W(WSEXP);
+    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
+    rcpp_result_gen = Rcpp::wrap(ILSR(W, maxit, epsilon));
+    return rcpp_result_gen;
+END_RCPP
+}
 // btprob_vec
 arma::sp_mat btprob_vec(arma::vec pi);
 RcppExport SEXP _BradleyTerryScalable_btprob_vec(SEXP piSEXP) {
@@ -44,25 +57,12 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ILSR
-List ILSR(S4 W, int maxit, double epsilon);
-RcppExport SEXP _BradleyTerryScalable_ILSR(SEXP WSEXP, SEXP maxitSEXP, SEXP epsilonSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< S4 >::type W(WSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< double >::type epsilon(epsilonSEXP);
-    rcpp_result_gen = Rcpp::wrap(ILSR(W, maxit, epsilon));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_BradleyTerryScalable_BT_EM", (DL_FUNC) &_BradleyTerryScalable_BT_EM, 5},
+    {"_BradleyTerryScalable_ILSR", (DL_FUNC) &_BradleyTerryScalable_ILSR, 3},
     {"_BradleyTerryScalable_btprob_vec", (DL_FUNC) &_BradleyTerryScalable_btprob_vec, 1},
     {"_BradleyTerryScalable_fitted_vec", (DL_FUNC) &_BradleyTerryScalable_fitted_vec, 2},
-    {"_BradleyTerryScalable_ILSR", (DL_FUNC) &_BradleyTerryScalable_ILSR, 3},
     {NULL, NULL, 0}
 };
 
