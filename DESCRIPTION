@@ -20,12 +20,12 @@ Depends:
 Imports:
     igraph,
     Matrix,
-    Rcpp (>= 1.0.0),
+    Rcpp (>= 1.0.3),
     methods,
     purrr,
     dplyr
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Suggests:
     Matrix.utils,
     stringr,
