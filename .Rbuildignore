@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+README.Rmd
+_pkgdown.yml
+cran-comments.md
+docs
+^\.travis\.yml$
