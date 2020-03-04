@@ -4,8 +4,7 @@
 \alias{summary.btfit}
 \title{Summarizing Bradley-Terry Fits}
 \usage{
-\method{summary}{btfit}(object, subset = NULL, ref = NULL, SE = FALSE,
-  ...)
+\method{summary}{btfit}(object, subset = NULL, ref = NULL, SE = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}

@@ -4,8 +4,7 @@
 \alias{coef.btfit}
 \title{Extract coefficients of a 'btfit' object}
 \usage{
-\method{coef}{btfit}(object, subset = NULL, ref = NULL, as_df = FALSE,
-  ...)
+\method{coef}{btfit}(object, subset = NULL, ref = NULL, as_df = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class "btfit", typically the result \code{ob} of \code{ob <- btfit(..)}. See \code{\link{btfit}}.}
