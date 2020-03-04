@@ -12,10 +12,6 @@ BT_EM <- function(W, a, b, maxit = 5000L, epsilon = 1e-3) {
     .Call(`_BradleyTerryScalable_BT_EM`, W, a, b, maxit, epsilon)
 }
 
-ILSR <- function(W, maxit = 5000L, epsilon = 1e-3) {
-    .Call(`_BradleyTerryScalable_ILSR`, W, maxit, epsilon)
-}
-
 btprob_vec <- function(pi) {
     .Call(`_BradleyTerryScalable_btprob_vec`, pi)
 }
