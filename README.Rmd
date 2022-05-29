@@ -44,6 +44,8 @@ devtools::install_github("EllaKaye/BradleyTerryScalable", build_vignettes = TRUE
 library(BradleyTerryScalable)
 ```
 
+Please note that since this package contains compiled code, you will need to have developer tools installed. Please see [https://r-pkgs.org/setup.html#setup-tools](https://r-pkgs.org/setup.html#setup-tools) for further details.
+
 ## Preparing the data
 The main model-fitting function in this package is `btfit()`. This function takes as its main argument an object of class `btdata`. To create a `btdata` object, use the function `btdata(x)`.
 
@@ -92,7 +94,7 @@ A `btdata` object is a list containing two or three elements:
 - `components`: a list of the fully-connected components of the comparison graph (see the third bullet point above)
 - `graph`: if `return_graph = TRUE`, then the `igraph` object of the comparison graph is returned, which can be useful for visualising the data.
 
-```{r message = FALSE, fig.align = "center"}
+```{r toy-graph, message = FALSE, fig.align = "center"}
 library(igraph)
 par(mar = c(0, 0, 0, 0) + 0.1)  
 plot.igraph(toy_btdata$graph, vertex.size = 28, edge.arrow.size = 0.5) 
@@ -178,7 +180,7 @@ citations_sim[1:2]
 ```
 
 As a bigger example, let's simulate a single instance of a fairly sparse tournament with 1000 items (or 'players'), and then fit the Bradley-Terry model to the resulting data:
-```{r, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 7, out.width = '97%'}
+```{r simulation-graph, warning = FALSE, message = FALSE, fig.width = 7, fig.height = 7, out.width = '97%'}
 library(Matrix)
 library(dplyr)
 library(ggplot2)

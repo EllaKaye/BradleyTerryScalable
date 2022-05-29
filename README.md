@@ -1,27 +1,40 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-BradleyTerryScalable
-====================
 
-[![Travis-CI Build Status](https://travis-ci.org/EllaKaye/BradleyTerryScalable.svg?branch=master)](https://travis-ci.org/EllaKaye/BradleyTerryScalable) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/BradleyTerryScalable)](https://cran.r-project.org/package=BradleyTerryScalable)
+# BradleyTerryScalable
 
-An R package for fitting the Bradley-Terry model to pair-comparison data, to enable statistically principled ranking of a potentially large number of objects.
+[![Travis build
+status](https://travis-ci.org/EllaKaye/BradleyTerryScalable.svg?branch=master)](https://travis-ci.org/EllaKaye/BradleyTerryScalable)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/BradleyTerryScalable)](https://cran.r-project.org/package=BradleyTerryScalable)
 
-Given a number of items for which we have pair-comparison data, the Bradley-Terry model assigns a 'strength' parameter to each item. These can be used to rank the items. Moreover, they can be used to determine the probability that any given item will 'beat' any other given item when they are compared. Further details of the mathematical model, and the algorithms used to fit it, are available in the package vignette.
+An R package for fitting the Bradley-Terry model to pair-comparison
+data, to enable statistically principled ranking of a potentially large
+number of objects.
 
-**The documentation website for this package can be found [here](https://ellakaye.github.io/BradleyTerryScalable/) (thanks to [`pkgdown`](https://github.com/hadley/pkgdown))**
+Given a number of items for which we have pair-comparison data, the
+Bradley-Terry model assigns a ‘strength’ parameter to each item. These
+can be used to rank the items. Moreover, they can be used to determine
+the probability that any given item will ‘beat’ any other given item
+when they are compared. Further details of the mathematical model, and
+the algorithms used to fit it, are available in the package vignette.
 
-The Bradley-Terry model
------------------------
+**The documentation website for this package can be found
+[here](https://ellakaye.github.io/BradleyTerryScalable/) (thanks to
+[`pkgdown`](https://github.com/hadley/pkgdown))**
 
-Details of the Bradley-Terry model are not presented here (due to GitHub's inability to display equations). Instead, please refer to the vignette [here](https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html) or through the R console:
+## The Bradley-Terry model
+
+Details of the Bradley-Terry model are not presented here (due to
+GitHub’s inability to display equations). Instead, please refer to the
+vignette
+[here](https://ellakaye.github.io/BradleyTerryScalable/articles/BradleyTerryScalable.html)
+or through the R console:
 
 ``` r
 vignette("BradleyTerryScalable", package = "BradleyTerryScalable")
 ```
 
-Installing the package
-----------------------
+## Installing the package
 
 ``` r
 # installing from CRAN
@@ -36,31 +49,73 @@ devtools::install_github("EllaKaye/BradleyTerryScalable", build_vignettes = TRUE
 library(BradleyTerryScalable)
 ```
 
-Preparing the data
-------------------
+Please note that since this package contains compiled code, you will
+need to have developer tools installed. Please see
+<https://r-pkgs.org/setup.html#setup-tools> for further details.
 
-The main model-fitting function in this package is `btfit()`. This function takes as its main argument an object of class `btdata`. To create a `btdata` object, use the function `btdata(x)`.
+## Preparing the data
+
+The main model-fitting function in this package is `btfit()`. This
+function takes as its main argument an object of class `btdata`. To
+create a `btdata` object, use the function `btdata(x)`.
 
 The `x` argument to `btdata` can be one of four classes of object:
 
--   A matrix (either a base `matrix` or a class from the `Matrix` package), dimension *K* by *K*, where *K* is the number of items. The *i*, *j*-th element is *w*<sub>*i**j*</sub>, the number of times item *i* has beaten item *j*. Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.
+-   A matrix (either a base `matrix` or a class from the `Matrix`
+    package), dimension *K* by *K*, where *K* is the number of items.
+    The *i*, *j*-th element is *w*<sub>*i**j*</sub>, the number of times
+    item *i* has beaten item *j*. Ties can be accounted for by assigning
+    half a win (i.e. 0.5) to each item.
 
--   A contingency table of class `table`, similar to the matrix described in the above point.
+-   A contingency table of class `table`, similar to the matrix
+    described in the above point.
 
--   An `igraph`, representing the *comparison graph*, with the *K* items as nodes. For the edges:
-    -   If the graph is unweighted, a directed edge from node *i* to node *j* for every time item *i* has beaten item *j*
-    -   If the graph is weighted, then one edge from node *i* to node *j* if item *i* has beaten item *j* at least once, with the weight attribute of that edge set to the number of times *i* has beaten *j*.
+-   An `igraph`, representing the *comparison graph*, with the *K* items
+    as nodes. For the edges:
+
+    -   If the graph is unweighted, a directed edge from node *i* to
+        node *j* for every time item *i* has beaten item *j*
+    -   If the graph is weighted, then one edge from node *i* to node
+        *j* if item *i* has beaten item *j* at least once, with the
+        weight attribute of that edge set to the number of times *i* has
+        beaten *j*.
+
 -   A data frame (`data.frame` or `tibble`), with three or four columns
-    -   If the data frame has three columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item.
-    -   If the data frame has four columns, then the first column must be the name of the first item, the second column must be the name of the second item, and the third column must be the number of times the first item has beaten the second item and the fourth column must be the number of times the second item has beaten the first item.
-    -   In either of these cases, the data can be aggregated, or there can be one row per comparison.
-    -   Ties can be accounted for by assigning half a win (i.e. 0.5) to each item.
 
-We anticipate that the user may have data in a three-column data frame that does not match the description of the three-column data frame above. For example, the data frame could have one row per comparison, where the third column contains a code to indicate which of the two items won, say `W1` if the item in column 1 won, `W2` if the item in column 2 won and `D` if it was a tie/draw. Alternatively, the third column could contain the win-count, but only relative to the first item, i.e. 1 if the first item wins, 0 if it loses and 0.5 if there was a draw. In this case, the `btdata` function won't know that a loss for the first item item should be counted as a win for the second item.
+    -   If the data frame has three columns, then the first column must
+        be the name of the first item, the second column must be the
+        name of the second item, and the third column must be the number
+        of times the first item has beaten the second item.
+    -   If the data frame has four columns, then the first column must
+        be the name of the first item, the second column must be the
+        name of the second item, and the third column must be the number
+        of times the first item has beaten the second item and the
+        fourth column must be the number of times the second item has
+        beaten the first item.
+    -   In either of these cases, the data can be aggregated, or there
+        can be one row per comparison.
+    -   Ties can be accounted for by assigning half a win (i.e. 0.5) to
+        each item.
 
-For the cases described in the previous paragraph, the `BradleyTerryScalable` package provides the `codes_to_counts()` function, which takes such three-column data-frames and returns a four-column data frame of the required format for passing to the `btdata()` function.
+We anticipate that the user may have data in a three-column data frame
+that does not match the description of the three-column data frame
+above. For example, the data frame could have one row per comparison,
+where the third column contains a code to indicate which of the two
+items won, say `W1` if the item in column 1 won, `W2` if the item in
+column 2 won and `D` if it was a tie/draw. Alternatively, the third
+column could contain the win-count, but only relative to the first item,
+i.e. 1 if the first item wins, 0 if it loses and 0.5 if there was a
+draw. In this case, the `btdata` function won’t know that a loss for the
+first item item should be counted as a win for the second item.
 
-The `BradleyTerryScalable` package provides two toy data sets which we'll use in this demonstration:
+For the cases described in the previous paragraph, the
+`BradleyTerryScalable` package provides the `codes_to_counts()`
+function, which takes such three-column data-frames and returns a
+four-column data frame of the required format for passing to the
+`btdata()` function.
+
+The `BradleyTerryScalable` package provides two toy data sets which
+we’ll use in this demonstration:
 
 ``` r
 data(citations) 
@@ -93,19 +148,29 @@ toy_data
 #> 17     Dan     Amy      W2
 ```
 
-`citations` is in an appropriate format to pass to `btdata()`, whereas `toy_data` needs to be passed through `codes_to_counts()` first:
+`citations` is in an appropriate format to pass to `btdata()`, whereas
+`toy_data` needs to be passed through `codes_to_counts()` first:
 
 ``` r
 citations_btdata <- btdata(citations)
 toy_data_4col <- codes_to_counts(toy_data, c("W1", "W2", "D"))
+#> Warning: `as_data_frame()` was deprecated in tibble 2.0.0.
+#> Please use `as_tibble()` instead.
+#> The signature and semantics have changed, see `?as_tibble`.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 toy_btdata <- btdata(toy_data_4col, return_graph = TRUE) 
 ```
 
 A `btdata` object is a list containing two or three elements:
 
--   `wins`: a matrix of the form described in the second bullet point above
--   `components`: a list of the fully-connected components of the comparison graph (see the third bullet point above)
--   `graph`: if `return_graph = TRUE`, then the `igraph` object of the comparison graph is returned, which can be useful for visualising the data.
+-   `wins`: a matrix of the form described in the second bullet point
+    above
+-   `components`: a list of the fully-connected components of the
+    comparison graph (see the third bullet point above)
+-   `graph`: if `return_graph = TRUE`, then the `igraph` object of the
+    comparison graph is returned, which can be useful for visualising
+    the data.
 
 ``` r
 library(igraph)
@@ -113,9 +178,10 @@ par(mar = c(0, 0, 0, 0) + 0.1)
 plot.igraph(toy_btdata$graph, vertex.size = 28, edge.arrow.size = 0.5) 
 ```
 
-<img src="README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="README-toy-graph-1.png" style="display: block; margin: auto;" />
 
-Information about the `btdata` objects can be seen through the `summary.btdata()` method:
+Information about the `btdata` objects can be seen through the
+`summary.btdata()` method:
 
 ``` r
 summary(citations_btdata)
@@ -134,9 +200,11 @@ summary(toy_btdata)
 #> 3              4    1
 ```
 
-Note that components of size 1 will be filtered out in the MLE fit (see next section); the model doesn't make sense for them.
+Note that components of size 1 will be filtered out in the MLE fit (see
+next section); the model doesn’t make sense for them.
 
-`select_components()` can be used to create a subset of a `btdata` object. In our toy case, the following all give the same subset:
+`select_components()` can be used to create a subset of a `btdata`
+object. In our toy case, the following all give the same subset:
 
 ``` r
 toy_btdata_subset <- select_components(toy_btdata, "3")
@@ -150,22 +218,37 @@ summary(toy_btdata_subset)
 
 Alternatively, set the `subset` argument in `btfit()`.
 
-Fitting the model
------------------
+## Fitting the model
 
-`summary.btdata(object)` gives information on whether or not the underlying comparison graph is fully connected. This affects the type of estimate available for the strength parameter.
+`summary.btdata(object)` gives information on whether or not the
+underlying comparison graph is fully connected. This affects the type of
+estimate available for the strength parameter.
 
--   If the comparison graph is fully connected (i.e. if `Fully-connected: TRUE` is printed), then the maximum likelihood estimate (MLE) for the Bradley-Terry model exists and is finite.
--   If the comparison graph is not fully connected (i.e. if `Fully-connected: FALSE` is printed), then we cannot find the MLE for the full dataset. There are two alternatives:
-    -   Find the MLE on each fully connected component of the comparison graph (and note then that it is only meaningful to rank and compare items within the same component).
-    -   Place a Bayesian prior on the model, then find the maximum a posteriori (MAP) estimate. This always exists and is finite. It gives a principled way of ranking and comparing all *K* items.
+-   If the comparison graph is fully connected (i.e. if
+    `Fully-connected: TRUE` is printed), then the maximum likelihood
+    estimate (MLE) for the Bradley-Terry model exists and is finite.
+-   If the comparison graph is not fully connected (i.e. if
+    `Fully-connected: FALSE` is printed), then we cannot find the MLE
+    for the full dataset. There are two alternatives:
+    -   Find the MLE on each fully connected component of the comparison
+        graph (and note then that it is only meaningful to rank and
+        compare items within the same component).
+    -   Place a Bayesian prior on the model, then find the maximum a
+        posteriori (MAP) estimate. This always exists and is finite. It
+        gives a principled way of ranking and comparing all *K* items.
 
-The function `btfit()` requires two arguments: the data (in the form of a `btdata` oject), and `a`, which controls whether the MLE or MAP estimate is returned.
+The function `btfit()` requires two arguments: the data (in the form of
+a `btdata` oject), and `a`, which controls whether the MLE or MAP
+estimate is returned.
 
--   If `a = 1`, the MLE is returned, either on the full dataset if the comparison graph is fully-connected, or else the MLE is found separately for each fully-connected component.
--   If `a > 1`, the MAP estimate is returned, with `a` as the value of the shape parameter in the prior.
+-   If `a = 1`, the MLE is returned, either on the full dataset if the
+    comparison graph is fully-connected, or else the MLE is found
+    separately for each fully-connected component.
+-   If `a > 1`, the MAP estimate is returned, with `a` as the value of
+    the shape parameter in the prior.
 
-See `?btfit()` or the *Fitting the Bradley-Terry model* section above for more details.
+See `?btfit()` or the *Fitting the Bradley-Terry model* section above
+for more details.
 
 ``` r
 citations_fit <- btfit(citations_btdata, 1)
@@ -173,66 +256,86 @@ toy_fit_MLE <- btfit(toy_btdata, 1)
 toy_fit_MAP <- btfit(toy_btdata, 1.1)
 ```
 
-`btfit` objects are lists, and they are not designed to be examined directly, but to be passed to other methods.
+`btfit` objects are lists, and they are not designed to be examined
+directly, but to be passed to other methods.
 
-Methods for a `btfit` object
-----------------------------
+## Methods for a `btfit` object
 
 ### `summary.btfit()`, `coef.btfit()` and `vcov.btfit()`
 
 The `summary.btfit()` method returns a list with
 
 -   `call`: the call to `btfit()`
--   `item_summary`: a data frame with one row for each item in the fit (note that this can be fewer than the number of items in the data, if there were any components of size one, or if the fit was on a subset). Items are ranked in descending order *within each component*
--   `component_summary`: a data frame with one row per component in the fit.
+-   `item_summary`: a data frame with one row for each item in the fit
+    (note that this can be fewer than the number of items in the data,
+    if there were any components of size one, or if the fit was on a
+    subset). Items are ranked in descending order *within each
+    component*
+-   `component_summary`: a data frame with one row per component in the
+    fit.
 
-The standard errors are *not* returned by default (since the underlying `vcov.btfit()` function can be slow for large matrices), but can be included by setting `SE = TRUE`. It is also possible to set a reference item, and to return the summary for only a subset of components (see `?summary.btfit()`).
+The standard errors are *not* returned by default (since the underlying
+`vcov.btfit()` function can be slow for large matrices), but can be
+included by setting `SE = TRUE`. It is also possible to set a reference
+item, and to return the summary for only a subset of components (see
+`?summary.btfit()`).
 
-The `coef.btfit()` method extracts the parameter estimates. This is the strength parameter, on the log scale, constrained (by default) such that the mean of the estimates is zero. By default it is a vector if `btfit()` was run on the full dataset, or a list of vectors otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`.
+The `coef.btfit()` method extracts the parameter estimates. This is the
+strength parameter, on the log scale, constrained (by default) such that
+the mean of the estimates is zero. By default it is a vector if
+`btfit()` was run on the full dataset, or a list of vectors otherwise,
+but there is also the possibility of returning a data frame by setting
+`as_df = TRUE`.
 
-The `vcov.btfit()` method returns the variance-covariance matrix (or a list of these matrices by component), and also has `ref` and `subset` arguments (see `?vcov.btfit()`).
+The `vcov.btfit()` method returns the variance-covariance matrix (or a
+list of these matrices by component), and also has `ref` and `subset`
+arguments (see `?vcov.btfit()`).
 
 ``` r
 summary(citations_fit)
+#> Warning: `data_frame()` was deprecated in tibble 1.1.0.
+#> Please use `tibble()` instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 #> $call
 #> btfit(btdata = citations_btdata, a = 1)
 #> 
 #> $item_summary
-#> # A tibble: 4 x 3
-#>      component         item   estimate
-#>          <chr>        <chr>      <dbl>
-#> 1 full_dataset       JRSS-B  1.0604065
-#> 2 full_dataset   Biometrika  0.7897537
-#> 3 full_dataset         JASA  0.3095638
-#> 4 full_dataset Comm Statist -2.1597241
+#> # A tibble: 4 × 3
+#>   component    item         estimate
+#>   <chr>        <chr>           <dbl>
+#> 1 full_dataset JRSS-B          1.06 
+#> 2 full_dataset Biometrika      0.790
+#> 3 full_dataset JASA            0.310
+#> 4 full_dataset Comm Statist   -2.16 
 #> 
 #> $component_summary
-#> # A tibble: 1 x 4
-#>      component num_items iters converged
-#>          <chr>     <int> <int>     <lgl>
-#> 1 full_dataset         4     2      TRUE
+#> # A tibble: 1 × 4
+#>   component    num_items iters converged
+#>   <chr>            <int> <int> <lgl>    
+#> 1 full_dataset         4     2 TRUE
 summary(toy_fit_MLE, SE = TRUE)
 #> $call
 #> btfit(btdata = toy_btdata, a = 1)
 #> 
 #> $item_summary
-#> # A tibble: 7 x 4
-#>   component  item    estimate        SE
-#>       <chr> <chr>       <dbl>     <dbl>
-#> 1         2   Han  0.69564153 0.9110076
-#> 2         2   Gal  0.41253614 0.7675914
-#> 3         2   Fin -1.10817768 1.0499275
-#> 4         3   Cyd  0.59239992 0.9905958
-#> 5         3   Amy  0.03250119 0.6990438
-#> 6         3   Ben -0.24307179 0.9443103
-#> 7         3   Dan -0.38182932 0.7124240
+#> # A tibble: 7 × 4
+#>   component item  estimate    SE
+#>   <chr>     <chr>    <dbl> <dbl>
+#> 1 2         Han     0.696  0.911
+#> 2 2         Gal     0.413  0.768
+#> 3 2         Fin    -1.11   1.05 
+#> 4 3         Cyd     0.592  0.991
+#> 5 3         Amy     0.0325 0.699
+#> 6 3         Ben    -0.243  0.944
+#> 7 3         Dan    -0.382  0.712
 #> 
 #> $component_summary
-#> # A tibble: 2 x 4
+#> # A tibble: 2 × 4
 #>   component num_items iters converged
-#>       <chr>     <int> <int>     <lgl>
-#> 1         2         3     6      TRUE
-#> 2         3         4    10      TRUE
+#>   <chr>         <int> <int> <lgl>    
+#> 1 2                 3     6 TRUE     
+#> 2 3                 4    10 TRUE
 coef(toy_fit_MAP)
 #>         Eve         Cyd         Han         Amy         Gal         Ben 
 #>  1.90113420  0.47237293  0.24535391 -0.07655328 -0.10175687 -0.42296697 
@@ -250,7 +353,12 @@ vcov(citations_fit, ref = "JASA")
 
 ### `btprob()` and `fitted.btfit()`
 
-The `btprob` function calculates the Bradley-Terry probabilities that item *i* beats item *j*. By default the result is a matrix if `btfit` was run on the full dataset, or a list of matrices otherwise, but there is also the possibility of returning a data frame by setting `as_df = TRUE`. The `fitted.btfit()` method functions similarly, except it returns the expected number of wins (see `?fitted.btfit()`).
+The `btprob` function calculates the Bradley-Terry probabilities that
+item *i* beats item *j*. By default the result is a matrix if `btfit`
+was run on the full dataset, or a list of matrices otherwise, but there
+is also the possibility of returning a data frame by setting
+`as_df = TRUE`. The `fitted.btfit()` method functions similarly, except
+it returns the expected number of wins (see `?fitted.btfit()`).
 
 ``` r
 btprob(citations_fit)
@@ -262,24 +370,34 @@ btprob(citations_fit)
 #>   JASA         0.32063771  0.3822073 .             0.9219605
 #>   Comm Statist 0.03841516  0.0497612 0.07803945    .
 fitted(toy_fit_MLE, as_df = TRUE)
-#> # A tibble: 8 x 5
-#>   component player1 player2      fit1      fit2
-#>       <chr>   <chr>   <chr>     <dbl>     <dbl>
-#> 1         2     Han     Gal 1.1406148 0.8593852
-#> 2         2     Han     Fin 0.8586132 0.1413868
-#> 3         2     Gal     Fin 1.6412871 0.3587129
-#> 4         3     Cyd     Amy 1.2728582 0.7271418
-#> 5         3     Amy     Ben 0.5684605 0.4315395
-#> 6         3     Cyd     Dan 0.7259617 0.2740383
-#> 7         3     Amy     Dan 1.2042516 0.7957484
-#> 8         3     Ben     Dan 1.0692677 0.9307323
+#> # A tibble: 8 × 5
+#>   component player1 player2  fit1  fit2
+#>   <chr>     <chr>   <chr>   <dbl> <dbl>
+#> 1 2         Han     Gal     1.14  0.859
+#> 2 2         Han     Fin     0.859 0.141
+#> 3 2         Gal     Fin     1.64  0.359
+#> 4 3         Cyd     Amy     1.27  0.727
+#> 5 3         Amy     Ben     0.568 0.432
+#> 6 3         Cyd     Dan     0.726 0.274
+#> 7 3         Amy     Dan     1.20  0.796
+#> 8 3         Ben     Dan     1.07  0.931
 ```
 
 ### `simulate.btfit()` and `simulate_BT()`
 
-There are two functions to simulate data from a Bradley-Terry model. The S3 method `simulate.btfit()` takes a `btfit` object *which has been fitted on one component* (either the full dataset, or a one-component subset). The underlying function `simulate_BT()` takes an `N` matrix (i.e. where the *i*, *j*-th element is the number of times items *i* and *j* have been compared) and a vector `pi`, the strength parameters of a Bradley-Terry model (note that `pi` is *not* the same as the estimates in `coef.btfit()` and `summary.btfit()`, which are on the logarithmic scale). Both functions return a `wins` matrix by default, but can also be set to return a `btdata` object instead.
+There are two functions to simulate data from a Bradley-Terry model. The
+S3 method `simulate.btfit()` takes a `btfit` object *which has been
+fitted on one component* (either the full dataset, or a one-component
+subset). The underlying function `simulate_BT()` takes an `N` matrix
+(i.e. where the *i*, *j*-th element is the number of times items *i* and
+*j* have been compared) and a vector `pi`, the strength parameters of a
+Bradley-Terry model (note that `pi` is *not* the same as the estimates
+in `coef.btfit()` and `summary.btfit()`, which are on the logarithmic
+scale). Both functions return a `wins` matrix by default, but can also
+be set to return a `btdata` object instead.
 
-For example, we can simulate 100 new datasets from the fitted model for the small `citations` dataset:
+For example, we can simulate 100 new datasets from the fitted model for
+the small `citations` dataset:
 
 ``` r
 citations_sim <- simulate(citations_fit, nsim = 100, seed = 1)
@@ -303,7 +421,9 @@ citations_sim[1:2]
 #>   Comm Statist     20         40   70            .
 ```
 
-As a bigger example, let's simulate a single instance of a fairly sparse tournament with 1000 items (or 'players'), and then fit the Bradley-Terry model to the resulting data:
+As a bigger example, let’s simulate a single instance of a fairly sparse
+tournament with 1000 items (or ‘players’), and then fit the
+Bradley-Terry model to the resulting data:
 
 ``` r
 library(Matrix)
@@ -349,9 +469,11 @@ ggplot(plot_df, aes(x, y)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-<img src="README-unnamed-chunk-14-1.png" width="97%" />
+<img src="README-simulation-graph-1.png" width="97%" />
 
-Further information
--------------------
+## Further information
 
-All code for the package is available at <https://github.com/EllaKaye/BradleyTerryScalable> and a documentation website is available at <https://ellakaye.github.io/BradleyTerryScalable>
+All code for the package is available at
+<https://github.com/EllaKaye/BradleyTerryScalable> and a documentation
+website is available at
+<https://ellakaye.github.io/BradleyTerryScalable>
