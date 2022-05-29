@@ -2,7 +2,7 @@ Package: BradleyTerryScalable
 Type: Package
 Title: Fits the Bradley-Terry Model to Potentially Large and Sparse Networks of
     Comparison Data
-Version: 0.1.0.9200
+Version: 0.1.0.9300
 Date: 2017
 Authors@R: c(
   person("Ella", "Kaye", email = "E.Kaye.1@warwick.ac.uk", role = c("aut", "cre")),
